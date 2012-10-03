@@ -56,11 +56,11 @@ int main(int argc, char *argv[])
 	#endif
 	
 	
-	CPPL::PipeClient pc(CLI_PIPENAME, [](){return new CPPL::ClientReceiver();}, CLI_TIM_CON, CLI_TIM_RX, CLI_TIM_TX);
-	CPPL::ErrorCode rval = pc.open();
-	if (rval != CPPL::ErrorCode::SUCCESS)
+	San2::Cppl::PipeClient pc(CLI_PIPENAME, [](){return new San2::Cppl::ClientReceiver();}, CLI_TIM_CON, CLI_TIM_RX, CLI_TIM_TX);
+	San2::Cppl::ErrorCode rval = pc.open();
+	if (rval != San2::Cppl::ErrorCode::SUCCESS)
 	{
-		 printf("open() failed errcode: %d\n", CPPL::errorCodeToInt(rval));
+		 printf("open() failed errcode: %d\n", San2::Cppl::errorCodeToInt(rval));
 		 return -1;
 	}
 	
@@ -68,25 +68,25 @@ int main(int argc, char *argv[])
 	
 	printf("***\n");
 	rval = pc.send(str1, strlen(str1));
-	if (rval != CPPL::ErrorCode::SUCCESS) printf("send(st1) error \n");
+	if (rval != San2::Cppl::ErrorCode::SUCCESS) printf("send(st1) error \n");
 	rval = pc.send(str2, strlen(str2));
-	if (rval != CPPL::ErrorCode::SUCCESS) printf("send(st2) error \n");
+	if (rval != San2::Cppl::ErrorCode::SUCCESS) printf("send(st2) error \n");
 	rval = pc.send(str3, strlen(str3));
-	if (rval != CPPL::ErrorCode::SUCCESS) printf("send(st3) error \n");
+	if (rval != San2::Cppl::ErrorCode::SUCCESS) printf("send(st3) error \n");
 	rval = pc.send(str4, strlen(str4));
-	if (rval != CPPL::ErrorCode::SUCCESS) printf("send(st4) error \n");
+	if (rval != San2::Cppl::ErrorCode::SUCCESS) printf("send(st4) error \n");
 	rval = pc.send(str5, strlen(str5));
-	if (rval != CPPL::ErrorCode::SUCCESS) printf("send(st5) error \n");
+	if (rval != San2::Cppl::ErrorCode::SUCCESS) printf("send(st5) error \n");
 	rval = pc.send(str6, strlen(str6));
-	if (rval != CPPL::ErrorCode::SUCCESS) printf("send(st6) error \n");
+	if (rval != San2::Cppl::ErrorCode::SUCCESS) printf("send(st6) error \n");
 	rval = pc.send(str7, strlen(str7));
-	if (rval != CPPL::ErrorCode::SUCCESS) printf("send(st7) error \n");
+	if (rval != San2::Cppl::ErrorCode::SUCCESS) printf("send(st7) error \n");
 	rval = pc.send(str8, strlen(str8));
-	if (rval != CPPL::ErrorCode::SUCCESS) printf("send(st8) error \n");
+	if (rval != San2::Cppl::ErrorCode::SUCCESS) printf("send(st8) error \n");
 	rval = pc.send(str9, strlen(str9));
-	if (rval != CPPL::ErrorCode::SUCCESS) printf("send(st9) error \n");
+	if (rval != San2::Cppl::ErrorCode::SUCCESS) printf("send(st9) error \n");
 	rval = pc.send(str10, strlen(str10));
-	if (rval != CPPL::ErrorCode::SUCCESS) printf("send(st10) error \n");
+	if (rval != San2::Cppl::ErrorCode::SUCCESS) printf("send(st10) error \n");
 	
 
 	while(1)

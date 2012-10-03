@@ -2,20 +2,23 @@
 
 #include "abstractclientreceiver.hpp"
 
-namespace CPPL
+namespace San2
 {
-	class ClientReceiver : public AbstractClientReceiver
+	namespace Cppl
 	{
-	  public:
-		ClientReceiver();
-		ErrorCode run();
-	  protected:
-		~ClientReceiver();
-	  private:
-		 // another msvc fix
-		#ifdef LINUX
-			ClientReceiver(const ClientReceiver& copyFromMe)=delete;
-			ClientReceiver& operator=(const ClientReceiver& copyFromMe)=delete;
-		#endif
-	};
+		class ClientReceiver : public AbstractClientReceiver
+		{
+		  public:
+			ClientReceiver();
+			ErrorCode run();
+		  protected:
+			~ClientReceiver();
+		  private:
+			 // another msvc fix
+			#ifdef LINUX
+				ClientReceiver(const ClientReceiver& copyFromMe)=delete;
+				ClientReceiver& operator=(const ClientReceiver& copyFromMe)=delete;
+			#endif
+		};
+	}
 }

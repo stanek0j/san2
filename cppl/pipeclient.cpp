@@ -27,8 +27,7 @@
 #define CPPL_PIPECLI_RXBUFSIZE 1500
 #define CPPL_PIPECLI_WIN_MAXFNAMEBYTES 512
 
-namespace CPPL 
-{	
+namespace San2 { namespace Cppl {	
 
     void PipeClient::run()
     {
@@ -42,7 +41,7 @@ namespace CPPL
 
 	#ifdef LINUX
 	
-	PipeClient::PipeClient(const char *pipeName, std::function<CPPL::AbstractClientReceiver* (void)> createAbstractClientReceiverProc, unsigned int timCON, unsigned int timRX, unsigned int timTX) :
+	PipeClient::PipeClient(const char *pipeName, std::function<AbstractClientReceiver* (void)> createAbstractClientReceiverProc, unsigned int timCON, unsigned int timRX, unsigned int timTX) :
 		pipename(pipeName),
 		absReceiver(createAbstractClientReceiverProc()), // ugly: no error checking (excpetion new)
 		mTimCON(timCON),
@@ -211,4 +210,4 @@ namespace CPPL
     }
 
 	#endif
-}
+}} // ns

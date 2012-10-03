@@ -26,8 +26,6 @@ namespace San2
 		typedef std::array<unsigned char, IPv4Size> IPv4Address;
 		typedef std::array<unsigned char, IPv6Size> IPv6Address;
 		
-		typedef San2::Utils::CVector<unsigned char> bytes;
-		
 		// flags
 		// DX - destination execute
 		// EX - each node execute

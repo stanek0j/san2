@@ -2,28 +2,31 @@
 #include <stdio.h>
 #include "terminalreceiver.hpp"
 
-TerminalReceiver::TerminalReceiver()
-{
-	
-}
-	
-CPPL::ErrorCode TerminalReceiver::run()
-{
-    CPPL::PipeClient *client = getPipeClient();
+namespace San2 { namespace Cppl {
 
-    unsigned int bytesRead;
-    const unsigned int dataSize = 512;
-    char data[dataSize];
+	TerminalReceiver::TerminalReceiver()
+	{
+		
+	}
+		
+	ErrorCode TerminalReceiver::run()
+	{
+		PipeClient *client = getPipeClient();
 
-    while(client->readSome(data, dataSize, &bytesRead) == CPPL::ErrorCode::SUCCESS)
-    {
-	    fwrite(data, 1, bytesRead, stdout);
-    }
-	return CPPL::ErrorCode::SUCCESS;
-}
- 
-TerminalReceiver::~TerminalReceiver()
-{
-	// empty	
-}
+		unsigned int bytesRead;
+		const unsigned int dataSize = 512;
+		char data[dataSize];
+
+		while(client->readSome(data, dataSize, &bytesRead) == ErrorCode::SUCCESS)
+		{
+			fwrite(data, 1, bytesRead, stdout);
+		}
+		return ErrorCode::SUCCESS;
+	}
+	 
+	TerminalReceiver::~TerminalReceiver()
+	{
+		// empty	
+	}
 	
+}} // ns

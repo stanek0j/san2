@@ -33,8 +33,8 @@
 // http://msdn.microsoft.com/en-us/library/windows/desktop/aa365150(v=vs.85).aspx
 #define CPPL_PIPESERV_WIN_MAXCHARPIPENAME 256
 
-namespace CPPL 
-{
+namespace San2 { namespace Cppl { 
+
     void PipeServer::run()
     {
         errcode = runProc();
@@ -47,7 +47,7 @@ namespace CPPL
 
 	#ifdef LINUX
 	
-	PipeServer::PipeServer(const char *pipeName, std::function<CPPL::AbstractServerReceiver* (void)> createAbstractServerReceiverProc, unsigned int timCON, unsigned int timRX, unsigned int timTX):
+	PipeServer::PipeServer(const char *pipeName, std::function<AbstractServerReceiver* (void)> createAbstractServerReceiverProc, unsigned int timCON, unsigned int timRX, unsigned int timTX):
 		pipename(pipeName),
 		mCreateAbstractServerReceiverProc(createAbstractServerReceiverProc),
 		mTimCON(timCON),
@@ -284,4 +284,4 @@ namespace CPPL
 	}
 
 	#endif
-}
+}} // ns

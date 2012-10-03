@@ -5,12 +5,11 @@
 #include "cpthread.hpp"
 #include "pipechannel.hpp"
 
-namespace CPPL
-{
+namespace San2 { namespace Cppl {
 
 	// TODO: Very ugly needs nicer code
 #ifdef LINUX
-	void ThreadManager::startThread(int sockt, std::function<CPPL::AbstractServerReceiver* (void)> createAbstractServerReceiverProc, unsigned int timRX, unsigned int timTX)
+	void ThreadManager::startThread(int sockt, std::function<AbstractServerReceiver* (void)> createAbstractServerReceiverProc, unsigned int timRX, unsigned int timTX)
 	{
 		mMutex.lock();
 			// anything inside mutex must not throw, otherwise deadlock
@@ -22,7 +21,7 @@ namespace CPPL
 #endif
 
 #ifdef WINDOWS
-	void ThreadManager::startThread(HANDLE hPipe, std::function<CPPL::AbstractServerReceiver* (void)> createAbstractServerReceiverProc, unsigned int timRX, unsigned int timTX)
+	void ThreadManager::startThread(HANDLE hPipe, std::function<AbstractServerReceiver* (void)> createAbstractServerReceiverProc, unsigned int timRX, unsigned int timTX)
 	{
 		mMutex.lock();
 			// anything inside mutex must not throw, otherwise deadlock
@@ -122,4 +121,4 @@ namespace CPPL
 		
 		return cnt;
 	}
-}
+}} //ns

@@ -13,8 +13,8 @@
 #include "pipechannel.hpp"
 #include "helper.hpp"
 
-namespace CPPL
-{
+namespace San2 { namespace Cppl {
+	
 	ServerReceiver::ServerReceiver()
 	{
 		
@@ -53,17 +53,17 @@ namespace CPPL
 			line[strlen(line)] = 0x0A;
 			lineLen++;
 			
-			CPPL::ErrorCode sendRval = send(line, lineLen);
+			ErrorCode sendRval = send(line, lineLen);
 
-			if (sendRval != CPPL::ErrorCode::SUCCESS) // echo
+			if (sendRval != ErrorCode::SUCCESS) // echo
 			{
 				printf("error: srvproc send\n");
-				return CPPL::ErrorCode::FAILURE;
+				return ErrorCode::FAILURE;
 			}
 		}
 		
 		printf("client exit\n");
-		return CPPL::ErrorCode::SUCCESS;
+		return ErrorCode::SUCCESS;
 	}
 	
-}
+}} // ns

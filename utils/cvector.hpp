@@ -190,6 +190,8 @@ namespace San2
 			std::copy(s.begin(), s.end(), temp.begin());
 			return temp; 
 		}
+		
+		typedef San2::Utils::CVector<unsigned char> bytes;
 	}
 
 }

@@ -3,8 +3,8 @@
 #include "abstractreceiver.hpp"
 #include "helper.hpp"
 
-namespace CPPL
-{
+namespace San2 { namespace Cppl {
+	
 	AbstractReceiver::AbstractReceiver()
 	{
 		// empty	
@@ -19,4 +19,5 @@ namespace CPPL
 	{
 		// empty
 	}
-}
+
+}} //ns

@@ -21,8 +21,8 @@
 
 #define CPPL_PIPECHANN_RXBUFSIZE 1500
 
-namespace CPPL
-{
+namespace San2 { namespace Cppl {
+	
 		PipeChannel::~PipeChannel()
 		{
 			delete absReceiver; // is it safe?
@@ -34,7 +34,7 @@ namespace CPPL
 		}
 	
 	#ifdef LINUX
-		PipeChannel::PipeChannel(int sockt, std::function<CPPL::AbstractServerReceiver* (void)> createAbstractServerReceiverProc, unsigned int timRX, unsigned int timTX) :
+		PipeChannel::PipeChannel(int sockt, std::function<AbstractServerReceiver* (void)> createAbstractServerReceiverProc, unsigned int timRX, unsigned int timTX) :
 			sock(sockt),
 			absReceiver(createAbstractServerReceiverProc()), // ugly: no error checking (excpetion new)
 			mTimRX(timRX),
@@ -65,7 +65,7 @@ namespace CPPL
 	#endif
 
 	#ifdef WINDOWS
-		PipeChannel::PipeChannel(HANDLE handlePipe, std::function<CPPL::AbstractServerReceiver* (void)> createAbstractServerReceiverProc, unsigned int timRX, unsigned int timTX) :
+		PipeChannel::PipeChannel(HANDLE handlePipe, std::function<AbstractServerReceiver* (void)> createAbstractServerReceiverProc, unsigned int timRX, unsigned int timTX) :
 			hPipe(handlePipe),
 			absReceiver(createAbstractServerReceiverProc()), // ugly: no error checking
 			mTimRX(timRX),
@@ -95,4 +95,4 @@ namespace CPPL
             return cppl_win_sendall_stream(hPipe, data, &len, mTimTX, this);
         }
 	#endif
-}
+}} // ns

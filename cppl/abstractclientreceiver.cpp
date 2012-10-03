@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include "abstractclientreceiver.hpp"
 
-namespace CPPL
-{
+namespace San2 { namespace Cppl {
+	
 	AbstractClientReceiver::AbstractClientReceiver() :
 		mClient(NULL)
 	{
@@ -26,4 +26,4 @@ namespace CPPL
 		return mClient;
 	}
 
-}
+}} //ns

@@ -57,5 +57,6 @@ clean::
 	cd test
 	rm -f test/*.o
 	rm -f utils/*.o
+	rm -f cppl/*.o
 
 	

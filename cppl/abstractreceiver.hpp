@@ -3,22 +3,25 @@
 
 #include "helper.hpp"
 
-namespace CPPL
+namespace San2
 {	
-	class AbstractReceiver
+	namespace Cppl
 	{
-	  public:
-	    AbstractReceiver();
-	    virtual ErrorCode run()=0;
-	    virtual void disconnected(ErrorCode errcode);
-	  protected:
-	    virtual ~AbstractReceiver();
-	    //virtual int send(char *data, int len)=0;
-	  private:
-		 // another msvc fix
-		#ifdef LINUX
-			AbstractReceiver(const AbstractReceiver& copyFromMe)=delete;
-			AbstractReceiver& operator=(const AbstractReceiver& copyFromMe)=delete;
-		#endif
-	};
+		class AbstractReceiver
+		{
+		  public:
+			AbstractReceiver();
+			virtual ErrorCode run()=0;
+			virtual void disconnected(ErrorCode errcode);
+		  protected:
+			virtual ~AbstractReceiver();
+			//virtual int send(char *data, int len)=0;
+		  private:
+			 // another msvc fix
+			#ifdef LINUX
+				AbstractReceiver(const AbstractReceiver& copyFromMe)=delete;
+				AbstractReceiver& operator=(const AbstractReceiver& copyFromMe)=delete;
+			#endif
+		};
+	}
 }

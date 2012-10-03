@@ -10,8 +10,8 @@
 
 #include "clientreceiver.hpp"
 
-namespace CPPL
-{
+namespace San2 { namespace Cppl {
+	
 	ClientReceiver::ClientReceiver()
 	{
 		
@@ -19,19 +19,19 @@ namespace CPPL
 	
 	ErrorCode ClientReceiver::run()
 	{
-		CPPL::PipeClient *client = getPipeClient();
+		PipeClient *client = getPipeClient();
 
 		unsigned int bytesRead;
 		const unsigned int dataSize = 512;
 		char data[dataSize];
 
-		while(client->readSome(data, dataSize, &bytesRead) == CPPL::ErrorCode::SUCCESS)
+		while(client->readSome(data, dataSize, &bytesRead) == ErrorCode::SUCCESS)
 		{
 			fwrite(data, 1, bytesRead, stdout);
 			fflush(stdout);
 		}
 		printf("client exit cc \n");
-		return CPPL::ErrorCode::SUCCESS;
+		return ErrorCode::SUCCESS;
 	}
 
     ClientReceiver::~ClientReceiver()
@@ -39,4 +39,4 @@ namespace CPPL
 	  // empty	
 	}
 	
-}
+}} // ns

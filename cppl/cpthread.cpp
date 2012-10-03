@@ -2,8 +2,8 @@
 #include "cpthread.hpp"
 #include <thread>
 
-namespace CPPL
-{
+namespace San2 { namespace Cppl {
+	
 	#ifdef LINUX
 		CpThread::CpThread() :
 			thr(NULL),
@@ -83,4 +83,4 @@ namespace CPPL
 		run();
 		mFinished = true;
 	}
-}
+}} // ns

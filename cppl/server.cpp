@@ -27,12 +27,12 @@
 	#define SRV_PIPENAME "\\\\.\\pipe\\mynamedpipe"
 #endif
 
-CPPL::AbstractServerReceiver* createAbstractServerReceiver()
+San2::Cppl::AbstractServerReceiver* createAbstractServerReceiver()
 {
-	return new CPPL::ServerReceiver();
+	return new San2::Cppl::ServerReceiver();
 }
 
-CPPL::PipeServer ps(SRV_PIPENAME, createAbstractServerReceiver, TIMEOUT_CON, TIMEOUT_RX, TIMEOUT_TX);
+San2::Cppl::PipeServer ps(SRV_PIPENAME, createAbstractServerReceiver, TIMEOUT_CON, TIMEOUT_RX, TIMEOUT_TX);
 
 #ifdef LINUX
   struct sigaction act;

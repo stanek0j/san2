@@ -15,8 +15,8 @@
 #include "helper.hpp"
 #include "abstractreceiver.hpp"
 
-namespace CPPL
-{
+namespace San2 { namespace Cppl {
+	
         int cppl_extract_buffer(char *readBuffer, unsigned int readBufferSize, unsigned int *readBufferLen, char *outputBuffer, unsigned int outputBufferSize, unsigned int extractCount)
         {
             assert(!(extractCount == 0 || *readBufferLen == 0 || extractCount > readBufferSize || extractCount > outputBufferSize || *readBufferLen > readBufferSize || extractCount > *readBufferLen));
@@ -270,4 +270,4 @@ namespace CPPL
 		    return ErrorCode::SUCCESS;
 		}
 	#endif
-}
+}}

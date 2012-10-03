@@ -38,10 +38,10 @@ int main(int argc, char *argv[])
 	}
 	
 	char line[256];
-	CPPL::PipeClient pc(argv[1], [](){return new TerminalReceiver();}, CLI_TIM_CON, CLI_TIM_RX, CLI_TIM_TX);
-	CPPL::ErrorCode rval = pc.open();
+	San2::Cppl::PipeClient pc(argv[1], [](){return new San2::Cppl::TerminalReceiver();}, CLI_TIM_CON, CLI_TIM_RX, CLI_TIM_TX);
+	San2::Cppl::ErrorCode rval = pc.open();
 	
-	if (rval != CPPL::ErrorCode::SUCCESS) 
+	if (rval != San2::Cppl::ErrorCode::SUCCESS) 
 	{
 		printf("pc.open() failed errcode: %d\n", errorCodeToInt(rval));
 		return -1;
@@ -54,14 +54,14 @@ int main(int argc, char *argv[])
 		std::cin.getline(line, MAX_LINE_LEN);
 		
 		rval = pc.send(line, strlen(line));
-		if (rval != CPPL::ErrorCode::SUCCESS)
+		if (rval != San2::Cppl::ErrorCode::SUCCESS)
 		{
 			printf("error: sending data from client to server failed\n");
 			break;
 		}
 
 		rval = pc.send("\x0A", 1); // line feed
-		if (rval != CPPL::ErrorCode::SUCCESS)
+		if (rval != San2::Cppl::ErrorCode::SUCCESS)
 		{
 			printf("error: sending data from client to server failed\n");
 			break;
