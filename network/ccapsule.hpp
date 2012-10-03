@@ -21,7 +21,7 @@ namespace San2
 			void setDX(bool dx); // Destination eXecute
 			void setEX(bool ex); // Everywhere eXecute
 			
-			bytes data; // set directly
+			San2::Utils::bytes data; // set directly
 		protected:
 		
 		private:

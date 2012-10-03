@@ -1,7 +1,5 @@
 
 
-#include <unistd.h> // sleep()
-
 
 #include <stdlib.h>
 #include <string.h>
@@ -13,6 +11,7 @@
 
 #include "utils/cvector.hpp"
 #include "utils/cproducerconsumer.hpp"
+#include "utils/platform/sleep.hpp"
 #include "test/cproducer.hpp"
 #include "test/cconsumer.hpp"
 
@@ -90,7 +89,7 @@ int main(int argc, char *argv[])
 	
 	for (unsigned k = 0; k < 15; k++)
 	{
-		sleep(1);
+		San2::Utils::sleep(1);
 		std::cout << pc.size() << std::endl;
 	}
 	

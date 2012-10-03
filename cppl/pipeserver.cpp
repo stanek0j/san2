@@ -148,7 +148,7 @@ namespace San2 { namespace Cppl {
 	#endif
 
 	#ifdef WINDOWS
-	PipeServer::PipeServer(const char *pipeName, std::function<CPPL::AbstractServerReceiver* (void)> createAbstractServerReceiverProc, unsigned int timCON, unsigned int timRX, unsigned int timTX):
+	PipeServer::PipeServer(const char *pipeName, std::function<AbstractServerReceiver* (void)> createAbstractServerReceiverProc, unsigned int timCON, unsigned int timRX, unsigned int timTX):
 		pipename(pipeName),
 		mCreateAbstractServerReceiverProc(createAbstractServerReceiverProc),
 		mTimCON(timCON),
@@ -273,7 +273,7 @@ namespace San2 { namespace Cppl {
 				
 		  // GetOverlappedResult is useless because for ConnectNamedPipe() is return value undefined
 		  // http://msdn.microsoft.com/en-us/library/windows/desktop/ms683209(v=vs.85).aspx
-		  manager.startThread<PipeChannel>([=](){return new PipeChannel(acceptSocket, mCreateAbstractServerReceiverProc, mTimRX, mTimTX);})
+		  manager.startThread<PipeChannel>([=](){return new PipeChannel(hPipe, mCreateAbstractServerReceiverProc, mTimRX, mTimTX);});
 	   } 
 
 	   CloseHandle(o.hEvent);

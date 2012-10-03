@@ -3,18 +3,19 @@
 
 #include "abstractclientreceiver.hpp"
 
-class TerminalReceiver : public CPPL::AbstractClientReceiver
-{
-  public:
-	TerminalReceiver();
-	CPPL::ErrorCode run();
-  protected:
-	~TerminalReceiver();
-  private:
-	 // another msvc fix
-	#ifdef LINUX
-		TerminalReceiver(const TerminalReceiver& copyFromMe)=delete;
-		TerminalReceiver& operator=(const TerminalReceiver& copyFromMe)=delete;
-	#endif
-};
-
+namespace San2 { namespace Cppl {
+    class TerminalReceiver : public AbstractClientReceiver
+    {
+      public:
+	    TerminalReceiver();
+	    ErrorCode run();
+      protected:
+	    ~TerminalReceiver();
+      private:
+	     // another msvc fix
+	    #ifdef LINUX
+		    TerminalReceiver(const TerminalReceiver& copyFromMe)=delete;
+		    TerminalReceiver& operator=(const TerminalReceiver& copyFromMe)=delete;
+	    #endif
+    };
+}} //  ns

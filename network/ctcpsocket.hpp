@@ -13,8 +13,7 @@ namespace San2
 		class CTcpSocket
 		{
 		public:
-			CTpcSocket(const IPv4Address &toBind);
-			
+			CTcpSocket(const IPv4Address &toBind);
 			static std::list<IPv4Address> getIPv4InterfaceList();
 			
 		protected:

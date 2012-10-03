@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="network">
+      <UniqueIdentifier>{92aa3ab9-1b72-4b71-b414-a587b84e4fdf}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\network\ccapsule.hpp">
+      <Filter>network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\network\cinetiface.hpp">
+      <Filter>network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\network\ctcpsocket.hpp">
+      <Filter>network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\network\nettypedef.hpp">
+      <Filter>network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\network\sockdefs.h">
+      <Filter>network</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\network\ccapsule.cpp">
+      <Filter>network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\network\ctcpsocket.cpp">
+      <Filter>network</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

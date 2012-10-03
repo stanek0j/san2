@@ -53,7 +53,7 @@ namespace San2
 					
 				}
 
-				template <class Rep, class Period = std::ratio<1> >
+				template <class Rep, class Period>
 				int push(const T &item, CThread *thr, std::chrono::duration<Rep, Period> duration)
 				{
 					std::unique_lock<std::mutex> lock(m_mutex);
@@ -85,7 +85,7 @@ namespace San2
 					return 0;
 				}
 
-				template <class Rep, class Period = std::ratio<1> >
+				template <class Rep, class Period>
 				int pop(T *out, CThread *thr, std::chrono::duration<Rep, Period> duration)
 				{
 					std::unique_lock<std::mutex> lock(m_mutex);				

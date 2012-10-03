@@ -100,7 +100,7 @@ namespace San2 { namespace Cppl {
 
 	#ifdef WINDOWS
 	
-	PipeClient::PipeClient(const char *pipeName, std::function<CPPL::AbstractClientReceiver* (void)> createAbstractClientReceiverProc, unsigned int timCON, unsigned int timRX, unsigned int timTX) :
+	PipeClient::PipeClient(const char *pipeName, std::function<AbstractClientReceiver* (void)> createAbstractClientReceiverProc, unsigned int timCON, unsigned int timRX, unsigned int timTX) :
 		pipename(pipeName),
 		absReceiver(createAbstractClientReceiverProc()), // ugly: no error checking (excpetion new)
 		mTimCON(timCON),

@@ -1,28 +1,27 @@
 #pragma once
 
+#include "sockdefs.h"
+
+#include "nettypedef.hpp"
 #include "ctcpsocket.hpp"
 
-San2::Network::CTcpSocket::CTcpSocket() :
+San2::Network::CTcpSocket::CTcpSocket(const IPv4Address &toBind) :
 	sock(SNET_BADSOCKET)
 {
 	
 }
 
-
-San2::Network::CTcpSocket::init()
+std::list<San2::Network::IPv4Address> San2::Network::CTcpSocket::getIPv4InterfaceList()
 {
-	
-}
-
-static std::list<IPv4Address> San2::Network::CTcpSocket::getIPv4InterfaceList()
-{
-	
+    // TODO: Nothing here yet
+    std::list<San2::Network::IPv4Address> x;
+	return x;
 }
 
 /* initialize WSA before use */
-SOCKTYPE get_socket(char *server_ip, char *server_port, struct sockaddr_in *address)
+SNET_SOCKTYPE get_socket(char *server_ip, char *server_port, struct sockaddr_in *address)
 {
-    SOCKTYPE sock;
+    SNET_SOCKTYPE sock;
     struct addrinfo hints, *servinfo, *p;
 
     memset(&hints, 0, sizeof(hints));
@@ -34,7 +33,7 @@ SOCKTYPE get_socket(char *server_ip, char *server_port, struct sockaddr_in *addr
 	{
 		/* fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(rv)); */
 		perror("getaddrinfo failed");
-		return BADSOCKET;
+		return SNET_BADSOCKET;
 	}
 
     for(p = servinfo; p != NULL; p = p->ai_next)
@@ -47,7 +46,7 @@ SOCKTYPE get_socket(char *server_ip, char *server_port, struct sockaddr_in *addr
     {
         perror("socket failed");
         freeaddrinfo(servinfo);
-        return BADSOCKET;
+        return SNET_BADSOCKET;
     }
 
     memcpy(address, p->ai_addr, sizeof(struct sockaddr_in));
