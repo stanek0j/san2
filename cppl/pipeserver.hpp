@@ -13,7 +13,8 @@
 
 #include <functional>
 #include "pipechannel.hpp"
-#include "threadmanager.hpp"
+#include "utils/cthread.hpp"
+#include "utils/cthreadmanager.hpp"
 #include "helper.hpp"
 #include "abstractserverreceiver.hpp"
 
@@ -21,7 +22,7 @@ namespace San2
 {	
 	namespace Cppl
 	{
-		class PipeServer : public CpThread
+		class PipeServer : public San2::Utils::CThread
 		{
 			public:
 				PipeServer(const char *pipeName, std::function<AbstractServerReceiver* (void)> createAbstractServerReceiverProc, unsigned int timCON, unsigned int timRX, unsigned int timTX);
@@ -33,7 +34,7 @@ namespace San2
 				
 				
 			private:
-				ThreadManager manager;
+				San2::Utils::CThreadManager manager;
 				const char *pipename;
 				std::function<AbstractServerReceiver* (void)> mCreateAbstractServerReceiverProc;
 				unsigned int mTimCON, mTimRX, mTimTX;

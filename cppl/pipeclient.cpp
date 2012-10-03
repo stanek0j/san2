@@ -20,8 +20,6 @@
 
 #include "pipeclient.hpp"
 #include "helper.hpp"
-#include "cpthread.hpp"
-#include "helper.hpp"
 #include "abstractclientreceiver.hpp"
 
 #define CPPL_PIPECLI_RXBUFSIZE 1500

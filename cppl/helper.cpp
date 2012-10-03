@@ -46,7 +46,7 @@ namespace San2 { namespace Cppl {
 			tv->tv_usec = (msec % 1000) * 1000;
 		}
 
-		ErrorCode cppl_nix_sendall_stream(int sock, const char *buf, int *len, unsigned int timeoutMsec, CpThread *thr)
+		ErrorCode cppl_nix_sendall_stream(int sock, const char *buf, int *len, unsigned int timeoutMsec, San2::Utils::CThread *thr)
 		{
 			if (sock == -1) return ErrorCode::FAILURE;
 			fd_set fds;
@@ -90,7 +90,7 @@ namespace San2 { namespace Cppl {
 			return n==-1? (ErrorCode::FAILURE):(ErrorCode::SUCCESS);
 		}
 		
-		ErrorCode cppl_nix_read(int sock, CpThread *thr, char *data, unsigned int dataSize, unsigned int *bytesRead, unsigned int mTimRX)
+		ErrorCode cppl_nix_read(int sock, San2::Utils::CThread *thr, char *data, unsigned int dataSize, unsigned int *bytesRead, unsigned int mTimRX)
 		{
 			if (sock == -1) return ErrorCode::FAILURE;
 			fd_set fds;
@@ -130,7 +130,7 @@ namespace San2 { namespace Cppl {
 	#endif
 
 	#ifdef WINDOWS
-		ErrorCode cppl_win_sendall_stream(HANDLE hPipe, const char *buf, int *len, DWORD timeoutMsec, CpThread *thr) // STREAM
+		ErrorCode cppl_win_sendall_stream(HANDLE hPipe, const char *buf, int *len, DWORD timeoutMsec, San2::Utils::CThread *thr) // STREAM
 		{
 			if (hPipe == INVALID_HANDLE_VALUE) return ErrorCode::FAILURE;
 			int total = 0;        // how many bytes we've sent
@@ -192,7 +192,7 @@ namespace San2 { namespace Cppl {
 			return n==-1? (ErrorCode::FAILURE):(ErrorCode::SUCCESS);
 		}	
 
-		ErrorCode cppl_win_read(HANDLE hPipe, CpThread *thr, char *data, unsigned int dataSize, DWORD *bytesRead, unsigned int mTimRX)
+		ErrorCode cppl_win_read(HANDLE hPipe, San2::Utils::CThread *thr, char *data, unsigned int dataSize, DWORD *bytesRead, unsigned int mTimRX)
 		{	
 		   if (hPipe == INVALID_HANDLE_VALUE) return ErrorCode::FAILURE;
 		   OVERLAPPED o;

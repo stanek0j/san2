@@ -8,7 +8,7 @@
 	#include <windows.h>
 #endif
 
-#include "cpthread.hpp"
+#include "utils/cthread.hpp"
 
 #define CPPL_SUCCESS 0
 #define CPPL_TIMEOUT 1
@@ -89,13 +89,13 @@ namespace San2
 
 		#ifdef LINUX
 			void ms2tv(unsigned long msec, struct timeval *tv);
-			ErrorCode cppl_nix_sendall_stream(int sock, const char *buf, int *len, unsigned int timeoutMsec, CpThread *thr);
-			ErrorCode cppl_nix_read(int sock, CpThread *thr, char *data, unsigned int dataSize, unsigned int *bytesRead, unsigned int mTimRX);
+			ErrorCode cppl_nix_sendall_stream(int sock, const char *buf, int *len, unsigned int timeoutMsec, San2::Utils::CThread *thr);
+			ErrorCode cppl_nix_read(int sock, San2::Utils::CThread *thr, char *data, unsigned int dataSize, unsigned int *bytesRead, unsigned int mTimRX);
 		#endif
 		
 		#ifdef WINDOWS
-			ErrorCode cppl_win_sendall_stream(HANDLE hPipe, const char *buf, int *len, DWORD timeoutMsec, CpThread *thr); // STREAM
-			ErrorCode cppl_win_read(HANDLE hPipe, CpThread *thr, char *data, unsigned int dataSize, DWORD *bytesRead, unsigned int mTimRX);
+			ErrorCode cppl_win_sendall_stream(HANDLE hPipe, const char *buf, int *len, DWORD timeoutMsec, San2::Utils::CThread *thr); // STREAM
+			ErrorCode cppl_win_read(HANDLE hPipe, San2::Utils::CThread *thr, char *data, unsigned int dataSize, DWORD *bytesRead, unsigned int mTimRX);
 		#endif
 	}
 }

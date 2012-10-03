@@ -15,12 +15,10 @@
 	#include <windows.h> 
 #endif
 
-#include <thread>
 #include <string>
 #include <functional>
 
 #include "pipeserver.hpp"
-#include "cpthread.hpp"
 
 #define CPPL_PIPESERV_UNIX_MAXCONNQUEUE 5
 #define CPPL_PIPESERV_WIN_OUTBUFSIZE 512
@@ -142,7 +140,7 @@ namespace San2 { namespace Cppl {
 				return ErrorCode::FAILURE;
 			}
 				
-			manager.startThread(acceptSocket, mCreateAbstractServerReceiverProc, mTimRX, mTimTX);
+			manager.startThread<PipeChannel>([=](){return new PipeChannel(acceptSocket, mCreateAbstractServerReceiverProc, mTimRX, mTimTX);});
 		}
 		
 		return ErrorCode::SUCCESS;
@@ -275,7 +273,7 @@ namespace San2 { namespace Cppl {
 				
 		  // GetOverlappedResult is useless because for ConnectNamedPipe() is return value undefined
 		  // http://msdn.microsoft.com/en-us/library/windows/desktop/ms683209(v=vs.85).aspx
-		  manager.startThread(hPipe, mCreateAbstractServerReceiverProc, mTimRX, mTimTX);
+		  manager.startThread<PipeChannel>([=](){return new PipeChannel(acceptSocket, mCreateAbstractServerReceiverProc, mTimRX, mTimTX);})
 	   } 
 
 	   CloseHandle(o.hEvent);

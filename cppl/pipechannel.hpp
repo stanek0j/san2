@@ -8,7 +8,6 @@
 #endif
 
 #include "bufferprocessor.hpp"
-#include "cpthread.hpp"
 #include "helper.hpp"
 #include "abstractserverreceiver.hpp"
 

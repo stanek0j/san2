@@ -1,14 +1,14 @@
 
 #pragma once
 
-#include "cpthread.hpp"
 #include "helper.hpp"
+#include "utils/cthread.hpp"
 
 namespace San2
 {
 	namespace Cppl
 	{
-		class BufferProcessor : public CpThread
+		class BufferProcessor : public San2::Utils::CThread
 		{
 		public:
 			BufferProcessor();

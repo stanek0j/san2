@@ -16,7 +16,7 @@
 #include <string>
 
 #include "bufferprocessor.hpp"
-#include "cpthread.hpp"
+#include "utils/cthread.hpp"
 #include "helper.hpp"
 #include "abstractclientreceiver.hpp"
 
