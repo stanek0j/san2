@@ -15,7 +15,8 @@ OBJS-CPPL = cppl/helper.o \
             cppl/abstractreceiver.o \
             cppl/bufferprocessor.o
 
-OBJS-UTILS = utils/cthread.o
+OBJS-UTILS = utils/cthread.o \
+	     utils/platform/sleep.o
 
 OBJS-TEST  = test/pctest.o
 
@@ -55,6 +56,7 @@ clean::
 	cd test
 	rm -f test/*.o
 	rm -f utils/*.o
+	rm -f utils/platform/*.o
 	rm -f cppl/*.o
 
 	

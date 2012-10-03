@@ -6,14 +6,14 @@ namespace San2
     namespace Utils
     {
         #ifdef LINUX
-            void sleep(unsigned int seconds)
+            void SanSleep(unsigned int seconds)
             {
                 sleep(seconds);
             }
         #endif
 
         #ifdef WINDOWS
-            void sleep(unsigned int seconds)
+            void SanSleep(unsigned int seconds)
             {
                 // Ano, jenom takhle je to spravne SleepEx a TRUE. Jinak to zablokuje vsechny thready
                 // a to je potom prusvih

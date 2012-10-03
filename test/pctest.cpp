@@ -89,7 +89,7 @@ int main(int argc, char *argv[])
 	
 	for (unsigned k = 0; k < 15; k++)
 	{
-		San2::Utils::sleep(1);
+		San2::Utils::SanSleep(1);
 		std::cout << pc.size() << std::endl;
 	}
 	

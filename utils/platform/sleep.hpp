@@ -16,11 +16,11 @@ namespace San2
         // Trik je v tom, ze kdyz nebude definovano ani LINUX ani WINDOWS, pak zahlasi uz komilator chybu
         // a ne az potom linker
         #ifdef LINUX
-            void sleep(unsigned int seconds);
+            void SanSleep(unsigned int seconds);
         #endif
 
         #ifdef WINDOWS
-            void sleep(unsigned int seconds);
+            void SanSleep(unsigned int seconds);
         #endif
     }
 }
