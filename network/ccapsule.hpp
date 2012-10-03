@@ -14,7 +14,6 @@ namespace San2
 			void setDestinationAddress(const SanAddress &dstAddress);
 			void setHopLimit(const SanHops &maxHops);
 			
-			
 			SanAddress getSourceAddress();
 			SanAddress getDestinationAddress();
 			SanHops getHopLimit();
@@ -22,6 +21,7 @@ namespace San2
 			void setDX(bool dx); // Destination eXecute
 			void setEX(bool ex); // Everywhere eXecute
 			
+			bytes data; // set directly
 		protected:
 		
 		private:

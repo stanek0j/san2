@@ -152,34 +152,32 @@ namespace San2
 					return *this;
 				}    
 		};
-	
-		typedef CVector<unsigned char> bytes;
 		
-		bytes array2bytes(const unsigned char *in, int len)
+		CVector<unsigned char> array2bytes(const unsigned char *in, int len)
 		{
-			bytes ret;
+			CVector<unsigned char> ret;
 			ret.resize(len);
 			copy(in, in + len, ret.begin());
 			return ret;
 		}
 		
 		// returns without \0
-		bytes string2bytes(const char *str)
+		CVector<unsigned char> string2bytes(const char *str)
 		{
-			bytes out;
+			CVector<unsigned char> out;
 			out.resize(strlen(str)); // important, otherwise SIGSEGV
 			copy(str, str + strlen(str), out.begin());
 			return out;
 		}
 		
-		void printBytes(const bytes &in)
+		void printBytes(const CVector<unsigned char> &in)
 		{
-			bytes::const_iterator from = in.begin();
-			bytes::const_iterator to = in.end();
+			CVector<unsigned char>::const_iterator from = in.begin();
+			CVector<unsigned char>::const_iterator to = in.end();
 			for ( ; from!=to; ++from ) printf("%02X", *from);
 		}
 
-		void printBytesAsString(const bytes &in)
+		void printBytesAsString(const CVector<unsigned char> &in)
 		{
 			std::vector<unsigned char>::const_iterator from = in.begin();
 			std::vector<unsigned char>::const_iterator to = in.end();
