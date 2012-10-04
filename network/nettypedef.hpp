@@ -18,13 +18,14 @@ namespace San2
 		const std::size_t IPv4Size = 4;
 		const std::size_t IPv6Size = 16;
 		
+		const std::size_t minimumCapsuleHeaderSize = sanCapsuleIdSize + 2 * sanAddressSize + sanHashSize + sanFlagSize + sanHopSize;
+		
 		typedef std::array<unsigned char, sanAddressSize> SanAddress;
 		typedef std::array<unsigned char, sanHashSize> SanApplicationId;
-		typedef unsigned char SanFlags;
-		typedef std::array<unsigned char, sanHopSize> SanHops;
 		
 		typedef std::array<unsigned char, IPv4Size> IPv4Address;
 		typedef std::array<unsigned char, IPv6Size> IPv6Address;
+		
 		
 		// flags
 		// DX - destination execute

@@ -1,6 +1,7 @@
 
 #pragma once
 #include <vector>
+#include <array>
 #include <string>
 #include <iostream>
 #include <string.h>
@@ -14,13 +15,31 @@ namespace San2
 		class CVector : public std::vector <T, Allocator>
 		{
 			public:
-				/*
-				CVector::CVector()
-					: std::vector()
+				
+				explicit CVector(const Allocator& alloc = Allocator()) : 
+					std::vector<T, Allocator>(alloc)
 				{
 					
 				}
-				*/
+				
+				explicit CVector(std::size_t n, const T& value= T(), const Allocator& alloc = Allocator()) :
+					std::vector<T, Allocator>(n, value, alloc)
+				{
+				
+				}
+		
+				template <class InputIterator>
+				CVector(InputIterator first, InputIterator last, const Allocator& alloc = Allocator()) :
+					std::vector<T, Allocator>(first, last, alloc)
+				{
+					
+				}
+				
+				CVector(const std::vector<T,Allocator>& x) :
+					std::vector<T, Allocator>(x)
+				{
+					
+				}
 				
 				// you get size by this.size()
 				const T *toArray()

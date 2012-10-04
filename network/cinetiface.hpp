@@ -9,12 +9,9 @@ namespace San2
 		class CINetIface
 		{
 		public:
-			virtual int sendCaplsule(const CCapsule &capsule);
-		protected:
-		
-		private:
-			SanAddress ifaceAddress;
-		
+			virtual int sendCapsule(CCapsule &capsule)=0; // mozna to zmenim na pointer nebo auto_ptr
+			virtual SanAddress getInterfaceAddress()=0;	
+	
 		};
 	}
 }
