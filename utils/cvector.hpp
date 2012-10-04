@@ -50,7 +50,7 @@ namespace San2
 				void append(const T &item)
 				{
 					// this-> is necessary, otherwise error
-					reserve(this->size() + 1);
+					reserve(this->size() + sizeof(T));
 					push_back(item);
 				}
 				
@@ -73,6 +73,12 @@ namespace San2
 					// this-> is necessary, otherwise error
 					reserve(this->size() + toAppend.size());
 					insert(this->end(), toAppend.begin(), toAppend.end());
+				}
+				
+				void prepend(const T &item)
+				{
+					reserve(sizeof(T) + this.size());
+					insert(this->begin(), item);
 				}
 				
 				void prepend(const std::vector<T, Allocator> &toPrepend)
