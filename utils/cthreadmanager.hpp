@@ -19,11 +19,11 @@ namespace San2
 			public:
 			
 			template <class CThreadDeriverType>
-			CThread *startThread(std::function<CThreadDeriverType* (void)> createThreadFunction)
+			CThreadDeriverType *startThread(std::function<CThreadDeriverType* (void)> createThreadFunction)
 			{
 				std::lock_guard<std::mutex> lock(mMutex);
 				
-				CThread *thr = createThreadFunction();
+				CThreadDeriverType *thr = createThreadFunction();
 				mThreads.insert(thr);
 				thr->start();
 				return thr;
