@@ -1,5 +1,6 @@
 			
 #include "ccapsule.hpp"
+#include "utils/flag.hpp"												
 						
 void San2::Network::CCapsule::setSourceAddress(const San2::Network::SanAddress &srcAddress)
 {
@@ -58,7 +59,7 @@ void San2::Network::CCapsule::pack(San2::Utils::bytes &out)
 	out.insert(out.end(), m_dstAddress.cbegin(), m_dstAddress.cend());
 	out.insert(out.end(), m_srcAddress.cbegin(), m_srcAddress.cend());
 	out += hop2bytes(m_hop); 
-	// flags
+	out += constructFlags();
 	out += m_data;
 }
 
@@ -88,17 +89,11 @@ San2::Network::SanApplicationId San2::Network::CCapsule::getAppId()
 	return m_appId;
 }
 
-/*
-//|DX|EX|0|0|0|0|0|0|			
-void San2::Network::CCapsule::setDX(bool dx)
+unsigned char San2::Network::CCapsule::constructFlags()
 {
-	if (dx) m_flags |= 0x80;
-	else m_flags &= 0x7F;
+	unsigned char flags = 0; // 0 - null all flags
+	San2::Utils::Flag::setFlag(flags, SAN_FLAGPOS_DX_POSITION, m_flagDX);
+	San2::Utils::Flag::setFlag(flags, SAN_FLAGPOS_EX_POSITION, m_flagEX);
+	return flags;
 }
 
-void San2::Network::CCapsule::setEX(bool ex)
-{
-	if (ex) m_flags |= 0x40;
-	else m_flags &= 0xBF;
-}
-*/

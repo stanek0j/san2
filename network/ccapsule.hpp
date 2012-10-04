@@ -4,6 +4,9 @@
 #include "nettypedef.hpp"
 #include "utils/platform/basictypes.hpp"
 
+#define SAN_FLAGPOS_DX_POSITION 0
+#define SAN_FLAGPOS_EX_POSITION 1
+
 namespace San2
 {
 	namespace Network
@@ -61,6 +64,7 @@ namespace San2
 		
 		private:
 			static San2::Utils::bytes hop2bytes(SAN_UINT16 hop);
+			unsigned char constructFlags();
 		
 			bool m_flagDX;
 			bool m_flagEX;
