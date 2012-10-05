@@ -8,6 +8,10 @@
     <ClInclude Include="..\..\utils\platform\sleep.hpp">
       <Filter>platform</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\utils\platform\basictypes.hpp">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\utils\flag.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\utils\cthread.cpp" />

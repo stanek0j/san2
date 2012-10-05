@@ -23,6 +23,8 @@
     <ClInclude Include="..\..\utils\cthread.hpp" />
     <ClInclude Include="..\..\utils\cthreadmanager.hpp" />
     <ClInclude Include="..\..\utils\cvector.hpp" />
+    <ClInclude Include="..\..\utils\flag.hpp" />
+    <ClInclude Include="..\..\utils\platform\basictypes.hpp" />
     <ClInclude Include="..\..\utils\platform\sleep.hpp" />
   </ItemGroup>
   <ItemGroup>
@@ -111,6 +113,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <PreprocessorDefinitions>WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
