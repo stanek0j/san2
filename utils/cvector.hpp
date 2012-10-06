@@ -44,7 +44,10 @@ namespace San2
 				// you get size by this.size()
 				const T *toArray()
 				{
-					return &this[0];
+					//std::vector<T, Allocator> *vec = this;
+					//const T* arr = &((*vec)[0]);
+					//return arr;
+					return &((*this)[0]);
 				}
 				
 				void append(const T &item)

@@ -22,7 +22,11 @@ OBJS-TEST  = test/pctest.o
 
 OBJS-NETWORK = network/ccapsule.o
 
-all:: cppl utils main test network
+OBJS-RPC = rpc/cirpcfunction.o \
+		   rpc/cirpcchannel.o \
+		   rpc/crpcexecutor.o
+
+all:: cppl utils main test network rpc
 
 cppl: cpplclient cpplserver
 
@@ -31,6 +35,8 @@ utils: $(OBJS-UTILS)
 test: $(OBJS-TEST) pctest
 
 network: $(OBJS-NETWORK)
+
+rpc: $(OBJS-RPC)
 
 pctest: $(OBJS-TEST) utils
 	$(CCC) $(OBJS-TEST) $(OBJS-UTILS) -o ./pctest $(LIBS) $(LDFLAGS)
