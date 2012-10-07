@@ -86,6 +86,7 @@ clean::
 	rm -f cppl_client
 	rm -f utils_vector
 	rm -f producerconsumer
+	rm -f terminal
 	
 
 	
