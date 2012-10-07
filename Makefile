@@ -26,13 +26,17 @@ OBJS-RPC = rpc/cirpcfunction.o \
 		   rpc/cirpcchannel.o \
 		   rpc/crpcexecutor.o
 
-all:: cppl utils main test network rpc
+OBJS-STREAM = stream/cistreamrw.o
+
+all:: cppl utils main test network rpc stream
 
 cppl: cpplclient cpplserver
 
 utils: $(OBJS-UTILS)
 
 test: $(OBJS-TEST) pctest
+
+stream: $(OBJS-STREAM)
 
 network: $(OBJS-NETWORK)
 
@@ -57,12 +61,16 @@ main: main.o utils
 	
 clean::
 	rm --recursive -f *.o
-	rm -f $(BINDIR)/server
-	rm -f $(BINDIR)/client
+	rm -f server
+	rm -f client
+	rm -f main
+	rm -f pctest
 	cd test
 	rm -f test/*.o
 	rm -f utils/*.o
 	rm -f utils/platform/*.o
 	rm -f cppl/*.o
+	rm -f network/*.o
+	rm -f stream/*.o
 
 	
