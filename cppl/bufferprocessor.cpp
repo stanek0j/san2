@@ -25,8 +25,10 @@ namespace San2 { namespace Cppl {
 			ErrorCode rval = fillBuffer();
 			if (rval != ErrorCode::SUCCESS) return rval;
 
-			*bytesRead = mReadBufferLen;
-			return extractBuffer(buffer, bufferSize, mReadBufferLen);
+			if (bufferSize >= mReadBufferLen) *bytesRead = mReadBufferLen;
+			else *bytesRead = bufferSize;
+			
+			return extractBuffer(buffer, bufferSize, *bytesRead);
 	}
 
 	ErrorCode BufferProcessor::readDelimeter(char *output, unsigned int outputSize, unsigned int *outputLen, char delimeter)
