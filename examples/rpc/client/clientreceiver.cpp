@@ -19,6 +19,11 @@ ClientReceiver::ClientReceiver() :
 
 San2::Cppl::ErrorCode ClientReceiver::run()
 {
+	printf("RpcClientThread\n");
+	bool ret = m_rpcexec.registerFunction([](){return new TestFunc();});
+	if (ret) printf("reg success\n");
+	else printf("reg fail\n");
+
 	San2::Cppl::BufferProcessor *bp = getBufferProcessor();
 
 	unsigned int bytesRead;

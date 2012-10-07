@@ -34,6 +34,7 @@ San2::Cppl::AbstractReceiver* createAbstractReceiver()
 
 San2::Cppl::PipeServer ps(SRV_PIPENAME, createAbstractReceiver, TIMEOUT_CON, TIMEOUT_RX, TIMEOUT_TX);
 
+/*
 #ifdef LINUX
   struct sigaction act;
   void sighandler(int signum, siginfo_t *info, void *ptr)
@@ -48,10 +49,11 @@ San2::Cppl::PipeServer ps(SRV_PIPENAME, createAbstractReceiver, TIMEOUT_CON, TIM
      
   }
 #endif
+*/
 
 int main(int argc, char *argv[])
 {
-	
+	printf("RpcServer\n");
 	ps.start();
 /*
   #ifdef LINUX

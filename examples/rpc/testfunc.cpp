@@ -1,6 +1,11 @@
 
 #include "testfunc.hpp"
 
+TestFunc::TestFunc()
+{
+	
+}
+
 unsigned int TestFunc::getUniqueId()const
 {
 	return 123; // TODO: replace by global define file of func ids
@@ -9,6 +14,7 @@ unsigned int TestFunc::getUniqueId()const
 bool TestFunc::operator()(void)
 {
 	printf("Rpc Test function SUCCESS\n");
+	return true;
 }
 
 bool TestFunc::pack(San2::Utils::bytes &out)

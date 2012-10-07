@@ -3,6 +3,7 @@
 #include "cppl/abstractreceiver.hpp"
 #include "comm/cpplrpcchannel.hpp"
 #include "rpc/crpcexecutor.hpp"
+#include "examples/rpc/testfunc.hpp"
 
 class ServerReceiver : public San2::Cppl::AbstractReceiver
 {

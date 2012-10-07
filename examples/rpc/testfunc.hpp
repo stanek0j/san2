@@ -1,9 +1,10 @@
 
 #include "rpc/cirpcfunction.hpp"
 
-class TestFunc
+class TestFunc : public San2::Rpc::CIRpcFunction
 {
 public:
+	TestFunc();
 	unsigned int getUniqueId()const;
 	bool operator()(void);
 	

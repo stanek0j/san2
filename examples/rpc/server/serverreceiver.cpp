@@ -30,6 +30,11 @@ ServerReceiver::~ServerReceiver()
 
 San2::Cppl::ErrorCode ServerReceiver::run()
 {
+	printf("RpcServerThread\n");
+	bool ret = m_rpcexec.registerFunction([](){return new TestFunc();});
+	if (ret) printf("reg success\n");
+	else printf("reg fail\n");
+	
 	const unsigned int lineSize = 512;
 	char line[lineSize];
 
@@ -68,4 +73,3 @@ San2::Cppl::ErrorCode ServerReceiver::run()
 	printf("client exit\n");
 	return San2::Cppl::ErrorCode::SUCCESS;
 }
-

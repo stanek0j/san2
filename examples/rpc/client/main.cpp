@@ -35,6 +35,7 @@
 
 int main(int argc, char *argv[])
 {
+	printf("RpcClient\n");
 	char data[50];
 	
 	char str1[] = "\x0A\x0A\x0A"; // 6

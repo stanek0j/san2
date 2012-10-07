@@ -26,8 +26,8 @@ namespace San2
 		private:
 			// another msvc fix
 		    #ifdef LINUX
-			    CIRpcFunction(const CIRpcFunction& copyFromMe)=delete;
-			    CIRpcFunction& operator=(const CIRpcFunction& copyFromMe)=delete;
+			    //CIRpcFunction(const CIRpcFunction& copyFromMe)=delete;
+			    //CIRpcFunction& operator=(const CIRpcFunction& copyFromMe)=delete;
 		    #endif
 		};
 	}
