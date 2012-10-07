@@ -24,6 +24,8 @@ namespace San2
 			int r;
 			while(num > 0)
 			{
+				// NOTE: Member functions implemented in this class must ensure that (maxCount <= maxSingleReadSize)
+				// when calling readSomeAppend()!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 				r = readSomeAppend(out, num >= m_maxSingleReadSize ? m_maxSingleReadSize : num);
 				if (r <= 0) return false;
 				num -= r;
@@ -32,9 +34,13 @@ namespace San2
 		}
 			
 		// TRUE = success
-		bool CIStreamRW::writeAll(San2::Utils::bytes::const_iterator first, San2::Utils::bytes::const_iterator last)
+		bool CIStreamRW::writeAll(const San2::Utils::bytes &data)
 		{
 			int n;	
+			
+			San2::Utils::bytes::const_iterator first = data.begin();
+			San2::Utils::bytes::const_iterator lasr = data.end();
+			
 			while(first != last) 
 			{
 				n = writeSome(first, last);
@@ -43,6 +49,11 @@ namespace San2
 			}
 
 			return true;
+		}
+		
+		unsigned int CIStreamRW::getMaxSingleReadSize() const
+		{
+			return m_maxSingleReadSize;
 		}
 	}
 }
