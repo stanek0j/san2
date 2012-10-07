@@ -34,7 +34,10 @@ San2::Cppl::ErrorCode ClientReceiver::run()
 	bool ret = m_rpcexec->registerFunction([](){return new TestFunc();});
 	if (ret) printf("reg success\n");
 	else printf("reg fail\n");
-
+	
+	TestFunc tf;
+	bool x = m_rpcexec->invokeFunction(tf);
+	if (!x) printf("Invoke fail\n");
 	//---------------------------------
 
 	unsigned int bytesRead;

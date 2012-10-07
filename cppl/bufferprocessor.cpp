@@ -22,8 +22,12 @@ namespace San2 { namespace Cppl {
 
 	ErrorCode BufferProcessor::readSome(char *buffer, unsigned int bufferSize, unsigned int *bytesRead)
 	{
-			ErrorCode rval = fillBuffer();
-			if (rval != ErrorCode::SUCCESS) return rval;
+			// TODO: Fix infinite timeout
+			if (bufferSize > mReadBufferLen)
+			{
+				ErrorCode rval = fillBuffer();
+				if (rval != ErrorCode::SUCCESS) return rval;
+			}
 
 			if (bufferSize >= mReadBufferLen) *bytesRead = mReadBufferLen;
 			else *bytesRead = bufferSize;

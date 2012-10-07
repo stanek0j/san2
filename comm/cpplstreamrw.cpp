@@ -17,7 +17,9 @@ int CpplStreamRW::readSomeAppend(San2::Utils::bytes &data, unsigned int maxCount
 {
 	unsigned int bytesRead;
 	char buffer[m_maxSingleReadSize];
+	printf("CpplStreamRW::readSomeAppend: maxCount:%d\n", maxCount);
 	San2::Cppl::ErrorCode ret = m_bp->readSome(buffer, maxCount, &bytesRead); // Very ugly maxCount
+	printf("==========>>>>>>>>>after\n");
 	
 	if (ret != San2::Cppl::ErrorCode::SUCCESS)
 	{ 

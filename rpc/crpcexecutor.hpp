@@ -31,6 +31,8 @@ namespace San2
 			// bool registerFunction(std::shared_ptr<RpcFunction> func);
 			bool registerFunction(std::function<CIRpcFunction* (void)> createFunction);
 			
+			bool invokeFunction(CIRpcFunction& func);
+			
 			// destructor must be virtual!
 			virtual ~CRpcExecutor(){ /* intentionally empty */ };
 		

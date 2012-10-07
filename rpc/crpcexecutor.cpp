@@ -28,10 +28,23 @@ namespace San2
 					 printf("FAIL: CRpcExecutor::run()::recvData()\n");
 					 break;
 				}
+				printf("b exec\n");
 				if (executeFunction(functionId, b) != RpcError::SUCCESS);
 			}
 			printf("CRpcExecutor::run() end\n");
 		}
+		
+		bool CRpcExecutor::invokeFunction(CIRpcFunction& func)
+		{
+			San2::Utils::bytes b;
+			if (!func.pack(b))
+			{
+				printf("Func pack failed\n");
+				return false;
+			}
+			
+			return m_channel.sendData(func.getUniqueId(), b);
+		}	
 		
 		bool CRpcExecutor::registerFunction(std::function<CIRpcFunction* (void)> createFunction)
 		{
