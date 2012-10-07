@@ -2,6 +2,7 @@
 #pragma once
 
 #include "rpc/cirpcchannel.hpp"
+#include "stream/clenvalueseparator.hpp"
 #include "cpplstreamrw.hpp"
 
 class RpcChannel : public San2::Rpc::CIRpcChannel
@@ -9,7 +10,11 @@ class RpcChannel : public San2::Rpc::CIRpcChannel
 public:
 	RpcChannel(San2::Cppl::BufferProcessor *bp);
 	// destructor must be virtual!
-	virtual ~CIRpcChannel(){ /* intentionally empty */ };
+	
+	virtual ~RpcChannel()
+	{ 
+		delete m_separator;
+	}
 
 	// TRUE = success
 	virtual bool sendDatagram(const San2::Utils::bytes &data);
@@ -17,5 +22,6 @@ public:
 
 private:
 	San2::Cppl::BufferProcessor *m_bp;
-	CLenValueSeparator<CpplStreamRW> m_lvsep;
+	CpplStreamRW m_rw;
+	San2::Stream::CLenValueSeparator *m_separator;
 };

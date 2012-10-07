@@ -11,13 +11,6 @@ namespace San2
 			
 		}
 		
-		/*
-		virtual ~CIStreamRW::CIStreamRW()
-		{
-			
-		}
-		* */
-		
 		// TRUE = success
 		bool CIStreamRW::readExactNumBytesAppend(San2::Utils::bytes &out, unsigned int num) // TRUE = success
 		{
@@ -39,7 +32,7 @@ namespace San2
 			int n;	
 			
 			San2::Utils::bytes::const_iterator first = data.begin();
-			San2::Utils::bytes::const_iterator lasr = data.end();
+			San2::Utils::bytes::const_iterator last = data.end();
 			
 			while(first != last) 
 			{

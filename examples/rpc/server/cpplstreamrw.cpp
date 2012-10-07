@@ -3,8 +3,9 @@
 #include "cpplstreamrw.hpp"
 
 CpplStreamRW::CpplStreamRW(const unsigned int maxSingleReadSize, San2::Cppl::BufferProcessor *bp) :
-	San2::Stream::CIStreamRW(maxSingleReadSize)
-	m_bp(bp)
+	San2::Stream::CIStreamRW(maxSingleReadSize),
+	m_bp(bp),
+	m_maxSingleReadSize(maxSingleReadSize)
 {
 	
 }
@@ -13,7 +14,7 @@ CpplStreamRW::CpplStreamRW(const unsigned int maxSingleReadSize, San2::Cppl::Buf
 int CpplStreamRW::readSomeAppend(San2::Utils::bytes &data, unsigned int maxCount)
 {
 	unsigned int bytesRead;
-	char buffer[maxSingleRead];
+	char buffer[m_maxSingleReadSize];
 	San2::Cppl::ErrorCode ret = m_bp->readSome(buffer, maxCount, &bytesRead); // Very ugly maxCount
 	
 	if (ret != San2::Cppl::ErrorCode::SUCCESS) return -1;
@@ -23,8 +24,10 @@ int CpplStreamRW::readSomeAppend(San2::Utils::bytes &data, unsigned int maxCount
 }
 
 // RETURN VALUE: number of bytes read, -1 on error, 0 on timeout
-int CpplStreamRW::writeSome(const San2::Utils::bytes &data)
+int CpplStreamRW::writeSome(San2::Utils::bytes::const_iterator first, San2::Utils::bytes::const_iterator last)
 {
-	if (m_bp->send(data.toArray(), data.size()) == San2::Cppl::ErrorCode::SUCCESS) return data.size();
+	unsigned int dataSize = last - first;
+	if (m_bp->send((char *)&(*first), dataSize) == San2::Cppl::ErrorCode::SUCCESS) // ugly!
+		return dataSize;
 	else return -1;
 }

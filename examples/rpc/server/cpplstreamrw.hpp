@@ -1,14 +1,13 @@
 
 #pragma once
 
+#include "utils/cvector.hpp"
 #include "cppl/bufferprocessor.hpp"
-#include "cistreamrw.hpp"
+#include "stream/cistreamrw.hpp"
 
 class CpplStreamRW : public San2::Stream::CIStreamRW
 {	
-public:
-	const unsigned int maxSingleRead = 2048;
-			
+public:	
 	CpplStreamRW(const unsigned int maxSingleReadSize, San2::Cppl::BufferProcessor *bp);
 	// WARNING: data MUST be APPENDED at the END of vector!!!
 	// this is a performance enhancement
@@ -18,7 +17,7 @@ public:
 	int readSomeAppend(San2::Utils::bytes &data, unsigned int maxCount);		
 	
 	// RETURN VALUE: number of bytes read, -1 on error, 0 on timeout
-	int writeSome(const San2::Utils::bytes &data);
+	int writeSome(San2::Utils::bytes::const_iterator first, San2::Utils::bytes::const_iterator last);
 	
 private:
 	San2::Cppl::BufferProcessor *m_bp;

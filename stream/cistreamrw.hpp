@@ -30,13 +30,13 @@ namespace San2
 			virtual int readSomeAppend(San2::Utils::bytes &data, unsigned int maxCount)=0;
 			
 			// RETURN VALUE: number of bytes read, -1 on error, 0 on timeout
-			virtual int writeSome(const San2::Utils::bytes &data)=0;
+			virtual int writeSome(San2::Utils::bytes::const_iterator first, San2::Utils::bytes::const_iterator last)=0;
 			
 			// implemented in this class
 			// warning: data WILL be APPENDED at the END of vector!!!
 			// this is a performance enhancement
 			bool readExactNumBytesAppend(San2::Utils::bytes &out, unsigned int num); // TRUE = success
-			bool writeAll(San2::Utils::bytes::const_iterator first, San2::Utils::bytes::const_iterator last); // TRUE = success
+			bool writeAll(const San2::Utils::bytes &data); // TRUE = success
 			
 			unsigned int getMaxSingleReadSize() const;
 		protected:

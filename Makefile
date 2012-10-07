@@ -35,6 +35,9 @@ OBJS-EXAMPLES-CPPL-CLIENT = examples/cppl/client/client.o \
 OBJS-EXAMPLES-CPPL-TERMINAL = examples/cppl/terminal/terminal.o \
 							examples/cppl/terminal/terminalreceiver.o
 
+OBJS-EXAMPLES-RPC-SERVER = examples/rpc/server/cpplstreamrw.o \
+						   examples/rpc/server/rpcchannel.o
+
 all:: components examples
 
 components: utils cppl stream network rpc
@@ -45,10 +48,11 @@ stream: $(OBJS-STREAM)
 network: $(OBJS-NETWORK)
 rpc: $(OBJS-RPC)
 
-examples: examples-utils examples-cppl
+examples: examples-utils examples-cppl examples-rpc
 
 examples-utils: examples-utils-producerconsumer examples-utils-vector
 examples-cppl: examples-cppl-server examples-cppl-client examples-cppl-terminal
+examples-rpc: examples-rpc-server
 
 examples-utils-producerconsumer: utils $(OBJS-EXAMPLES-UTILS-PRODUCERCONSUMER)
 	$(CCC) $(OBJS-EXAMPLES-UTILS-PRODUCERCONSUMER) $(OBJS-UTILS) -o ./producerconsumer $(LIBS) $(LDFLAGS)
@@ -64,6 +68,9 @@ examples-cppl-terminal: utils cppl $(OBJS-EXAMPLES-CPPL-TERMINAL)
 
 examples-utils-vector: utils $(OBJS-EXAMPLES-UTILS-VECTOR)
 	$(CCC) $(OBJS-EXAMPLES-UTILS-VECTOR) $(OBJS-UTILS) -o ./utils_vector $(LIBS) $(LDFLAGS)
+
+examples-rpc-server: utils cppl stream rpc $(OBJS-EXAMPLES-RPC-SERVER)
+	$(CCC) $(OBJS-UTILS) $(OBJS-CPPL) $(OBJS-STREAM) $(OBJS-RPC) $(OBJS-EXAMPLES-RPC-SERVER)  -o ./rpc_server $(LIBS) $(LDFLAGS)
 		
 #tells how to make an *.o object file from an *.c file
 %.o: %.cpp
@@ -82,6 +89,9 @@ clean::
 	rm -f examples/utils/vector/*.o
 	rm -f examples/utils/producerconsumer/*.o
 	rm -f examples/cppl/*.o
+	rm -f examples/rpc/*.o
+	rm -f examples/rpc/server/*.o
+	rm -f examples/rpc/client/*.o
 	rm -f cppl_server
 	rm -f cppl_client
 	rm -f utils_vector
