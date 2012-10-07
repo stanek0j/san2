@@ -20,6 +20,6 @@ class ClientReceiver : public San2::Cppl::AbstractReceiver
 		ClientReceiver& operator=(const ClientReceiver& copyFromMe)=delete;
 	#endif
 	
-	San2::Comm::CpplRpcChannel m_rpcChannel;
-	San2::Rpc::CRpcExecutor m_rpcexec;
+	San2::Comm::CpplRpcChannel *m_rpcChannel;
+	San2::Rpc::CRpcExecutor *m_rpcexec;
 };

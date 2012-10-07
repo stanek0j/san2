@@ -11,20 +11,29 @@
 #include "clientreceiver.hpp"
 	
 ClientReceiver::ClientReceiver() :
-	m_rpcChannel(getBufferProcessor()),
-	m_rpcexec(m_rpcChannel, 5000)
+	m_rpcChannel(NULL),
+	m_rpcexec(NULL)
 {
 	
 }
 
+
+ClientReceiver::~ClientReceiver()
+{
+	if (m_rpcChannel != NULL) delete m_rpcChannel;
+	if (m_rpcexec != NULL) delete m_rpcexec;
+}
+	
+
 San2::Cppl::ErrorCode ClientReceiver::run()
 {
-	printf("RpcClientThread\n");
-	bool ret = m_rpcexec.registerFunction([](){return new TestFunc();});
+	San2::Cppl::BufferProcessor *bp = getBufferProcessor();
+	m_rpcChannel = new San2::Comm::CpplRpcChannel(bp);
+	m_rpcexec = new San2::Rpc::CRpcExecutor(*m_rpcChannel, 5000);
+	
+	bool ret = m_rpcexec->registerFunction([](){return new TestFunc();});
 	if (ret) printf("reg success\n");
 	else printf("reg fail\n");
-
-	San2::Cppl::BufferProcessor *bp = getBufferProcessor();
 
 	unsigned int bytesRead;
 	const unsigned int dataSize = 512;
@@ -36,11 +45,7 @@ San2::Cppl::ErrorCode ClientReceiver::run()
 		fflush(stdout);
 	}
 	printf("client exit cc \n");
+	
 	return San2::Cppl::ErrorCode::SUCCESS;
 }
 
-ClientReceiver::~ClientReceiver()
-{
-  // empty	
-}
-	

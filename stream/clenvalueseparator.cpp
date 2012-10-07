@@ -19,13 +19,33 @@ namespace San2
 	
 		bool CLenValueSeparator::readMessage(San2::Utils::bytes &out)
 		{
-			// TODO: implelent
-			return false;
+			San2::Utils::bytes btmp;
+			if (!(m_rw.readExactNumBytesAppend(btmp, sizeof(SAN_UINT32))))
+			{
+				printf("FAIL:CLenValueSeparator::readMessage()::1\n");
+				return false;
+			}
+			
+			
+			SAN_UINT32 iSize;
+			memcpy(&iSize, btmp.toArray(), sizeof(SAN_UINT32));
+			iSize = San2::Utils::Endian::san_u_be32toh(iSize);
+			
+			printf("size is: %ud\n", iSize);
+			
+			
+			if (!(m_rw.readExactNumBytesAppend(out, iSize)))
+			{
+				printf("FAIL:CLenValueSeparator::readMessage()::2\n");
+				return false;
+			}
+			
+			return true;
 		}
 		
 		bool CLenValueSeparator::writeMessage(const San2::Utils::bytes& in)
 		{
-			SAN_UINT32 iMessageSize = San2::Utils::Endian::san_u_be32toh(in.size());
+			SAN_UINT32 iMessageSize = San2::Utils::Endian::san_u_htobe32(in.size());
 			char tmpMessageSize[sizeof(SAN_UINT32)];
 			memcpy(tmpMessageSize, &iMessageSize, sizeof(SAN_UINT32));
 			

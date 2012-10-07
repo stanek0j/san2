@@ -17,28 +17,32 @@
 
 
 ServerReceiver::ServerReceiver() :
-	m_rpcChannel(getBufferProcessor()),
-	m_rpcexec(m_rpcChannel, 5000)
+	m_rpcChannel(NULL),
+	m_rpcexec(NULL)
 {
 
 }
 
 ServerReceiver::~ServerReceiver()
 {
-// empty	
+	if (m_rpcChannel != NULL) delete m_rpcChannel;
+	if (m_rpcexec != NULL) delete m_rpcexec;
 }
 
 San2::Cppl::ErrorCode ServerReceiver::run()
 {
-	printf("RpcServerThread\n");
-	bool ret = m_rpcexec.registerFunction([](){return new TestFunc();});
+	San2::Cppl::BufferProcessor *bp = getBufferProcessor();
+	m_rpcChannel = new San2::Comm::CpplRpcChannel(bp);
+	m_rpcexec = new San2::Rpc::CRpcExecutor(*m_rpcChannel, 5000);
+	
+	bool ret = m_rpcexec->registerFunction([](){return new TestFunc();});
 	if (ret) printf("reg success\n");
 	else printf("reg fail\n");
 	
+	m_rpcexec->run();
+	
 	const unsigned int lineSize = 512;
 	char line[lineSize];
-
-	San2::Cppl::BufferProcessor *bp = getBufferProcessor();
 
 	while (1)
 	{
