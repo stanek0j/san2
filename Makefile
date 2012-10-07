@@ -17,7 +17,8 @@ OBJS-CPPL = cppl/helper.o \
 OBJS-NETWORK = network/ccapsule.o
 
 OBJS-RPC = rpc/cirpcchannel.o \
-		   rpc/crpcexecutor.o
+		   rpc/crpcexecutor.o \
+		   rpc/cirpcfunction.o
 
 OBJS-EXAMPLES-UTILS-PRODUCERCONSUMER = examples/utils/producerconsumer/pctest.o
 
@@ -80,6 +81,7 @@ examples-rpc-server: utils cppl stream rpc $(OBJS-EXAMPLES-RPC-SERVER)
 	
 clean::
 	rm -f *.o
+	rm -f rpc/*.o
 	rm -f utils/*.o
 	rm -f utils/platform/*.o
 	rm -f cppl/*.o

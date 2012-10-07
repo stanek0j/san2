@@ -1,12 +1,12 @@
 
 #pragma once
 
+#include "utils/cvector.hpp"
+
 namespace San2 
 {
 	namespace Rpc
 	{
-		class San2::Utils::bytes;
-		
 		class CIRpcFunction
 		{
 		public:			
