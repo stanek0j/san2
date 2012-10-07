@@ -42,6 +42,11 @@ OBJS-EXAMPLES-CPPL-TERMINAL = examples/cppl/terminal/terminal.o \
 OBJS-EXAMPLES-RPC-SERVER = examples/rpc/server/main.o \
 						   examples/rpc/server/serverreceiver.o
 
+OBJS-EXAMPLES-RPC-CLIENT = examples/rpc/client/main.o \
+						   examples/rpc/client/clientreceiver.o
+						   
+OBJS-TEST-FUNC = examples/rpc/testfunc.o
+
 all:: components examples
 
 components: utils cppl stream network rpc comm
@@ -57,7 +62,7 @@ examples: examples-utils examples-cppl examples-rpc
 
 examples-utils: examples-utils-producerconsumer examples-utils-vector
 examples-cppl: examples-cppl-server examples-cppl-client examples-cppl-terminal
-examples-rpc: examples-rpc-server
+examples-rpc: examples-rpc-server examples-rpc-client
 
 examples-utils-producerconsumer: utils $(OBJS-EXAMPLES-UTILS-PRODUCERCONSUMER)
 	$(CCC) $(OBJS-EXAMPLES-UTILS-PRODUCERCONSUMER) $(OBJS-UTILS) -o ./producerconsumer $(LIBS) $(LDFLAGS)
@@ -74,9 +79,12 @@ examples-cppl-terminal: utils cppl $(OBJS-EXAMPLES-CPPL-TERMINAL)
 examples-utils-vector: utils $(OBJS-EXAMPLES-UTILS-VECTOR)
 	$(CCC) $(OBJS-EXAMPLES-UTILS-VECTOR) $(OBJS-UTILS) -o ./utils_vector $(LIBS) $(LDFLAGS)
 
-examples-rpc-server: utils cppl stream comm rpc $(OBJS-EXAMPLES-RPC-SERVER)
-	$(CCC) $(OBJS-UTILS) $(OBJS-CPPL) $(OBJS-STREAM) $(OBJS-COMM) $(OBJS-RPC) $(OBJS-EXAMPLES-RPC-SERVER)  -o ./rpc_server $(LIBS) $(LDFLAGS)
+examples-rpc-server: utils cppl stream comm rpc $(OBJS-EXAMPLES-RPC-SERVER) $(OBJS-TEST-FUNC)
+	$(CCC) $(OBJS-UTILS) $(OBJS-CPPL) $(OBJS-STREAM) $(OBJS-COMM) $(OBJS-RPC) $(OBJS-EXAMPLES-RPC-SERVER) $(OBJS-TEST-FUNC)  -o ./rpc_server $(LIBS) $(LDFLAGS)
 		
+examples-rpc-client: utils cppl stream comm rpc $(OBJS-EXAMPLES-RPC-CLIENT) $(OBJS-TEST-FUNC)
+	$(CCC) $(OBJS-UTILS) $(OBJS-CPPL) $(OBJS-STREAM) $(OBJS-COMM) $(OBJS-RPC) $(OBJS-EXAMPLES-RPC-CLIENT) $(OBJS-TEST-FUNC)  -o ./rpc_client $(LIBS) $(LDFLAGS)
+
 #tells how to make an *.o object file from an *.c file
 %.o: %.cpp
 	$(CCC) -c $(CCFLAGS) $< -o $@
@@ -104,6 +112,8 @@ clean::
 	rm -f utils_vector
 	rm -f producerconsumer
 	rm -f terminal
+	rm -f rpc_server
+	rm -f rpc_client
 	
 
 	
