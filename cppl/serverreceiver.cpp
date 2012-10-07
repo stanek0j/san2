@@ -30,11 +30,11 @@ namespace San2 { namespace Cppl {
 		const unsigned int lineSize = 512;
 		char line[lineSize];
 		
-		PipeChannel *chann = getPipeChannel();
+		BufferProcessor *bp = getBufferProcessor();
 		
 		while (1)
 		{
-			ErrorCode rval = chann->readLine(line, lineSize);
+			ErrorCode rval = bp->readLine(line, lineSize);
 			if (rval != ErrorCode::SUCCESS)
 			{
 				if (rval == ErrorCode::PEER_DISCONNECT)

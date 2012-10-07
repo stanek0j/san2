@@ -12,7 +12,7 @@
 #include "pipeclient.hpp"
 #include "pipeserver.hpp"
 #include "pipechannel.hpp"
-#include "abstractserverreceiver.hpp"
+#include "abstractreceiver.hpp"
 #include "serverreceiver.hpp"
 
 #define TIMEOUT_CON 5000
@@ -27,12 +27,12 @@
 	#define SRV_PIPENAME "\\\\.\\pipe\\mynamedpipe"
 #endif
 
-San2::Cppl::AbstractServerReceiver* createAbstractServerReceiver()
+San2::Cppl::AbstractReceiver* createAbstractReceiver()
 {
 	return new San2::Cppl::ServerReceiver();
 }
 
-San2::Cppl::PipeServer ps(SRV_PIPENAME, createAbstractServerReceiver, TIMEOUT_CON, TIMEOUT_RX, TIMEOUT_TX);
+San2::Cppl::PipeServer ps(SRV_PIPENAME, createAbstractReceiver, TIMEOUT_CON, TIMEOUT_RX, TIMEOUT_TX);
 
 #ifdef LINUX
   struct sigaction act;

@@ -19,13 +19,13 @@ namespace San2 { namespace Cppl {
 	
 	ErrorCode ClientReceiver::run()
 	{
-		PipeClient *client = getPipeClient();
+		BufferProcessor *bp = getBufferProcessor();
 
 		unsigned int bytesRead;
 		const unsigned int dataSize = 512;
 		char data[dataSize];
 
-		while(client->readSome(data, dataSize, &bytesRead) == ErrorCode::SUCCESS)
+		while(bp->readSome(data, dataSize, &bytesRead) == ErrorCode::SUCCESS)
 		{
 			fwrite(data, 1, bytesRead, stdout);
 			fflush(stdout);

@@ -15,7 +15,7 @@ namespace San2
 		class CCpplStream : public CIStreamRW
 		{
 		public:
-			CCpplStream(const unsigned int maxSingleReadSize);
+			CCpplStream(const unsigned int maxSingleReadSize, PipeChannel &);
 			virtual ~CCpplStream();
 			virtual int readSomeAppend(San2::Utils::bytes &data, unsigned int maxCount);
 			virtual int writeSome(San2::Utils::bytes::const_iterator first, San2::Utils::bytes::const_iterator last);

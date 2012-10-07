@@ -1,12 +1,12 @@
 
 #pragma once
-#include "abstractserverreceiver.hpp"
+#include "abstractreceiver.hpp"
 
 namespace San2
 {	
 	namespace Cppl
 	{
-		class ServerReceiver : public AbstractServerReceiver
+		class ServerReceiver : public AbstractReceiver
 		{
 		  public:
 			ServerReceiver();

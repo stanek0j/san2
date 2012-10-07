@@ -34,14 +34,14 @@ namespace San2 { namespace Cppl {
 		}
 	
 	#ifdef LINUX
-		PipeChannel::PipeChannel(int sockt, std::function<AbstractServerReceiver* (void)> createAbstractServerReceiverProc, unsigned int timRX, unsigned int timTX) :
+		PipeChannel::PipeChannel(int sockt, std::function<AbstractReceiver* (void)> createAbstractReceiverProc, unsigned int timRX, unsigned int timTX) :
 			sock(sockt),
-			absReceiver(createAbstractServerReceiverProc()), // ugly: no error checking (excpetion new)
+			absReceiver(createAbstractReceiverProc()), // ugly: no error checking (excpetion new)
 			mTimRX(timRX),
 			mTimTX(timTX),
             errcode(ErrorCode::SUCCESS)
 		{
-			absReceiver->mChannel = this;
+			absReceiver->m_bp = this;
 		}
 		
 		// call this only once
@@ -65,14 +65,14 @@ namespace San2 { namespace Cppl {
 	#endif
 
 	#ifdef WINDOWS
-		PipeChannel::PipeChannel(HANDLE handlePipe, std::function<AbstractServerReceiver* (void)> createAbstractServerReceiverProc, unsigned int timRX, unsigned int timTX) :
+		PipeChannel::PipeChannel(HANDLE handlePipe, std::function<AbstractReceiver* (void)> createAbstractReceiverProc, unsigned int timRX, unsigned int timTX) :
 			hPipe(handlePipe),
-			absReceiver(createAbstractServerReceiverProc()), // ugly: no error checking
+			absReceiver(createAbstractReceiverProc()), // ugly: no error checking
 			mTimRX(timRX),
 			mTimTX(timTX),
             errcode(ErrorCode::SUCCESS)
 		{
-			absReceiver->mChannel = this;
+			absReceiver->m_bp = this;
 			// Error checking performed in send()
 		}
 

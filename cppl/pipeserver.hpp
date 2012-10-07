@@ -16,7 +16,7 @@
 #include "utils/cthread.hpp"
 #include "utils/cthreadmanager.hpp"
 #include "helper.hpp"
-#include "abstractserverreceiver.hpp"
+#include "abstractreceiver.hpp"
 
 namespace San2 
 {	
@@ -25,7 +25,7 @@ namespace San2
 		class PipeServer : public San2::Utils::CThread
 		{
 			public:
-				PipeServer(const char *pipeName, std::function<AbstractServerReceiver* (void)> createAbstractServerReceiverProc, unsigned int timCON, unsigned int timRX, unsigned int timTX);
+				PipeServer(const char *pipeName, std::function<AbstractReceiver* (void)> createAbstractReceiverProc, unsigned int timCON, unsigned int timRX, unsigned int timTX);
 				ErrorCode getErrorCode();
 				
 			protected:
@@ -36,7 +36,7 @@ namespace San2
 			private:
 				San2::Utils::CThreadManager manager;
 				const char *pipename;
-				std::function<AbstractServerReceiver* (void)> mCreateAbstractServerReceiverProc;
+				std::function<AbstractReceiver* (void)> mCreateAbstractReceiverProc;
 				unsigned int mTimCON, mTimRX, mTimTX;
 				ErrorCode errcode;
 

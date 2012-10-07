@@ -9,13 +9,13 @@
 
 #include "bufferprocessor.hpp"
 #include "helper.hpp"
-#include "abstractserverreceiver.hpp"
+#include "abstractreceiver.hpp"
 
 namespace San2
 {	
 	namespace Cppl
 	{
-		class AbstractServerReceiver;
+		class AbstractReceiver;
 		class PipeServer; // forward declaration
 
 		class PipeChannel : public BufferProcessor
@@ -24,11 +24,11 @@ namespace San2
 				~PipeChannel(); // should be private
 
 				#ifdef LINUX
-					PipeChannel(int sockt, std::function<AbstractServerReceiver* (void)> createAbstractServerReceiverProc, unsigned int timRX, unsigned int timTX);
+					PipeChannel(int sockt, std::function<AbstractReceiver* (void)> createAbstractReceiverProc, unsigned int timRX, unsigned int timTX);
 				#endif
 
 				#ifdef WINDOWS
-					PipeChannel(HANDLE handlePipe, std::function<AbstractServerReceiver* (void)> createAbstractServerReceiverProc, unsigned int timRX, unsigned int timTX);
+					PipeChannel(HANDLE handlePipe, std::function<AbstractReceiver* (void)> createAbstractReceiverProc, unsigned int timRX, unsigned int timTX);
 				#endif
 
 					ErrorCode send(char *data, int len);
@@ -50,7 +50,7 @@ namespace San2
 					HANDLE hPipe;
 				#endif
 					
-					AbstractServerReceiver* absReceiver;
+					AbstractReceiver* absReceiver;
 					unsigned int mTimRX, mTimTX;
 				
 				ErrorCode errcode;

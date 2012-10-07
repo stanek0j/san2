@@ -14,17 +14,19 @@ namespace San2
 			BufferProcessor();
 			virtual ~BufferProcessor();
 
+			/* interface */
+			virtual ErrorCode send(char *data, int len)=0;
+			virtual ErrorCode read(char *data, unsigned int dataSize, unsigned int *bytesRead)=0;    
+
 			ErrorCode readSome(char *buffer, unsigned int bufferSize, unsigned int *bytesRead);
 			ErrorCode readDelimeter(char *output, unsigned int outputSize, unsigned int *outputLen, char delimeter);
 			ErrorCode readLine(char *line, unsigned int lineSize);
-			virtual ErrorCode send(char *data, int len)=0;
+			
+			
 			ErrorCode send(const char *nullTerminatedString);
 			ErrorCode send(const std::string &data);
 			ErrorCode sendLine(const char *nullTerminatedString);
 			ErrorCode sendLine(void);
-
-		protected:
-			virtual ErrorCode read(char *data, unsigned int dataSize, unsigned int *bytesRead)=0;    
 
 		private:
 			bool bufferFull();

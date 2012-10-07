@@ -18,18 +18,18 @@
 #include "bufferprocessor.hpp"
 #include "utils/cthread.hpp"
 #include "helper.hpp"
-#include "abstractclientreceiver.hpp"
+#include "abstractreceiver.hpp"
 
 namespace San2 
 {
 	namespace Cppl
 	{
-		class AbstractClientReceiver;
+		class AbstractReceiver;
 		
 		class PipeClient : public BufferProcessor
 		{
 			public:
-				PipeClient(const char *pipeName, std::function<AbstractClientReceiver* (void)> createAbstractClientReceiverProc, unsigned int timCON, unsigned int timRX, unsigned int timTX);
+				PipeClient(const char *pipeName, std::function<AbstractReceiver* (void)> createAbstractReceiverProc, unsigned int timCON, unsigned int timRX, unsigned int timTX);
 				~PipeClient();
 				ErrorCode open();
 				ErrorCode send(char *data, int len);
@@ -44,7 +44,7 @@ namespace San2
 				ErrorCode read(char *data, unsigned int dataSize, unsigned int *bytesRead);
 
 				const char *pipename;
-				AbstractClientReceiver *absReceiver;
+				AbstractReceiver *absReceiver;
 
 			#ifdef LINUX
 				int sock;

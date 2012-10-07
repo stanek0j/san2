@@ -45,9 +45,9 @@ namespace San2 { namespace Cppl {
 
 	#ifdef LINUX
 	
-	PipeServer::PipeServer(const char *pipeName, std::function<AbstractServerReceiver* (void)> createAbstractServerReceiverProc, unsigned int timCON, unsigned int timRX, unsigned int timTX):
+	PipeServer::PipeServer(const char *pipeName, std::function<AbstractReceiver* (void)> createAbstractReceiverProc, unsigned int timCON, unsigned int timRX, unsigned int timTX):
 		pipename(pipeName),
-		mCreateAbstractServerReceiverProc(createAbstractServerReceiverProc),
+		mCreateAbstractReceiverProc(createAbstractReceiverProc),
 		mTimCON(timCON),
 		mTimRX(timRX),
 		mTimTX(timTX),
@@ -140,7 +140,7 @@ namespace San2 { namespace Cppl {
 				return ErrorCode::FAILURE;
 			}
 				
-			manager.startThread<PipeChannel>([=](){return new PipeChannel(acceptSocket, mCreateAbstractServerReceiverProc, mTimRX, mTimTX);});
+			manager.startThread<PipeChannel>([=](){return new PipeChannel(acceptSocket, mCreateAbstractReceiverProc, mTimRX, mTimTX);});
 		}
 		
 		return ErrorCode::SUCCESS;
@@ -148,9 +148,9 @@ namespace San2 { namespace Cppl {
 	#endif
 
 	#ifdef WINDOWS
-	PipeServer::PipeServer(const char *pipeName, std::function<AbstractServerReceiver* (void)> createAbstractServerReceiverProc, unsigned int timCON, unsigned int timRX, unsigned int timTX):
+	PipeServer::PipeServer(const char *pipeName, std::function<AbstractReceiver* (void)> createAbstractReceiverProc, unsigned int timCON, unsigned int timRX, unsigned int timTX):
 		pipename(pipeName),
-		mCreateAbstractServerReceiverProc(createAbstractServerReceiverProc),
+		mCreateAbstractReceiverProc(createAbstractReceiverProc),
 		mTimCON(timCON),
 		mTimRX(timRX),
 		mTimTX(timTX),
@@ -273,7 +273,7 @@ namespace San2 { namespace Cppl {
 				
 		  // GetOverlappedResult is useless because for ConnectNamedPipe() is return value undefined
 		  // http://msdn.microsoft.com/en-us/library/windows/desktop/ms683209(v=vs.85).aspx
-		  manager.startThread<PipeChannel>([=](){return new PipeChannel(hPipe, mCreateAbstractServerReceiverProc, mTimRX, mTimTX);});
+		  manager.startThread<PipeChannel>([=](){return new PipeChannel(hPipe, mCreateAbstractReceiverProc, mTimRX, mTimTX);});
 	   } 
 
 	   CloseHandle(o.hEvent);

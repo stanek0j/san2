@@ -15,7 +15,7 @@
 #include "pipeclient.hpp"
 #include "pipeserver.hpp"
 #include "pipechannel.hpp"
-#include "abstractclientreceiver.hpp"
+#include "abstractreceiver.hpp"
 #include "clientreceiver.hpp"
 
 #define CLI_TIM_CON 20000

@@ -1,6 +1,6 @@
 
 CCC = g++
-CCFLAGS = -Wall -I$(CURDIR) -O3 -ggdb -std=c++0x -DUNIX -DLINUX -pthread
+CCFLAGS = -Wall -I$(CURDIR) -O3 -ggdb -std=c++0x -DUNIX -DLINUX -pthread -I.
 LDFLAGS = -pthread
 LIBS = -lpthread
 
@@ -8,8 +8,6 @@ OBJS-CPPL = cppl/helper.o \
             cppl/pipeclient.o \
             cppl/pipeserver.o \
             cppl/pipechannel.o \
-            cppl/abstractserverreceiver.o \
-            cppl/abstractclientreceiver.o \
             cppl/serverreceiver.o \
             cppl/clientreceiver.o \
             cppl/abstractreceiver.o \

@@ -20,7 +20,7 @@
 
 #include "pipeclient.hpp"
 #include "helper.hpp"
-#include "abstractclientreceiver.hpp"
+#include "abstractreceiver.hpp"
 
 #define CPPL_PIPECLI_RXBUFSIZE 1500
 #define CPPL_PIPECLI_WIN_MAXFNAMEBYTES 512
@@ -39,15 +39,15 @@ namespace San2 { namespace Cppl {
 
 	#ifdef LINUX
 	
-	PipeClient::PipeClient(const char *pipeName, std::function<AbstractClientReceiver* (void)> createAbstractClientReceiverProc, unsigned int timCON, unsigned int timRX, unsigned int timTX) :
+	PipeClient::PipeClient(const char *pipeName, std::function<AbstractReceiver* (void)> createAbstractReceiverProc, unsigned int timCON, unsigned int timRX, unsigned int timTX) :
 		pipename(pipeName),
-		absReceiver(createAbstractClientReceiverProc()), // ugly: no error checking (excpetion new)
+		absReceiver(createAbstractReceiverProc()), // ugly: no error checking (excpetion new)
 		mTimCON(timCON),
 		mTimRX(timRX),
 		mTimTX(timTX),
         errcode(ErrorCode::SUCCESS)
 	{
-		absReceiver->mClient = this;
+		absReceiver->m_bp = this;
 	}
 
 	PipeClient::~PipeClient()
@@ -100,16 +100,16 @@ namespace San2 { namespace Cppl {
 
 	#ifdef WINDOWS
 	
-	PipeClient::PipeClient(const char *pipeName, std::function<AbstractClientReceiver* (void)> createAbstractClientReceiverProc, unsigned int timCON, unsigned int timRX, unsigned int timTX) :
+	PipeClient::PipeClient(const char *pipeName, std::function<AbstractReceiver* (void)> createAbstractReceiverProc, unsigned int timCON, unsigned int timRX, unsigned int timTX) :
 		pipename(pipeName),
-		absReceiver(createAbstractClientReceiverProc()), // ugly: no error checking (excpetion new)
+		absReceiver(createAbstractReceiverProc()), // ugly: no error checking (excpetion new)
 		mTimCON(timCON),
 		mTimRX(timRX),
 		mTimTX(timTX),
 		hPipe(INVALID_HANDLE_VALUE),
         errcode(ErrorCode::SUCCESS)
 	{
-	   absReceiver->mClient = this;
+	   absReceiver->m_bp = this;
 	}
 
 	PipeClient::~PipeClient()

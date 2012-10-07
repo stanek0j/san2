@@ -1,12 +1,12 @@
 
 
-#include "abstractclientreceiver.hpp"
+#include "abstractreceiver.hpp"
 
 namespace San2
 {
 	namespace Cppl
 	{
-		class ClientReceiver : public AbstractClientReceiver
+		class ClientReceiver : public AbstractReceiver
 		{
 		  public:
 			ClientReceiver();
