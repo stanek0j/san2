@@ -13,7 +13,7 @@
 	#include <windows.h>
 #endif
 
-#include "pipeclient.hpp"
+#include "cppl/pipeclient.hpp"
 #include "terminalreceiver.hpp"
 
 #define CLI_TIM_CON 20000
@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
 	}
 	
 	char line[256];
-	San2::Cppl::PipeClient pc(argv[1], [](){return new San2::Cppl::TerminalReceiver();}, CLI_TIM_CON, CLI_TIM_RX, CLI_TIM_TX);
+	San2::Cppl::PipeClient pc(argv[1], [](){return new TerminalReceiver();}, CLI_TIM_CON, CLI_TIM_RX, CLI_TIM_TX);
 	San2::Cppl::ErrorCode rval = pc.open();
 	
 	if (rval != San2::Cppl::ErrorCode::SUCCESS) 

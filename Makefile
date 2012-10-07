@@ -26,11 +26,14 @@ OBJS-EXAMPLES-UTILS-VECTOR = examples/utils/vector/vector.o
 
 OBJS-STREAM = stream/cistreamrw.o
 
-OBJS-EXAMPLES-CPPL-SERVER = examples/cppl/server.o \
-							examples/cppl/serverreceiver.o
+OBJS-EXAMPLES-CPPL-SERVER = examples/cppl/server/server.o \
+							examples/cppl/server/serverreceiver.o
 					 
-OBJS-EXAMPLES-CPPL-CLIENT = examples/cppl/client.o \
-							examples/cppl/clientreceiver.o
+OBJS-EXAMPLES-CPPL-CLIENT = examples/cppl/client/client.o \
+							examples/cppl/client/clientreceiver.o
+							
+OBJS-EXAMPLES-CPPL-TERMINAL = examples/cppl/terminal/terminal.o \
+							examples/cppl/terminal/terminalreceiver.o
 
 all:: components examples
 
@@ -45,7 +48,7 @@ rpc: $(OBJS-RPC)
 examples: examples-utils examples-cppl
 
 examples-utils: examples-utils-producerconsumer examples-utils-vector
-examples-cppl: examples-cppl-server examples-cppl-client
+examples-cppl: examples-cppl-server examples-cppl-client examples-cppl-terminal
 
 examples-utils-producerconsumer: utils $(OBJS-EXAMPLES-UTILS-PRODUCERCONSUMER)
 	$(CCC) $(OBJS-EXAMPLES-UTILS-PRODUCERCONSUMER) $(OBJS-UTILS) -o ./producerconsumer $(LIBS) $(LDFLAGS)
@@ -55,6 +58,9 @@ examples-cppl-server: utils cppl $(OBJS-EXAMPLES-CPPL-SERVER)
 	
 examples-cppl-client: utils cppl $(OBJS-EXAMPLES-CPPL-CLIENT) 
 	$(CCC) $(OBJS-EXAMPLES-CPPL-CLIENT) $(OBJS-UTILS) $(OBJS-CPPL) -o ./cppl_client $(LIBS) $(LDFLAGS)
+
+examples-cppl-terminal: utils cppl $(OBJS-EXAMPLES-CPPL-TERMINAL) 
+	$(CCC) $(OBJS-EXAMPLES-CPPL-TERMINAL) $(OBJS-UTILS) $(OBJS-CPPL) -o ./terminal $(LIBS) $(LDFLAGS)
 
 examples-utils-vector: utils $(OBJS-EXAMPLES-UTILS-VECTOR)
 	$(CCC) $(OBJS-EXAMPLES-UTILS-VECTOR) $(OBJS-UTILS) -o ./utils_vector $(LIBS) $(LDFLAGS)
@@ -79,7 +85,7 @@ clean::
 	rm -f cppl_server
 	rm -f cppl_client
 	rm -f utils_vector
-	rm -f prosucerconsumer
+	rm -f producerconsumer
 	
 
 	
