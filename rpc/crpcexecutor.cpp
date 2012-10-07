@@ -15,15 +15,22 @@ namespace San2
 		
 		void CRpcExecutor::run()
 		{
+			printf("CRpcExecutor::run() begin\n");
+			
 			San2::Utils::bytes b;
 			unsigned int functionId;
 			
 			// needs some kind of return value
-			while(isTerminated())
+			while(!isTerminated())
 			{
-				if (!(m_channel.recvData(functionId, b, m_timRX))) break;
+				if (!(m_channel.recvData(functionId, b, m_timRX)))
+				{
+					 printf("FAIL: CRpcExecutor::run()::recvData()\n");
+					 break;
+				}
 				if (executeFunction(functionId, b) != RpcError::SUCCESS);
 			}
+			printf("CRpcExecutor::run() end\n");
 		}
 		
 		bool CRpcExecutor::registerFunction(std::function<CIRpcFunction* (void)> createFunction)

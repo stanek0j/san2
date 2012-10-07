@@ -40,39 +40,6 @@ San2::Cppl::ErrorCode ServerReceiver::run()
 	else printf("reg fail\n");
 	
 	m_rpcexec->run();
-	
-	const unsigned int lineSize = 512;
-	char line[lineSize];
-
-	while (1)
-	{
-		San2::Cppl::ErrorCode rval = bp->readLine(line, lineSize);
-		if (rval != San2::Cppl::ErrorCode::SUCCESS)
-		{
-			if (rval == San2::Cppl::ErrorCode::PEER_DISCONNECT)
-			{
-				printf("peer disconnected\n");
-				return San2::Cppl::ErrorCode::PEER_DISCONNECT;
-			}
-			printf("readLine failed errcode: %d\n", errorCodeToInt(rval));
-			
-			break;
-		}
-		
-		unsigned int lineLen = strlen(line); 
-		printf("rxline: %d\n", lineLen);
-		
-		line[strlen(line)] = 0x0A;
-		lineLen++;
-		
-		San2::Cppl::ErrorCode sendRval = send(line, lineLen);
-
-		if (sendRval != San2::Cppl::ErrorCode::SUCCESS) // echo
-		{
-			printf("error: srvproc send\n");
-			return San2::Cppl::ErrorCode::FAILURE;
-		}
-	}
 
 	printf("client exit\n");
 	return San2::Cppl::ErrorCode::SUCCESS;

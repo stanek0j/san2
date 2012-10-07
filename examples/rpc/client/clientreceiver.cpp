@@ -35,6 +35,8 @@ San2::Cppl::ErrorCode ClientReceiver::run()
 	if (ret) printf("reg success\n");
 	else printf("reg fail\n");
 
+	//---------------------------------
+
 	unsigned int bytesRead;
 	const unsigned int dataSize = 512;
 	char data[dataSize];

@@ -29,9 +29,10 @@ namespace San2
 			
 			SAN_UINT32 iSize;
 			memcpy(&iSize, btmp.toArray(), sizeof(SAN_UINT32));
+			printf("size is: %d\n", iSize);
 			iSize = San2::Utils::Endian::san_u_be32toh(iSize);
 			
-			printf("size is: %ud\n", iSize);
+			printf("size is: %d\n", iSize);
 			
 			
 			if (!(m_rw.readExactNumBytesAppend(out, iSize)))

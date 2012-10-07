@@ -30,12 +30,12 @@ namespace San2
 			void run();
 			// bool registerFunction(std::shared_ptr<RpcFunction> func);
 			bool registerFunction(std::function<CIRpcFunction* (void)> createFunction);
-			RpcError executeFunction(unsigned int uniqueId, const San2::Utils::bytes &in);
 			
 			// destructor must be virtual!
 			virtual ~CRpcExecutor(){ /* intentionally empty */ };
 		
 		private:
+			RpcError executeFunction(unsigned int uniqueId, const San2::Utils::bytes &in);
 			std::map<unsigned int, std::shared_ptr<CIRpcFunction> > m_functions;
 			bool findFunction(unsigned int uniqueId, std::shared_ptr<CIRpcFunction> &function);
 			CIRpcChannel &m_channel;
