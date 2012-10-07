@@ -9,10 +9,10 @@
 	#include <signal.h>
 #endif
 
-#include "pipeclient.hpp"
-#include "pipeserver.hpp"
-#include "pipechannel.hpp"
-#include "abstractreceiver.hpp"
+#include "cppl/pipeclient.hpp"
+#include "cppl/pipeserver.hpp"
+#include "cppl/pipechannel.hpp"
+#include "cppl/abstractreceiver.hpp"
 #include "serverreceiver.hpp"
 
 #define TIMEOUT_CON 5000

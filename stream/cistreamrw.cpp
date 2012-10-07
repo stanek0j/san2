@@ -11,10 +11,12 @@ namespace San2
 			
 		}
 		
+		/*
 		virtual ~CIStreamRW::CIStreamRW()
 		{
 			
 		}
+		* */
 		
 		// TRUE = success
 		bool CIStreamRW::readExactNumBytesAppend(San2::Utils::bytes &out, unsigned int num) // TRUE = success

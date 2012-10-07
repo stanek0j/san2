@@ -16,7 +16,7 @@ namespace San2
 		{
 		public:
 			CIStreamRW(const unsigned int maxSingleReadSize);
-			virtual ~CIStreamRW();
+			virtual ~CIStreamRW(){};
 			// interface
 			
 			// WARNING: data MUST be APPENDED at the END of vector!!!

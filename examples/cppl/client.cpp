@@ -12,10 +12,11 @@
 	#include <windows.h>
 #endif
 
-#include "pipeclient.hpp"
-#include "pipeserver.hpp"
-#include "pipechannel.hpp"
-#include "abstractreceiver.hpp"
+#include "cppl/pipeclient.hpp"
+#include "cppl/pipeserver.hpp"
+#include "cppl/pipechannel.hpp"
+#include "cppl/abstractreceiver.hpp"
+
 #include "clientreceiver.hpp"
 
 #define CLI_TIM_CON 20000
