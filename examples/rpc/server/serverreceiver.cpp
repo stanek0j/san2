@@ -13,30 +13,31 @@
 #include "cppl/pipechannel.hpp"
 #include "cppl/helper.hpp"
 
-#include "rpc/crpcexecutor.hpp"
-
 #include "serverreceiver.hpp"
 
-ServerReceiver::ServerReceiver(CIRpcChannel& channel)
+
+ServerReceiver::ServerReceiver() :
+	m_rpcChannel(getBufferProcessor()),
+	m_rpcexec(m_rpcChannel, 5000)
 {
-	
+
 }
 
 ServerReceiver::~ServerReceiver()
 {
-  // empty	
+// empty	
 }
 
 San2::Cppl::ErrorCode ServerReceiver::run()
 {
 	const unsigned int lineSize = 512;
 	char line[lineSize];
-	
+
 	San2::Cppl::BufferProcessor *bp = getBufferProcessor();
-	
+
 	while (1)
 	{
-		ErrorCode rval = bp->readLine(line, lineSize);
+		San2::Cppl::ErrorCode rval = bp->readLine(line, lineSize);
 		if (rval != San2::Cppl::ErrorCode::SUCCESS)
 		{
 			if (rval == San2::Cppl::ErrorCode::PEER_DISCONNECT)
@@ -44,7 +45,7 @@ San2::Cppl::ErrorCode ServerReceiver::run()
 				printf("peer disconnected\n");
 				return San2::Cppl::ErrorCode::PEER_DISCONNECT;
 			}
-			printf("readLine failed errcode: %d\n", San2::Cppl::errorCodeToInt(rval));
+			printf("readLine failed errcode: %d\n", errorCodeToInt(rval));
 			
 			break;
 		}
@@ -55,7 +56,7 @@ San2::Cppl::ErrorCode ServerReceiver::run()
 		line[strlen(line)] = 0x0A;
 		lineLen++;
 		
-		San2::Cppl::ErrorCode sendRval = bp->send(line, lineLen);
+		San2::Cppl::ErrorCode sendRval = send(line, lineLen);
 
 		if (sendRval != San2::Cppl::ErrorCode::SUCCESS) // echo
 		{
@@ -63,7 +64,8 @@ San2::Cppl::ErrorCode ServerReceiver::run()
 			return San2::Cppl::ErrorCode::FAILURE;
 		}
 	}
-	
+
 	printf("client exit\n");
 	return San2::Cppl::ErrorCode::SUCCESS;
 }
+

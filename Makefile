@@ -26,6 +26,9 @@ OBJS-EXAMPLES-UTILS-VECTOR = examples/utils/vector/vector.o
 
 OBJS-STREAM = stream/cistreamrw.o \
 			  stream/clenvalueseparator.o
+			  
+OBJS-COMM = comm/cpplrpcchannel.o \
+			comm/cpplstreamrw.o
 
 OBJS-EXAMPLES-CPPL-SERVER = examples/cppl/server/server.o \
 							examples/cppl/server/serverreceiver.o
@@ -36,19 +39,19 @@ OBJS-EXAMPLES-CPPL-CLIENT = examples/cppl/client/client.o \
 OBJS-EXAMPLES-CPPL-TERMINAL = examples/cppl/terminal/terminal.o \
 							examples/cppl/terminal/terminalreceiver.o
 
-OBJS-EXAMPLES-RPC-SERVER = examples/rpc/server/cpplstreamrw.o \
-						   examples/rpc/server/rpcchannel.o \
-						   examples/rpc/server/x.o \
+OBJS-EXAMPLES-RPC-SERVER = examples/rpc/server/main.o \
+						   examples/rpc/server/serverreceiver.o
 
 all:: components examples
 
-components: utils cppl stream network rpc
+components: utils cppl stream network rpc comm
 
 utils: $(OBJS-UTILS)
 cppl: $(OBJS-CPPL)
 stream: $(OBJS-STREAM)
 network: $(OBJS-NETWORK)
 rpc: $(OBJS-RPC)
+comm: $(OBJS-COMM)
 
 examples: examples-utils examples-cppl examples-rpc
 
@@ -71,8 +74,8 @@ examples-cppl-terminal: utils cppl $(OBJS-EXAMPLES-CPPL-TERMINAL)
 examples-utils-vector: utils $(OBJS-EXAMPLES-UTILS-VECTOR)
 	$(CCC) $(OBJS-EXAMPLES-UTILS-VECTOR) $(OBJS-UTILS) -o ./utils_vector $(LIBS) $(LDFLAGS)
 
-examples-rpc-server: utils cppl stream rpc $(OBJS-EXAMPLES-RPC-SERVER)
-	$(CCC) $(OBJS-UTILS) $(OBJS-CPPL) $(OBJS-STREAM) $(OBJS-RPC) $(OBJS-EXAMPLES-RPC-SERVER)  -o ./rpc_server $(LIBS) $(LDFLAGS)
+examples-rpc-server: utils cppl stream comm rpc $(OBJS-EXAMPLES-RPC-SERVER)
+	$(CCC) $(OBJS-UTILS) $(OBJS-CPPL) $(OBJS-STREAM) $(OBJS-COMM) $(OBJS-RPC) $(OBJS-EXAMPLES-RPC-SERVER)  -o ./rpc_server $(LIBS) $(LDFLAGS)
 		
 #tells how to make an *.o object file from an *.c file
 %.o: %.cpp
@@ -82,6 +85,7 @@ examples-rpc-server: utils cppl stream rpc $(OBJS-EXAMPLES-RPC-SERVER)
 clean::
 	rm -f *.o
 	rm -f rpc/*.o
+	rm -f comm/*.o
 	rm -f utils/*.o
 	rm -f utils/platform/*.o
 	rm -f cppl/*.o

@@ -32,7 +32,6 @@ namespace San2
 			bool registerFunction(std::function<CIRpcFunction* (void)> createFunction);
 			RpcError executeFunction(unsigned int uniqueId, const San2::Utils::bytes &in);
 			
-		protected:
 			// destructor must be virtual!
 			virtual ~CRpcExecutor(){ /* intentionally empty */ };
 		

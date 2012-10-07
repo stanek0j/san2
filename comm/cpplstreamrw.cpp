@@ -2,6 +2,8 @@
 #include <algorithm>
 #include "cpplstreamrw.hpp"
 
+namespace San2 { namespace Comm {
+
 CpplStreamRW::CpplStreamRW(const unsigned int maxSingleReadSize, San2::Cppl::BufferProcessor *bp) :
 	San2::Stream::CIStreamRW(maxSingleReadSize),
 	m_bp(bp),
@@ -31,3 +33,5 @@ int CpplStreamRW::writeSome(San2::Utils::bytes::const_iterator first, San2::Util
 		return dataSize;
 	else return -1;
 }
+
+}} // ns

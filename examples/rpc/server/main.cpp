@@ -29,7 +29,7 @@
 
 San2::Cppl::AbstractReceiver* createAbstractReceiver()
 {
-	return new San2::Cppl::ServerReceiver();
+	return new ServerReceiver();
 }
 
 San2::Cppl::PipeServer ps(SRV_PIPENAME, createAbstractReceiver, TIMEOUT_CON, TIMEOUT_RX, TIMEOUT_TX);
@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
 {
 	
 	ps.start();
-
+/*
   #ifdef LINUX
     // Testing server termination
 	  memset(&act, 0, sizeof(act));
@@ -62,7 +62,7 @@ int main(int argc, char *argv[])
     sigaction(SIGALRM, &act, NULL);
 	  alarm(SRV_TERMINATE_SEC);
   #endif
-
+*/
 	ps.join();
 	printf("returned: %d\n", errorCodeToInt(ps.getErrorCode()));	
 	return 0;
