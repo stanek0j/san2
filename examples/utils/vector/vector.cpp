@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
 	San2::Utils::bytes result = vec1 + vec2;
 	result += vec3;
 	
-	San2::Utils::printBytesAsString(result);
+	San2::Utils::bytes::printBytesAsString(result);
 	
     printf("\n");
     return 0;

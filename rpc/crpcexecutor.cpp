@@ -1,7 +1,6 @@
 
 #include <utility>
 #include "crpcexecutor.hpp"
-#include "rpcerror.hpp"
 
 namespace San2
 {

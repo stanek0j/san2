@@ -179,45 +179,45 @@ namespace San2
 					copy(rhs.begin(), rhs.end(), this->begin());
 					return *this;
 				}    
-		};
-		
-		CVector<unsigned char> array2bytes(const unsigned char *in, int len)
-		{
-			CVector<unsigned char> ret;
-			ret.resize(len);
-			copy(in, in + len, ret.begin());
-			return ret;
-		}
-		
-		// returns without \0
-		CVector<unsigned char> string2bytes(const char *str)
-		{
-			CVector<unsigned char> out;
-			out.resize(strlen(str)); // important, otherwise SIGSEGV
-			copy(str, str + strlen(str), out.begin());
-			return out;
-		}
-		
-		void printBytes(const CVector<unsigned char> &in)
-		{
-			CVector<unsigned char>::const_iterator from = in.begin();
-			CVector<unsigned char>::const_iterator to = in.end();
-			for ( ; from!=to; ++from ) printf("%02X", *from);
-		}
+				
+				static CVector<unsigned char> array2bytes(const unsigned char *in, int len)
+				{
+					CVector<unsigned char> ret;
+					ret.resize(len);
+					copy(in, in + len, ret.begin());
+					return ret;
+				}
+				
+				// returns without \0
+				static CVector<unsigned char> string2bytes(const char *str)
+				{
+					CVector<unsigned char> out;
+					out.resize(strlen(str)); // important, otherwise SIGSEGV
+					copy(str, str + strlen(str), out.begin());
+					return out;
+				}
+				
+				static void printBytes(const CVector<unsigned char> &in)
+				{
+					CVector<unsigned char>::const_iterator from = in.begin();
+					CVector<unsigned char>::const_iterator to = in.end();
+					for ( ; from!=to; ++from ) printf("%02X", *from);
+				}
 
-		void printBytesAsString(const CVector<unsigned char> &in)
-		{
-			std::vector<unsigned char>::const_iterator from = in.begin();
-			std::vector<unsigned char>::const_iterator to = in.end();
-			for ( ; from!=to; ++from ) printf("%c", *from);
-		}
-		
-		std::string WStringToString(std::wstring &s)
-		{
-			std::string temp(s.length(), ' ');
-			std::copy(s.begin(), s.end(), temp.begin());
-			return temp; 
-		}
+				static void printBytesAsString(const CVector<unsigned char> &in)
+				{
+					std::vector<unsigned char>::const_iterator from = in.begin();
+					std::vector<unsigned char>::const_iterator to = in.end();
+					for ( ; from!=to; ++from ) printf("%c", *from);
+				}
+				
+				static std::string WStringToString(std::wstring &s)
+				{
+					std::string temp(s.length(), ' ');
+					std::copy(s.begin(), s.end(), temp.begin());
+					return temp; 
+				}
+		};
 		
 		typedef San2::Utils::CVector<unsigned char> bytes;
 	}

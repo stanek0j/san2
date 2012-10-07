@@ -16,15 +16,15 @@ OBJS-CPPL = cppl/helper.o \
 
 OBJS-NETWORK = network/ccapsule.o
 
-OBJS-RPC = rpc/cirpcfunction.o \
-		   rpc/cirpcchannel.o \
+OBJS-RPC = rpc/cirpcchannel.o \
 		   rpc/crpcexecutor.o
 
 OBJS-EXAMPLES-UTILS-PRODUCERCONSUMER = examples/utils/producerconsumer/pctest.o
 
 OBJS-EXAMPLES-UTILS-VECTOR = examples/utils/vector/vector.o
 
-OBJS-STREAM = stream/cistreamrw.o
+OBJS-STREAM = stream/cistreamrw.o \
+			  stream/clenvalueseparator.o
 
 OBJS-EXAMPLES-CPPL-SERVER = examples/cppl/server/server.o \
 							examples/cppl/server/serverreceiver.o
@@ -36,7 +36,8 @@ OBJS-EXAMPLES-CPPL-TERMINAL = examples/cppl/terminal/terminal.o \
 							examples/cppl/terminal/terminalreceiver.o
 
 OBJS-EXAMPLES-RPC-SERVER = examples/rpc/server/cpplstreamrw.o \
-						   examples/rpc/server/rpcchannel.o
+						   examples/rpc/server/rpcchannel.o \
+						   examples/rpc/server/x.o \
 
 all:: components examples
 

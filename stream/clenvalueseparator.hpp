@@ -2,6 +2,7 @@
 #pragma once
 
 #include <iterator>
+#include "cistreamrw.hpp"
 #include "cimessageseparator.hpp"
 #include "utils/platform/basictypes.hpp"
 
@@ -17,7 +18,7 @@ namespace San2
 		class CLenValueSeparator : public CIMessageSeparator
 		{
 		public:
-			CLenValueSeparator(CIStreamRW &rw);
+			CLenValueSeparator(CIStreamRW& rw);
 			virtual ~CLenValueSeparator();			
 			bool readMessage(San2::Utils::bytes &out);
 			bool writeMessage(const San2::Utils::bytes& in);
@@ -25,7 +26,7 @@ namespace San2
 			// another msvc fix
 		    #ifdef LINUX
 			    CLenValueSeparator(const CLenValueSeparator& copyFromMe)=delete;
-			    CLenValueSeparator& operator=(const CLenValueSeparator& copyFromMe)=delete;
+			    // CLenValueSeparator& operator=(const CLenValueSeparator& copyFromMe)=delete;
 		    #endif
 		protected:
 			CIStreamRW &m_rw;

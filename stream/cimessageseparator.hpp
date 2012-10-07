@@ -23,8 +23,8 @@ namespace San2
 			
 			// another msvc fix
 		    #ifdef LINUX
-			    CIMessageSeparator(const CIMessageSeparator& copyFromMe)=delete;
-			    CIMessageSeparator& operator=(const CIMessageSeparator& copyFromMe)=delete;
+			    //CIMessageSeparator(const CIMessageSeparator& copyFromMe)=delete;
+			    //CIMessageSeparator& operator=(const CIMessageSeparator& copyFromMe)=delete;
 		    #endif
 		};
 	}
