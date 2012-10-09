@@ -1,32 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="..\..\cppl\abstractclientreceiver.cpp" />
     <ClCompile Include="..\..\cppl\abstractreceiver.cpp" />
-    <ClCompile Include="..\..\cppl\abstractserverreceiver.cpp" />
     <ClCompile Include="..\..\cppl\bufferprocessor.cpp" />
-    <ClCompile Include="..\..\cppl\client.cpp" />
-    <ClCompile Include="..\..\cppl\clientreceiver.cpp" />
     <ClCompile Include="..\..\cppl\helper.cpp" />
     <ClCompile Include="..\..\cppl\pipeclient.cpp" />
     <ClCompile Include="..\..\cppl\pipechannel.cpp" />
     <ClCompile Include="..\..\cppl\pipeserver.cpp" />
-    <ClCompile Include="..\..\cppl\server.cpp" />
-    <ClCompile Include="..\..\cppl\serverreceiver.cpp" />
-    <ClCompile Include="..\..\cppl\terminal.cpp" />
-    <ClCompile Include="..\..\cppl\terminalreceiver.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\cppl\abstractclientreceiver.hpp" />
     <ClInclude Include="..\..\cppl\abstractreceiver.hpp" />
-    <ClInclude Include="..\..\cppl\abstractserverreceiver.hpp" />
     <ClInclude Include="..\..\cppl\bufferprocessor.hpp" />
-    <ClInclude Include="..\..\cppl\clientreceiver.hpp" />
     <ClInclude Include="..\..\cppl\helper.hpp" />
     <ClInclude Include="..\..\cppl\pipeclient.hpp" />
     <ClInclude Include="..\..\cppl\pipechannel.hpp" />
     <ClInclude Include="..\..\cppl\pipeserver.hpp" />
-    <ClInclude Include="..\..\cppl\serverreceiver.hpp" />
-    <ClInclude Include="..\..\cppl\terminalreceiver.hpp" />
   </ItemGroup>
 </Project>
