@@ -31,6 +31,7 @@ ServerReceiver::~ServerReceiver()
 
 San2::Cppl::ErrorCode ServerReceiver::run()
 {
+    printf("ServerReceiver::run()\n");
 	San2::Cppl::BufferProcessor *bp = getBufferProcessor();
 	m_rpcChannel = new San2::Comm::CpplRpcChannel(bp);
 	m_rpcexec = new San2::Rpc::CRpcExecutor(*m_rpcChannel, 5000);

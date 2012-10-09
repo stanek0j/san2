@@ -13,6 +13,7 @@ namespace San2
 		{	
 		public:	
 			CpplStreamRW(const unsigned int maxSingleReadSize, San2::Cppl::BufferProcessor *bp);
+            virtual ~CpplStreamRW();
 			// WARNING: data MUST be APPENDED at the END of vector!!!
 			// this is a performance enhancement
 			// PARAMETERS: data - read bytes will be appended at the end of vector
@@ -26,6 +27,7 @@ namespace San2
 		private:
 			San2::Cppl::BufferProcessor *m_bp;
 			const unsigned int m_maxSingleReadSize;
+            char *rsapBuffer; // this stupid thing is there because MSVC does not support variable length array
 		};
 	}
 }

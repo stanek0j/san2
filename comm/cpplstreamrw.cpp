@@ -9,30 +9,38 @@ CpplStreamRW::CpplStreamRW(const unsigned int maxSingleReadSize, San2::Cppl::Buf
 	m_bp(bp),
 	m_maxSingleReadSize(maxSingleReadSize)
 {
-	
+    // No, this is a msvc fix. (MSVC does not support variable length arrays)
+	rsapBuffer = (char *) malloc(sizeof(char) * m_maxSingleReadSize);
+}
+
+CpplStreamRW::~CpplStreamRW()
+{
+    // No, this is a msvc fix. (MSVC does not support variable length arrays)
+    if (rsapBuffer != NULL) free(rsapBuffer);
 }
 
 // It is guaranteed by base interface class that (maxCount <= maxSingleReadSize)
 int CpplStreamRW::readSomeAppend(San2::Utils::bytes &data, unsigned int maxCount)
 {
 	unsigned int bytesRead;
-	char buffer[m_maxSingleReadSize];
-	printf("CpplStreamRW::readSomeAppend: maxCount:%d\n", maxCount);
-	San2::Cppl::ErrorCode ret = m_bp->readSome(buffer, maxCount, &bytesRead); // Very ugly maxCount
-	printf("==========>>>>>>>>>after\n");
+    
+	//printf("CpplStreamRW::readSomeAppend: maxCount:%d\n", maxCount);
+	San2::Cppl::ErrorCode ret = m_bp->readSome(rsapBuffer, maxCount, &bytesRead); // Very ugly maxCount
 	
 	if (ret != San2::Cppl::ErrorCode::SUCCESS)
 	{ 
+        // TODO: logger
 		printf("FAIL: CpplStreamRW::readSomeAppend::1::::errcode:%d\n", San2::Cppl::errorCodeToInt(ret));
 		return -1;
 	}
 	if (bytesRead <= 0)
 	{ 
+        // TODO: logger
 		printf("FAIL: CpplStreamRW::readSomeAppend::2\n");
 		return -1;
 	}
 	
-	std::copy(buffer, buffer + bytesRead, std::back_inserter(data)); // append
+	std::copy(rsapBuffer, rsapBuffer + bytesRead, std::back_inserter(data)); // append
 	return bytesRead;
 }
 
