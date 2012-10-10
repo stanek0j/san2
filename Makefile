@@ -5,7 +5,8 @@ LDFLAGS = -pthread
 LIBS = -lpthread
 
 OBJS-UTILS = utils/cthread.o \
-			 utils/platform/sleep.o
+			 utils/platform/sleep.o \
+			 utils/cdatapack.o
 
 OBJS-CPPL = cppl/helper.o \
             cppl/pipeclient.o \
@@ -45,7 +46,7 @@ OBJS-EXAMPLES-RPC-SERVER = examples/rpc/server/main.o \
 OBJS-EXAMPLES-RPC-CLIENT = examples/rpc/client/main.o \
 						   examples/rpc/client/clientreceiver.o
 						   
-OBJS-TEST-FUNC = examples/rpc/testfunc.o
+OBJS-TEST-FUNC = examples/rpc/testfunc.o examples/rpc/multiply.o
 
 all:: components examples
 

@@ -40,6 +40,10 @@ San2::Cppl::ErrorCode ServerReceiver::run()
 	if (ret) printf("reg success\n");
 	else printf("reg fail\n");
 	
+	ret = m_rpcexec->registerFunction([](){return new Multiply();});
+	if (ret) printf("reg success\n");
+	else printf("reg fail\n");
+	
 	m_rpcexec->run();
 
 	printf("client exit\n");

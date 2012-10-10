@@ -5,6 +5,7 @@
 #include "comm/cpplrpcchannel.hpp"
 #include "rpc/crpcexecutor.hpp"
 #include "examples/rpc/testfunc.hpp"
+#include "examples/rpc/multiply.hpp"
 
 class ClientReceiver : public San2::Cppl::AbstractReceiver
 {
