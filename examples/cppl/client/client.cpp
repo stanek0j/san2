@@ -12,13 +12,6 @@
 	#include <windows.h>
 #endif
 
-#include "cppl/pipeclient.hpp"
-#include "cppl/pipeserver.hpp"
-#include "cppl/pipechannel.hpp"
-#include "cppl/abstractreceiver.hpp"
-
-#include "clientreceiver.hpp"
-
 #define CLI_TIM_CON 20000
 #define CLI_TIM_RX   5000
 #define CLI_TIM_TX   5000
@@ -32,6 +25,45 @@
 
 #define CLI_SLEEP
 #define CLI_SLEEP_MSEC 2000
+
+#include "cppl/pipeclient.hpp"
+
+class CClient : public San2::Cppl::PipeClient
+{
+  public:
+	CClient(const char *pipeName, unsigned int timCON, unsigned int timRX, unsigned int timTX) :
+		San2::Cppl::PipeClient(pipeName, timCON, timRX, timTX)
+	{
+		
+	}
+	
+	virtual ~CClient(){};
+	
+	San2::Cppl::ErrorCode receive()
+	{
+		unsigned int bytesRead;
+		const unsigned int dataSize = 512;
+		char data[dataSize];
+
+		while(readSome(data, dataSize, &bytesRead) == San2::Cppl::ErrorCode::SUCCESS)
+		{
+			fwrite(data, 1, bytesRead, stdout);
+			fflush(stdout);
+		}
+		printf("Client exit\n");
+		return San2::Cppl::ErrorCode::SUCCESS;	
+		
+	}
+	
+  private:
+	 // another msvc fix
+	#ifdef LINUX
+		CClient(const CClient& copyFromMe)=delete;
+		CClient& operator=(const CClient& copyFromMe)=delete;
+	#endif
+};
+
+
 
 int main(int argc, char *argv[])
 {
@@ -57,8 +89,10 @@ int main(int argc, char *argv[])
 	#endif
 	
 	
-	San2::Cppl::PipeClient pc(CLI_PIPENAME, [](){return new San2::Cppl::ClientReceiver();}, CLI_TIM_CON, CLI_TIM_RX, CLI_TIM_TX);
+	CClient pc(CLI_PIPENAME, CLI_TIM_CON, CLI_TIM_RX, CLI_TIM_TX);
+	
 	San2::Cppl::ErrorCode rval = pc.open();
+	
 	if (rval != San2::Cppl::ErrorCode::SUCCESS)
 	{
 		 printf("open() failed errcode: %d\n", San2::Cppl::errorCodeToInt(rval));

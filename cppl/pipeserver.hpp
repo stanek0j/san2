@@ -16,16 +16,18 @@
 #include "utils/cthread.hpp"
 #include "utils/cthreadmanager.hpp"
 #include "helper.hpp"
-#include "abstractreceiver.hpp"
+#include "pipechannel.hpp"
 
 namespace San2 
 {	
 	namespace Cppl
 	{
+		class PipeChannel;
+		
 		class PipeServer : public San2::Utils::CThread
 		{
 			public:
-				PipeServer(const char *pipeName, std::function<AbstractReceiver* (void)> createAbstractReceiverProc, unsigned int timCON, unsigned int timRX, unsigned int timTX);
+				PipeServer(const char *pipeName, std::function<PipeChannel* (CPPL_PIPETYPE, unsigned int, unsigned int)> proc, unsigned int timCON, unsigned int timRX, unsigned int timTX);
 				ErrorCode getErrorCode();
 				
 			protected:
@@ -36,7 +38,7 @@ namespace San2
 			private:
 				San2::Utils::CThreadManager manager;
 				const char *pipename;
-				std::function<AbstractReceiver* (void)> mCreateAbstractReceiverProc;
+				std::function<PipeChannel* (CPPL_PIPETYPE, unsigned int, unsigned int)> m_proc;
 				unsigned int mTimCON, mTimRX, mTimTX;
 				ErrorCode errcode;
 

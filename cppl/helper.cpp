@@ -13,7 +13,6 @@
 #endif
 
 #include "helper.hpp"
-#include "abstractreceiver.hpp"
 
 namespace San2 { namespace Cppl {
 	

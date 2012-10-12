@@ -8,6 +8,16 @@
 	#include <windows.h>
 #endif
 
+
+#ifdef LINUX
+	#define CPPL_PIPETYPE int
+#endif
+
+#ifdef WINDOWS
+	#define CPPL_PIPETYPE HANDLE
+#endif
+
+
 #include "utils/cthread.hpp"
 
 #define CPPL_SUCCESS 0

@@ -25,7 +25,7 @@ namespace San2 { namespace Cppl {
 	
 		PipeChannel::~PipeChannel()
 		{
-			delete absReceiver; // is it safe?
+			// empty
 		}
 		
 		ErrorCode PipeChannel::getErrorCode()
@@ -34,20 +34,19 @@ namespace San2 { namespace Cppl {
 		}
 	
 	#ifdef LINUX
-		PipeChannel::PipeChannel(int sockt, std::function<AbstractReceiver* (void)> createAbstractReceiverProc, unsigned int timRX, unsigned int timTX) :
+		PipeChannel::PipeChannel(int sockt, unsigned int timRX, unsigned int timTX) :
 			sock(sockt),
-			absReceiver(createAbstractReceiverProc()), // ugly: no error checking (excpetion new)
 			mTimRX(timRX),
 			mTimTX(timTX),
             errcode(ErrorCode::SUCCESS)
 		{
-			absReceiver->m_bp = this;
+			
 		}
 		
 		// call this only once
 		void PipeChannel::run()
 		{
-			errcode = absReceiver->run();    
+			errcode = receive();
 			close(sock);
 			sock = -1;
 		}
@@ -65,22 +64,19 @@ namespace San2 { namespace Cppl {
 	#endif
 
 	#ifdef WINDOWS
-		PipeChannel::PipeChannel(HANDLE handlePipe, std::function<AbstractReceiver* (void)> createAbstractReceiverProc, unsigned int timRX, unsigned int timTX) :
+		PipeChannel::PipeChannel(HANDLE handlePipe, unsigned int timRX, unsigned int timTX) :
 			hPipe(handlePipe),
-			absReceiver(createAbstractReceiverProc()), // ugly: no error checking
 			mTimRX(timRX),
 			mTimTX(timTX),
             errcode(ErrorCode::SUCCESS)
 		{
-			absReceiver->m_bp = this;
-			// Error checking performed in send()
+			
 		}
-
 
 		// TODO: SetCommTimeouts() for isTerminated(), thread termination missing
 		void PipeChannel::run()
 		{	
-            errcode = absReceiver->run();
+            errcode = receive();
             CloseHandle(hPipe);
             hPipe = INVALID_HANDLE_VALUE;
 		}

@@ -12,7 +12,6 @@ OBJS-CPPL = cppl/helper.o \
             cppl/pipeclient.o \
             cppl/pipeserver.o \
             cppl/pipechannel.o \
-            cppl/abstractreceiver.o \
             cppl/bufferprocessor.o
 
 OBJS-NETWORK = network/ccapsule.o
@@ -39,19 +38,18 @@ OBJS-TCP =  tcp/ctcpserver.o \
 
 
 OBJS-EXAMPLES-CPPL-SERVER = examples/cppl/server/server.o \
-							examples/cppl/server/serverreceiver.o
+							examples/cppl/server/cchannel.o
 					 
-OBJS-EXAMPLES-CPPL-CLIENT = examples/cppl/client/client.o \
-							examples/cppl/client/clientreceiver.o
+OBJS-EXAMPLES-CPPL-CLIENT = examples/cppl/client/client.o
 							
 OBJS-EXAMPLES-CPPL-TERMINAL = examples/cppl/terminal/terminal.o \
-							examples/cppl/terminal/terminalreceiver.o
+				examples/cppl/terminal/terminalreceiver.o
 
 OBJS-EXAMPLES-RPC-SERVER = examples/rpc/server/main.o \
 						   examples/rpc/server/serverreceiver.o
 
 OBJS-EXAMPLES-RPC-CLIENT = examples/rpc/client/main.o \
-						   examples/rpc/client/clientreceiver.o
+						   examples/rpc/server/clientreceiver.o
 						   
 OBJS-TEST-FUNC = examples/rpc/testfunc.o examples/rpc/multiply.o
 

@@ -18,33 +18,30 @@
 #include "bufferprocessor.hpp"
 #include "utils/cthread.hpp"
 #include "helper.hpp"
-#include "abstractreceiver.hpp"
 
 namespace San2 
 {
 	namespace Cppl
 	{
-		class AbstractReceiver;
-		
 		class PipeClient : public BufferProcessor
 		{
 			public:
-				PipeClient(const char *pipeName, std::function<AbstractReceiver* (void)> createAbstractReceiverProc, unsigned int timCON, unsigned int timRX, unsigned int timTX);
-				~PipeClient();
+				PipeClient(const char *pipeName, unsigned int timCON, unsigned int timRX, unsigned int timTX);
+				virtual ~PipeClient();
+				virtual ErrorCode receive()=0;
+				
 				ErrorCode open();
 				ErrorCode send(char *data, int len);
 				ErrorCode getErrorCode();
 				
 			protected:
 				void run();
-				ErrorCode runProc();
 				
 			private:
 				// Yes, read() MUST be private, only BufferProcessor class can call it!!!!
 				ErrorCode read(char *data, unsigned int dataSize, unsigned int *bytesRead);
 
 				const char *pipename;
-				AbstractReceiver *absReceiver;
 
 			#ifdef LINUX
 				int sock;

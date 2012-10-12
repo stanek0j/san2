@@ -20,17 +20,13 @@
 
 #include "pipeclient.hpp"
 #include "helper.hpp"
-#include "abstractreceiver.hpp"
 
 #define CPPL_PIPECLI_RXBUFSIZE 1500
 #define CPPL_PIPECLI_WIN_MAXFNAMEBYTES 512
 
 namespace San2 { namespace Cppl {	
 
-    void PipeClient::run()
-    {
-        errcode = runProc();
-    }
+
 
 	ErrorCode PipeClient::getErrorCode()
 	{
@@ -39,15 +35,14 @@ namespace San2 { namespace Cppl {
 
 	#ifdef LINUX
 	
-	PipeClient::PipeClient(const char *pipeName, std::function<AbstractReceiver* (void)> createAbstractReceiverProc, unsigned int timCON, unsigned int timRX, unsigned int timTX) :
+	PipeClient::PipeClient(const char *pipeName, unsigned int timCON, unsigned int timRX, unsigned int timTX) :
 		pipename(pipeName),
-		absReceiver(createAbstractReceiverProc()), // ugly: no error checking (excpetion new)
 		mTimCON(timCON),
 		mTimRX(timRX),
 		mTimTX(timTX),
         errcode(ErrorCode::SUCCESS)
 	{
-		absReceiver->m_bp = this;
+		
 	}
 
 	PipeClient::~PipeClient()
@@ -55,13 +50,12 @@ namespace San2 { namespace Cppl {
 	    // empty
 	}
 
-    ErrorCode PipeClient::runProc()
-	{
-	   ErrorCode rval = absReceiver->run();    
-	   close(sock);
-	   sock = -1;
-	   return rval;
-	}
+    void PipeClient::run()
+    {
+        errcode = receive();
+        close(sock);
+		sock = -1;
+    }
 
 	// TODO: socket closing in open() and receive(), add cleanup() and destructor again
 	ErrorCode PipeClient::open()
@@ -100,16 +94,15 @@ namespace San2 { namespace Cppl {
 
 	#ifdef WINDOWS
 	
-	PipeClient::PipeClient(const char *pipeName, std::function<AbstractReceiver* (void)> createAbstractReceiverProc, unsigned int timCON, unsigned int timRX, unsigned int timTX) :
+	PipeClient::PipeClient(const char *pipeName, unsigned int timCON, unsigned int timRX, unsigned int timTX) :
 		pipename(pipeName),
-		absReceiver(createAbstractReceiverProc()), // ugly: no error checking (excpetion new)
 		mTimCON(timCON),
 		mTimRX(timRX),
 		mTimTX(timTX),
 		hPipe(INVALID_HANDLE_VALUE),
         errcode(ErrorCode::SUCCESS)
 	{
-	   absReceiver->m_bp = this;
+	   
 	}
 
 	PipeClient::~PipeClient()
@@ -189,13 +182,13 @@ namespace San2 { namespace Cppl {
 	   return ErrorCode::SUCCESS;
 	}
 
-    ErrorCode PipeClient::runProc()
-	{
-	   ErrorCode rval = absReceiver->run();    
-       CloseHandle(hPipe);
-       hPipe = INVALID_HANDLE_VALUE;
-	   return rval;
-	}
+	
+	void PipeClient::run()
+    {
+        errcode = receive();
+        CloseHandle(hPipe);
+		hPipe = INVALID_HANDLE_VALUE;
+    }
 
 	ErrorCode PipeClient::send(char *data, int len)
 	{	
