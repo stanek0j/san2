@@ -5,7 +5,7 @@
 #define CTCP_MAXCONNQUEUE 10
 
 namespace San2 { namespace Tcp {
-	CTcpServer::CTcpServer(const char *ip, const char *port, std::function<CITcpReceiver* (void)> proc, unsigned int timCON, unsigned int timRX, unsigned int timTX):
+	CTcpServer::CTcpServer(const char *ip, const char *port, std::function<CTcpChannel* (SNET_SOCKTYPE, unsigned long, unsigned int, unsigned int)> proc, unsigned int timCON, unsigned int timRX, unsigned int timTX):
 		m_ip(ip),
 		m_port(port),
 		m_proc(proc),
@@ -142,7 +142,7 @@ namespace San2 { namespace Tcp {
 				
 			unsigned long ipa = ((struct sockaddr_in) remoteAddress).sin_addr.s_addr;
 				
-			manager.startThread<CTcpChannel>([=](){return new CTcpChannel(acceptSocket, m_proc, ipa, mTimRX, mTimTX);});
+			manager.startThread<CTcpChannel>([=](){return m_proc(acceptSocket, ipa, mTimRX, mTimTX);});
 		}
 		
 		return TcpErrorCode::SUCCESS;

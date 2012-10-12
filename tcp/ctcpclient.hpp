@@ -7,22 +7,19 @@
 #include <functional>
 #include <string>
 
-#include "citcpbuffer.hpp"
 #include "utils/cthread.hpp"
-#include "citcpreceiver.hpp"
 #include "network/sockdefs.h"
 #include "tcphelper.hpp"
+#include "citcpbuffer.hpp"
 
 namespace San2 
 {
 	namespace Tcp
-	{
-		class CITcpReciver;
-		
+	{	
 		class CTcpClient : public CITcpBuffer
 		{
 			public:
-				CTcpClient(const char *ip, const char *port, std::function<CITcpReceiver* (void)> proc, unsigned int timCON, unsigned int timRX, unsigned int timTX);
+				CTcpClient(const char *ip, const char *port, unsigned int timCON, unsigned int timRX, unsigned int timTX);
 				~CTcpClient();
 				TcpErrorCode open();
 				TcpErrorCode send(char *data, int len);
@@ -30,6 +27,7 @@ namespace San2
 				
 			protected:
 				void run();
+				virtual TcpErrorCode receive()=0;
 				TcpErrorCode runProc();
 				
 			private:
@@ -38,7 +36,6 @@ namespace San2
 				const char *m_ip;
 				const char *m_port;
 				
-				CITcpReceiver *absReceiver;
 				unsigned int mTimCON, mTimRX, mTimTX;
 				TcpErrorCode errcode;
 				SNET_SOCKTYPE m_sock;

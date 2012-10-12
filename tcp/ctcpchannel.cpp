@@ -26,7 +26,7 @@ namespace San2 { namespace Tcp {
 	
 		CTcpChannel::~CTcpChannel()
 		{
-			delete absReceiver; // is it safe?
+			// empty
 		}
 		
 		TcpErrorCode CTcpChannel::getErrorCode()
@@ -34,19 +34,18 @@ namespace San2 { namespace Tcp {
 			return errcode;
 		}
 	
-		CTcpChannel::CTcpChannel(SNET_SOCKTYPE sock, std::function<CITcpReceiver* (void)> createAbstractReceiverProc, unsigned long s_addr, unsigned int timRX, unsigned int timTX) :
+		CTcpChannel::CTcpChannel(SNET_SOCKTYPE sock, unsigned long s_addr, unsigned int timRX, unsigned int timTX) :
 			m_sock(sock),
-			absReceiver(createAbstractReceiverProc()), // ugly: no error checking (excpetion new)
 			m_timRX(timRX),
 			m_timTX(timTX),
             errcode(TcpErrorCode::SUCCESS)
 		{
-			absReceiver->m_bp = this;
+			
 		}
 		
 		void CTcpChannel::run()
 		{
-			errcode = absReceiver->run();    
+			errcode = receive();    
 			SNET_SOCKCLOSE(m_sock);
 			m_sock = SNET_BADSOCKET;
 		}

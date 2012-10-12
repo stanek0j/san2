@@ -28,13 +28,14 @@ OBJS-STREAM = stream/cistreamrw.o \
 			  stream/clenvalueseparator.o
 			  
 OBJS-COMM = comm/cpplrpcchannel.o \
-			comm/cpplstreamrw.o
+			comm/cpplstreamrw.o \
+			comm/tcprpcchannel.o \
+			comm/tcpstreamrw.o
 
-OBJS-TCP =  tcp/ctcpserver.o \
-			tcp/ctcpchannel.o \
-			tcp/citcpreceiver.o \
+OBJS-TCP =  tcp/ctcpchannel.o \
 			tcp/ctcpclient.o \
-			tcp/tcphelper.o
+			tcp/tcphelper.o \
+			tcp/ctcpserver.o
 
 
 OBJS-EXAMPLES-CPPL-SERVER = examples/cppl/server/server.o \
@@ -69,7 +70,7 @@ examples: examples-utils examples-cppl examples-rpc
 
 examples-utils: examples-utils-producerconsumer examples-utils-vector
 examples-cppl: examples-cppl-server examples-cppl-client examples-cppl-terminal
-examples-rpc: examples-rpc-server examples-rpc-client
+examples-rpc: examples-rpc-server examples-rpc-client examples-rpc-tcpserver examples-rpc-tcpclient
 
 examples-utils-producerconsumer: utils $(OBJS-EXAMPLES-UTILS-PRODUCERCONSUMER)
 	$(CCC) $(OBJS-EXAMPLES-UTILS-PRODUCERCONSUMER) $(OBJS-UTILS) -o ./producerconsumer $(LIBS) $(LDFLAGS)
@@ -91,6 +92,13 @@ examples-rpc-server: utils cppl stream comm rpc $(OBJS-EXAMPLES-RPC-SERVER) $(OB
 		
 examples-rpc-client: utils cppl stream comm rpc $(OBJS-EXAMPLES-RPC-CLIENT) $(OBJS-TEST-FUNC)
 	$(CCC) $(OBJS-UTILS) $(OBJS-CPPL) $(OBJS-STREAM) $(OBJS-COMM) $(OBJS-RPC) $(OBJS-EXAMPLES-RPC-CLIENT) $(OBJS-TEST-FUNC)  -o ./rpc_client $(LIBS) $(LDFLAGS)
+	
+examples-rpc-tcpserver: utils tcp stream comm rpc $(OBJS-EXAMPLES-RPC-SERVER) $(OBJS-TEST-FUNC)
+	$(CCC) $(OBJS-UTILS) $(OBJS-TCP) $(OBJS-STREAM) $(OBJS-COMM) $(OBJS-RPC) $(OBJS-EXAMPLES-RPC-SERVER) $(OBJS-TEST-FUNC)  -o ./rpc_server $(LIBS) $(LDFLAGS)
+		
+examples-rpc-tcpclient: utils tcp stream comm rpc $(OBJS-EXAMPLES-RPC-CLIENT) $(OBJS-TEST-FUNC)
+	$(CCC) $(OBJS-UTILS) $(OBJS-TCP) $(OBJS-STREAM) $(OBJS-COMM) $(OBJS-RPC) $(OBJS-EXAMPLES-RPC-CLIENT) $(OBJS-TEST-FUNC)  -o ./rpc_client $(LIBS) $(LDFLAGS)
+	
 
 #tells how to make an *.o object file from an *.c file
 %.o: %.cpp
@@ -115,6 +123,8 @@ clean::
 	rm -f examples/rpc/*.o
 	rm -f examples/rpc/server/*.o
 	rm -f examples/rpc/client/*.o
+	rm -f examples/rpc/tcpserver/*.o
+	rm -f examples/rpc/tcpclient/*.o
 	rm -f cppl_server
 	rm -f cppl_client
 	rm -f utils_vector

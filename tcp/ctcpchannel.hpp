@@ -6,19 +6,22 @@
 #include "tcphelper.hpp"
 #include "network/sockdefs.h"
 #include "network/nettypedef.hpp"
-#include "citcpreceiver.hpp"
+#include "citcpbuffer.hpp"
 
 namespace San2
 {
 	namespace Tcp
 	{
+		class CITcpBuffer;
+		
 		class CTcpChannel : public CITcpBuffer
 		{
 		public:
-			CTcpChannel(SNET_SOCKTYPE sock, std::function<CITcpReceiver* (void)> createAbstractReceiverProc, unsigned long s_addr, unsigned int timRX, unsigned int timTX);
+			CTcpChannel(SNET_SOCKTYPE sock, unsigned long s_addr, unsigned int timRX, unsigned int timTX);
 			virtual ~CTcpChannel();
 		protected:
 			void run();
+			virtual TcpErrorCode receive()=0;
 			TcpErrorCode send(char *data, int len);
 			TcpErrorCode getErrorCode();
 			
@@ -26,7 +29,6 @@ namespace San2
 			TcpErrorCode read(char *data, unsigned int dataSize, unsigned int *bytesRead);
 
 			SNET_SOCKTYPE m_sock;
-			CITcpReceiver* absReceiver;
 			unsigned int m_timRX, m_timTX;
 			TcpErrorCode errcode;
 			

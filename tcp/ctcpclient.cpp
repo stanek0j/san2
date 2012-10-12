@@ -17,17 +17,16 @@ namespace San2 { namespace Tcp {
 		return errcode;
 	}
 	
-	CTcpClient::CTcpClient(const char *ip, const char *port, std::function<CITcpReceiver* (void)> proc, unsigned int timCON, unsigned int timRX, unsigned int timTX) :
+	CTcpClient::CTcpClient(const char *ip, const char *port, unsigned int timCON, unsigned int timRX, unsigned int timTX) :
 		m_ip(ip),
 		m_port(port),
-		absReceiver(proc()), // ugly: no error checking (excpetion new)
 		mTimCON(timCON),
 		mTimRX(timRX),
 		mTimTX(timTX),
         errcode(TcpErrorCode::SUCCESS),
         m_sock(SNET_BADSOCKET)
 	{
-		absReceiver->m_bp = this;
+		
 	}
 
 	CTcpClient::~CTcpClient()
@@ -37,7 +36,7 @@ namespace San2 { namespace Tcp {
 
     TcpErrorCode CTcpClient::runProc()
 	{
-	   TcpErrorCode rval = absReceiver->run();    
+	   TcpErrorCode rval = receive();    
 	   close(m_sock);
 	   m_sock = SNET_BADSOCKET;
 	   return rval;
