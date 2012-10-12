@@ -35,7 +35,8 @@ OBJS-COMM = comm/cpplrpcchannel.o \
 OBJS-TCP =  tcp/ctcpchannel.o \
 			tcp/ctcpclient.o \
 			tcp/tcphelper.o \
-			tcp/ctcpserver.o
+			tcp/ctcpserver.o \
+			tcp/citcpbuffer.o
 
 
 OBJS-EXAMPLES-CPPL-SERVER = examples/cppl/server/server.o \
@@ -51,6 +52,12 @@ OBJS-EXAMPLES-RPC-SERVER = examples/rpc/server/main.o \
 
 OBJS-EXAMPLES-RPC-CLIENT = examples/rpc/client/main.o \
 						   examples/rpc/client/clientreceiver.o
+
+OBJS-EXAMPLES-RPC-TCPSERVER = examples/rpc/tcpserver/main.o \
+						   examples/rpc/tcpserver/serverreceiver.o
+
+OBJS-EXAMPLES-RPC-TCPCLIENT = examples/rpc/tcpclient/main.o \
+						   examples/rpc/tcpclient/clientreceiver.o
 						   
 OBJS-TEST-FUNC = examples/rpc/testfunc.o examples/rpc/multiply.o
 
@@ -93,11 +100,11 @@ examples-rpc-server: utils cppl stream comm rpc $(OBJS-EXAMPLES-RPC-SERVER) $(OB
 examples-rpc-client: utils cppl stream comm rpc $(OBJS-EXAMPLES-RPC-CLIENT) $(OBJS-TEST-FUNC)
 	$(CCC) $(OBJS-UTILS) $(OBJS-CPPL) $(OBJS-STREAM) $(OBJS-COMM) $(OBJS-RPC) $(OBJS-EXAMPLES-RPC-CLIENT) $(OBJS-TEST-FUNC)  -o ./rpc_client $(LIBS) $(LDFLAGS)
 	
-examples-rpc-tcpserver: utils tcp stream comm rpc $(OBJS-EXAMPLES-RPC-SERVER) $(OBJS-TEST-FUNC)
-	$(CCC) $(OBJS-UTILS) $(OBJS-TCP) $(OBJS-STREAM) $(OBJS-COMM) $(OBJS-RPC) $(OBJS-EXAMPLES-RPC-SERVER) $(OBJS-TEST-FUNC)  -o ./rpc_server $(LIBS) $(LDFLAGS)
+examples-rpc-tcpserver: utils cppl tcp stream comm rpc $(OBJS-EXAMPLES-RPC-TCPSERVER) $(OBJS-TEST-FUNC)
+	$(CCC) $(OBJS-UTILS) $(OBJS-CPPL) $(OBJS-TCP) $(OBJS-STREAM) $(OBJS-COMM) $(OBJS-RPC) $(OBJS-EXAMPLES-RPC-TCPSERVER) $(OBJS-TEST-FUNC)  -o ./tcprpc_server $(LIBS) $(LDFLAGS)
 		
-examples-rpc-tcpclient: utils tcp stream comm rpc $(OBJS-EXAMPLES-RPC-CLIENT) $(OBJS-TEST-FUNC)
-	$(CCC) $(OBJS-UTILS) $(OBJS-TCP) $(OBJS-STREAM) $(OBJS-COMM) $(OBJS-RPC) $(OBJS-EXAMPLES-RPC-CLIENT) $(OBJS-TEST-FUNC)  -o ./rpc_client $(LIBS) $(LDFLAGS)
+examples-rpc-tcpclient: utils cppl tcp stream comm rpc $(OBJS-EXAMPLES-RPC-TCPCLIENT) $(OBJS-TEST-FUNC)
+	$(CCC) $(OBJS-UTILS) $(OBJS-CPPL)  $(OBJS-TCP) $(OBJS-STREAM) $(OBJS-COMM) $(OBJS-RPC) $(OBJS-EXAMPLES-RPC-TCPCLIENT) $(OBJS-TEST-FUNC)  -o ./tcprpc_client $(LIBS) $(LDFLAGS)
 	
 
 #tells how to make an *.o object file from an *.c file

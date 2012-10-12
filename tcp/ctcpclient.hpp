@@ -30,8 +30,9 @@ namespace San2
 				virtual TcpErrorCode receive()=0;
 				TcpErrorCode runProc();
 				
-			private:
 				TcpErrorCode read(char *data, unsigned int dataSize, unsigned int *bytesRead);
+			private:
+				
 				
 				const char *m_ip;
 				const char *m_port;

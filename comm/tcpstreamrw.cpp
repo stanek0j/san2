@@ -28,13 +28,13 @@ int TcpStreamRW::readSomeAppend(San2::Utils::bytes &data, unsigned int maxCount)
 	if (ret != San2::Tcp::TcpErrorCode::SUCCESS)
 	{ 
         // TODO: logger
-		printf("FAIL: CpplStreamRW::readSomeAppend::1::::errcode:%d\n", San2::Tcp::errorCodeToInt(ret));
+		printf("FAIL: TcpStreamRW::readSomeAppend::1::::errcode:%d\n", San2::Tcp::errorCodeToInt(ret));
 		return -1;
 	}
 	if (bytesRead <= 0)
 	{ 
         // TODO: logger
-		printf("FAIL: CpplStreamRW::readSomeAppend::2\n");
+		printf("FAIL: TcpStreamRW::readSomeAppend::2\n");
 		return -1;
 	}
 	

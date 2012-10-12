@@ -23,6 +23,7 @@ namespace San2
 				void run();
 				TcpErrorCode runProc();
 				TcpErrorCode getErrorCode();
+				
 			private:
 				San2::Utils::CThreadManager manager;
 				
