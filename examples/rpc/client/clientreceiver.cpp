@@ -9,26 +9,24 @@
 #endif
 
 #include "clientreceiver.hpp"
-	
-ClientReceiver::ClientReceiver() :
+
+ClientReceiver::ClientReceiver(const char *pipeName, unsigned int timCON, unsigned int timRX, unsigned int timTX) :
+	San2::Cppl::PipeClient(pipeName, timCON, timRX, timTX),
 	m_rpcChannel(NULL),
 	m_rpcexec(NULL)
 {
 	
 }
 
-
 ClientReceiver::~ClientReceiver()
 {
 	if (m_rpcChannel != NULL) delete m_rpcChannel;
 	if (m_rpcexec != NULL) delete m_rpcexec;
 }
-	
 
-San2::Cppl::ErrorCode ClientReceiver::run()
+San2::Cppl::ErrorCode ClientReceiver::receive()
 {
-	San2::Cppl::BufferProcessor *bp = getBufferProcessor();
-	m_rpcChannel = new San2::Comm::CpplRpcChannel(bp);
+	m_rpcChannel = new San2::Comm::CpplRpcChannel(this);
 	m_rpcexec = new San2::Rpc::CRpcExecutor(*m_rpcChannel, 5000);
 	
 	bool ret = m_rpcexec->registerFunction([](){return new TestFunc();});
@@ -54,7 +52,7 @@ San2::Cppl::ErrorCode ClientReceiver::run()
 	const unsigned int dataSize = 512;
 	char data[dataSize];
 
-	while(bp->readSome(data, dataSize, &bytesRead) == San2::Cppl::ErrorCode::SUCCESS)
+	while(readSome(data, dataSize, &bytesRead) == San2::Cppl::ErrorCode::SUCCESS)
 	{
 		fwrite(data, 1, bytesRead, stdout);
 		fflush(stdout);

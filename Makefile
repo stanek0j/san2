@@ -49,7 +49,7 @@ OBJS-EXAMPLES-RPC-SERVER = examples/rpc/server/main.o \
 						   examples/rpc/server/serverreceiver.o
 
 OBJS-EXAMPLES-RPC-CLIENT = examples/rpc/client/main.o \
-						   examples/rpc/server/clientreceiver.o
+						   examples/rpc/client/clientreceiver.o
 						   
 OBJS-TEST-FUNC = examples/rpc/testfunc.o examples/rpc/multiply.o
 

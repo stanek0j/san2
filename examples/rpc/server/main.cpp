@@ -12,7 +12,6 @@
 #include "cppl/pipeclient.hpp"
 #include "cppl/pipeserver.hpp"
 #include "cppl/pipechannel.hpp"
-#include "cppl/abstractreceiver.hpp"
 #include "serverreceiver.hpp"
 
 #define TIMEOUT_CON 5000
@@ -27,12 +26,12 @@
 	#define SRV_PIPENAME "\\\\.\\pipe\\mynamedpipe"
 #endif
 
-San2::Cppl::AbstractReceiver* createAbstractReceiver()
+San2::Cppl::PipeChannel* createPipeChannel(CPPL_PIPETYPE handle, unsigned int timRX, unsigned int timTX)
 {
-	return new ServerReceiver();
+	return new ServerReceiver(handle, timRX, timTX);
 }
 
-San2::Cppl::PipeServer ps(SRV_PIPENAME, createAbstractReceiver, TIMEOUT_CON, TIMEOUT_RX, TIMEOUT_TX);
+San2::Cppl::PipeServer ps(SRV_PIPENAME, createPipeChannel, TIMEOUT_CON, TIMEOUT_RX, TIMEOUT_TX);
 
 /*
 #ifdef LINUX

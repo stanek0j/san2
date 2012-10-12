@@ -1,19 +1,19 @@
 
 #pragma once
 
-#include "cppl/abstractreceiver.hpp"
+#include "cppl/pipeclient.hpp"
 #include "comm/cpplrpcchannel.hpp"
 #include "rpc/crpcexecutor.hpp"
 #include "examples/rpc/testfunc.hpp"
 #include "examples/rpc/multiply.hpp"
 
-class ClientReceiver : public San2::Cppl::AbstractReceiver
+class ClientReceiver : public San2::Cppl::PipeClient
 {
   public:
-	ClientReceiver();
-	San2::Cppl::ErrorCode run();
-  protected:
-	~ClientReceiver();
+	ClientReceiver(const char *pipeName, unsigned int timCON, unsigned int timRX, unsigned int timTX);
+	virtual ~ClientReceiver();
+	San2::Cppl::ErrorCode receive();
+	
   private:
 	 // another msvc fix
 	#ifdef LINUX

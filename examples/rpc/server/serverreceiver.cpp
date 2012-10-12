@@ -16,11 +16,12 @@
 #include "serverreceiver.hpp"
 
 
-ServerReceiver::ServerReceiver() :
+ServerReceiver::ServerReceiver(CPPL_PIPETYPE handle, unsigned int timRX, unsigned int timTX) :
+	San2::Cppl::PipeChannel(handle, timRX, timTX),
 	m_rpcChannel(NULL),
 	m_rpcexec(NULL)
 {
-
+	
 }
 
 ServerReceiver::~ServerReceiver()
@@ -29,11 +30,11 @@ ServerReceiver::~ServerReceiver()
 	if (m_rpcexec != NULL) delete m_rpcexec;
 }
 
-San2::Cppl::ErrorCode ServerReceiver::run()
+San2::Cppl::ErrorCode ServerReceiver::receive()
 {
     printf("ServerReceiver::run()\n");
-	San2::Cppl::BufferProcessor *bp = getBufferProcessor();
-	m_rpcChannel = new San2::Comm::CpplRpcChannel(bp);
+	
+	m_rpcChannel = new San2::Comm::CpplRpcChannel(this);
 	m_rpcexec = new San2::Rpc::CRpcExecutor(*m_rpcChannel, 5000);
 	
 	bool ret = m_rpcexec->registerFunction([](){return new TestFunc();});

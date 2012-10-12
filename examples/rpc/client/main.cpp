@@ -15,8 +15,6 @@
 #include "cppl/pipeclient.hpp"
 #include "cppl/pipeserver.hpp"
 #include "cppl/pipechannel.hpp"
-#include "cppl/abstractreceiver.hpp"
-
 #include "clientreceiver.hpp"
 
 #define CLI_TIM_CON 20000
@@ -43,7 +41,7 @@ int main(int argc, char *argv[])
 	data[2] = 0x00;
 	data[3] = 0x00;
 	*/
-	San2::Cppl::PipeClient pc(CLI_PIPENAME, [](){return new ClientReceiver();}, CLI_TIM_CON, CLI_TIM_RX, CLI_TIM_TX);
+	ClientReceiver pc(CLI_PIPENAME, CLI_TIM_CON, CLI_TIM_RX, CLI_TIM_TX);
 	San2::Cppl::ErrorCode rval = pc.open();
 	if (rval != San2::Cppl::ErrorCode::SUCCESS)
 	{

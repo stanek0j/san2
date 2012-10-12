@@ -1,19 +1,19 @@
 
 #pragma once
-#include "cppl/abstractreceiver.hpp"
+#include "cppl/pipechannel.hpp"
 #include "comm/cpplrpcchannel.hpp"
 #include "rpc/crpcexecutor.hpp"
 #include "examples/rpc/testfunc.hpp"
 #include "examples/rpc/multiply.hpp"
 
-class ServerReceiver : public San2::Cppl::AbstractReceiver
+class ServerReceiver : public San2::Cppl::PipeChannel
 {
   public:
-	ServerReceiver();
-	
+	ServerReceiver(CPPL_PIPETYPE handle, unsigned int timRX, unsigned int timTX);
+	virtual ~ServerReceiver();
   protected:
-	~ServerReceiver();
-	San2::Cppl::ErrorCode run();
+	
+	San2::Cppl::ErrorCode receive();
   private:
 
 	 // another msvc fix
