@@ -30,3 +30,11 @@
     #define SNET_PORTTYPE u_short    
     #define SNET_TIMOTYPE unsigned long
 #endif
+
+// get sockaddr, IPv4 or IPv6:
+inline void *san_get_in_addr(struct sockaddr *sa)
+{
+	// horsi uz to nebude :)
+    if (sa->sa_family == AF_INET) return &(((struct sockaddr_in*)sa)->sin_addr);
+    return &(((struct sockaddr_in6*)sa)->sin6_addr);
+}

@@ -31,6 +31,13 @@ OBJS-STREAM = stream/cistreamrw.o \
 OBJS-COMM = comm/cpplrpcchannel.o \
 			comm/cpplstreamrw.o
 
+OBJS-TCP =  tcp/ctcpserver.o \
+			tcp/ctcpchannel.o \
+			tcp/citcpreceiver.o \
+			tcp/ctcpclient.o \
+			tcp/tcphelper.o
+
+
 OBJS-EXAMPLES-CPPL-SERVER = examples/cppl/server/server.o \
 							examples/cppl/server/serverreceiver.o
 					 
@@ -50,7 +57,7 @@ OBJS-TEST-FUNC = examples/rpc/testfunc.o examples/rpc/multiply.o
 
 all:: components examples
 
-components: utils cppl stream network rpc comm
+components: utils cppl stream network rpc comm tcp
 
 utils: $(OBJS-UTILS)
 cppl: $(OBJS-CPPL)
@@ -58,6 +65,7 @@ stream: $(OBJS-STREAM)
 network: $(OBJS-NETWORK)
 rpc: $(OBJS-RPC)
 comm: $(OBJS-COMM)
+tcp: $(OBJS-TCP)
 
 examples: examples-utils examples-cppl examples-rpc
 
@@ -100,6 +108,7 @@ clean::
 	rm -f cppl/*.o
 	rm -f network/*.o
 	rm -f stream/*.o
+	rm -f tcp/*.o
 	rm -f examples/*.o
 	rm -f examples/utils/*.o
 	rm -f examples/utils/vector/*.o
