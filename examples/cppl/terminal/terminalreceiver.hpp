@@ -1,15 +1,15 @@
 
 #pragma once
 
-#include "cppl/abstractreceiver.hpp"
+#include "cppl/pipeclient.hpp"
 
-class TerminalReceiver : public San2::Cppl::AbstractReceiver
+class TerminalReceiver : public San2::Cppl::PipeClient
 {
   public:
-    TerminalReceiver();
-    San2::Cppl::ErrorCode run();
-  protected:
-    ~TerminalReceiver();
+    TerminalReceiver(const char *pipeName, unsigned int timCON, unsigned int timRX, unsigned int timTX);
+    virtual ~TerminalReceiver();
+    San2::Cppl::ErrorCode receive();
+    
   private:
      // another msvc fix
     #ifdef LINUX

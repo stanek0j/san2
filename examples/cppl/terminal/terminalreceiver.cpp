@@ -4,23 +4,18 @@
 #include "cppl/bufferprocessor.hpp"
 #include "terminalreceiver.hpp"
 
-TerminalReceiver::TerminalReceiver()
+TerminalReceiver::TerminalReceiver(const char *pipeName, unsigned int timCON, unsigned int timRX, unsigned int timTX) :
+	San2::Cppl::PipeClient(pipeName, timCON, timRX, timTX)
 {
 	
 }
 	
-San2::Cppl::ErrorCode TerminalReceiver::run()
+San2::Cppl::ErrorCode TerminalReceiver::receive()
 {
-	San2::Cppl::BufferProcessor *bp = getBufferProcessor();
-
 	unsigned int bytesRead;
 	const unsigned int dataSize = 512;
 	char data[dataSize];
-
-	while(bp->readSome(data, dataSize, &bytesRead) == San2::Cppl::ErrorCode::SUCCESS)
-	{
-		fwrite(data, 1, bytesRead, stdout);
-	}
+	while(readSome(data, dataSize, &bytesRead) == San2::Cppl::ErrorCode::SUCCESS) fwrite(data, 1, bytesRead, stdout);	
 	return San2::Cppl::ErrorCode::SUCCESS;
 }
  

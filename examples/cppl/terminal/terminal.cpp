@@ -13,9 +13,6 @@
 	#include <windows.h>
 #endif
 
-#include "cppl/pipeclient.hpp"
-#include "terminalreceiver.hpp"
-
 #define CLI_TIM_CON 20000
 #define CLI_TIM_RX   5000
 #define CLI_TIM_TX   5000
@@ -29,6 +26,9 @@
 	#define CLI_PIPENAME "\\\\.\\pipe\\mynamedpipe"
 #endif
 
+#include "cppl/pipeclient.hpp"
+#include "terminalreceiver.hpp"
+
 int main(int argc, char *argv[])
 {
 	if (argc != 2)
@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
 	}
 	
 	char line[256];
-	San2::Cppl::PipeClient pc(argv[1], [](){return new TerminalReceiver();}, CLI_TIM_CON, CLI_TIM_RX, CLI_TIM_TX);
+	TerminalReceiver pc(CLI_PIPENAME, CLI_TIM_CON, CLI_TIM_RX, CLI_TIM_TX);
 	San2::Cppl::ErrorCode rval = pc.open();
 	
 	if (rval != San2::Cppl::ErrorCode::SUCCESS) 
