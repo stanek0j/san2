@@ -17,7 +17,7 @@ namespace San2 { namespace Tcp {
 		return errcode;
 	}
 	
-	CTcpClient::CTcpClient(const char *ip, const char *port, unsigned int timCON, unsigned int timRX, unsigned int timTX) :
+	CTcpClient::CTcpClient(const std::string &ip, const std::string &port, unsigned int timCON, unsigned int timRX, unsigned int timTX) :
 		m_ip(ip),
 		m_port(port),
 		mTimCON(timCON),
@@ -53,7 +53,7 @@ namespace San2 { namespace Tcp {
 		hints.ai_family = AF_INET; // force IPv4
 		hints.ai_socktype = SOCK_STREAM;
 
-		if ((ret = getaddrinfo(m_ip, m_port, &hints, &servinfo)) != 0) 
+		if ((ret = getaddrinfo(m_ip.c_str(), m_port.c_str(), &hints, &servinfo)) != 0) 
 		{
 			fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(ret));
 			return TcpErrorCode::FAILURE;

@@ -19,7 +19,7 @@ namespace San2
 		class CTcpClient : public CITcpBuffer
 		{
 			public:
-				CTcpClient(const char *ip, const char *port, unsigned int timCON, unsigned int timRX, unsigned int timTX);
+				CTcpClient(const std::string &ip, const std::string &port, unsigned int timCON, unsigned int timRX, unsigned int timTX);
 				~CTcpClient();
 				TcpErrorCode open();
 				TcpErrorCode send(char *data, int len);
@@ -34,8 +34,8 @@ namespace San2
 			private:
 				
 				
-				const char *m_ip;
-				const char *m_port;
+				std::string m_ip;
+				std::string m_port;
 				
 				unsigned int mTimCON, mTimRX, mTimTX;
 				TcpErrorCode errcode;

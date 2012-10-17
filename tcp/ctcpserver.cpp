@@ -5,7 +5,7 @@
 #define CTCP_MAXCONNQUEUE 10
 
 namespace San2 { namespace Tcp {
-	CTcpServer::CTcpServer(const char *ip, const char *port, std::function<CTcpChannel* (SNET_SOCKTYPE, unsigned long, unsigned int, unsigned int)> proc, unsigned int timCON, unsigned int timRX, unsigned int timTX):
+	CTcpServer::CTcpServer(const std::string &ip, const std::string &port, std::function<CTcpChannel* (SNET_SOCKTYPE, unsigned long, unsigned int, unsigned int)> proc, unsigned int timCON, unsigned int timRX, unsigned int timTX):
 		m_ip(ip),
 		m_port(port),
 		m_proc(proc),
@@ -40,7 +40,7 @@ namespace San2 { namespace Tcp {
 		hints.ai_socktype = SOCK_STREAM;
 		hints.ai_flags = AI_PASSIVE;
 		
-		if ((ret = getaddrinfo(m_ip, m_port, &hints, &servinfo)) != 0) 
+		if ((ret = getaddrinfo(m_ip.c_str(), m_port.c_str(), &hints, &servinfo)) != 0) 
 		{
 			#ifdef WINDOWS
 				DWORD gla = GetLastError();

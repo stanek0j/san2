@@ -17,7 +17,7 @@ namespace San2
 		class CTcpServer : public San2::Utils::CThread
 		{
 			public:
-				CTcpServer(const char *ip, const char *port, std::function<CTcpChannel* (SNET_SOCKTYPE, unsigned long, unsigned int, unsigned int)> proc, unsigned int timCON, unsigned int timRX, unsigned int timTX);
+				CTcpServer(const std::string &ip, const std::string &port, std::function<CTcpChannel* (SNET_SOCKTYPE, unsigned long, unsigned int, unsigned int)> proc, unsigned int timCON, unsigned int timRX, unsigned int timTX);
 				
 			protected:
 				void run();
@@ -27,8 +27,8 @@ namespace San2
 			private:
 				San2::Utils::CThreadManager manager;
 				
-				const char *m_ip;
-				const char *m_port;
+				std::string m_ip;
+				std::string m_port;
 				
 				std::function<CTcpChannel* (SNET_SOCKTYPE, unsigned long, unsigned int, unsigned int)> m_proc;
 				unsigned int mTimCON, mTimRX, mTimTX;
