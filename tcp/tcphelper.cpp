@@ -47,7 +47,7 @@ namespace San2 { namespace Tcp {
 				errno = 0;
 				selRval = select(sock+1, NULL, &fds, NULL, &tv);
 				
-        #ifdef LUNIX
+        #ifdef LINUX
 				if (errno == EINTR) 
 				{
 					if (thr->isTerminated()) return TcpErrorCode::TERMINATED;
