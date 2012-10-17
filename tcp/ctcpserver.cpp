@@ -42,6 +42,10 @@ namespace San2 { namespace Tcp {
 		
 		if ((ret = getaddrinfo(m_ip, m_port, &hints, &servinfo)) != 0) 
 		{
+			#ifdef WINDOWS
+				DWORD gla = GetLastError();
+				printf("GAI_GLA: %d\n", gla);
+			#endif
 			fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(ret));
 			return TcpErrorCode::FAILURE;
 		}
@@ -56,7 +60,13 @@ namespace San2 { namespace Tcp {
 			}
 
 			int yes = 1;
+        
+        #ifdef LINUX
 			if (setsockopt(listenSocket, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int)) == -1) 
+        #endif
+        #ifdef WINDOWS
+        	if (setsockopt(listenSocket, SOL_SOCKET, SO_REUSEADDR, (const char *)&yes, sizeof(int)) == -1) 
+        #endif
 			{
 				perror("setsockopt");
 				return TcpErrorCode::FAILURE;
@@ -64,7 +74,7 @@ namespace San2 { namespace Tcp {
 
 			if (bind(listenSocket, p->ai_addr, p->ai_addrlen) == -1) 
 			{
-				close(listenSocket);
+				SNET_SOCKCLOSE(listenSocket);
 				perror("server: bind");
 				continue;
 			}
@@ -90,7 +100,7 @@ namespace San2 { namespace Tcp {
 		if (listen(listenSocket, CTCP_MAXCONNQUEUE) == -1) 
 		{
 			perror("listen");
-			close(listenSocket);
+            SNET_SOCKCLOSE(listenSocket);
 			return TcpErrorCode::FAILURE;
 		}
 	
@@ -103,10 +113,17 @@ namespace San2 { namespace Tcp {
 		int tmperrno;
 
 		// Set timeout on accept
+        
+    #ifdef LINUX
         struct timeval tv;
         ms2tv(mTimCON, &tv);       
         setsockopt(listenSocket, SOL_SOCKET, SO_RCVTIMEO, (const void *) &tv, sizeof(struct timeval));
+    #endif
 
+    #ifdef WINDOWS
+        DWORD dwTimAcc = mTimCON;
+        setsockopt(listenSocket, SOL_SOCKET, SO_RCVTIMEO, (const char *) &dwTimAcc, sizeof(struct timeval));
+    #endif
 		while(1) // TODO: Termination through IPC or SIGTERM or by closing socket
 		{
 			t = sizeof(sockaddr_in);
@@ -117,7 +134,7 @@ namespace San2 { namespace Tcp {
 			
 			if (isTerminated())
 			{
-				close(listenSocket);
+                SNET_SOCKCLOSE(listenSocket);
 				printf("PipeServer terminating ....\n");
 				manager.terminateAndJoin();
 				return TcpErrorCode::TERMINATED;
@@ -135,7 +152,7 @@ namespace San2 { namespace Tcp {
 			if (acceptSocket == -1) 
 			{
 				perror("accept");
-				close(listenSocket);
+                SNET_SOCKCLOSE(listenSocket);
 				// TODO: we should here terminate and join all threads here
 				return TcpErrorCode::FAILURE;
 			}

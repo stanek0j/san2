@@ -10,9 +10,11 @@
 	#include <sys/un.h>
 #endif
 
-#ifdef WINDOWS
+#ifdef WIN32
+    #include <WinSock2.h>
 	#include <windows.h>
 #endif
+
 
 #include <string>
 
@@ -34,8 +36,9 @@ namespace San2 { namespace Tcp {
 			return errcode;
 		}
 	
-		CTcpChannel::CTcpChannel(SNET_SOCKTYPE sock, unsigned long s_addr, unsigned int timRX, unsigned int timTX) :
+		CTcpChannel::CTcpChannel(SNET_SOCKTYPE sock, unsigned long addr, unsigned int timRX, unsigned int timTX) :
 			m_sock(sock),
+            m_addr(addr),
 			m_timRX(timRX),
 			m_timTX(timTX),
             errcode(TcpErrorCode::SUCCESS)

@@ -18,8 +18,68 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\comm\cpplrpcchannel.cpp" />
+    <ClCompile Include="..\..\comm\cpplstreamrw.cpp" />
+    <ClCompile Include="..\..\comm\tcprpcchannel.cpp" />
+    <ClCompile Include="..\..\comm\tcpstreamrw.cpp" />
+    <ClCompile Include="..\..\cppl\bufferprocessor.cpp" />
+    <ClCompile Include="..\..\cppl\helper.cpp" />
+    <ClCompile Include="..\..\cppl\pipechannel.cpp" />
+    <ClCompile Include="..\..\cppl\pipeclient.cpp" />
+    <ClCompile Include="..\..\cppl\pipeserver.cpp" />
+    <ClCompile Include="..\..\network\ccapsule.cpp" />
+    <ClCompile Include="..\..\rpc\cirpcchannel.cpp" />
+    <ClCompile Include="..\..\rpc\cirpcfunction.cpp" />
+    <ClCompile Include="..\..\rpc\crpcexecutor.cpp" />
+    <ClCompile Include="..\..\stream\cistreamrw.cpp" />
+    <ClCompile Include="..\..\stream\clenvalueseparator.cpp" />
+    <ClCompile Include="..\..\tcp\citcpbuffer.cpp" />
+    <ClCompile Include="..\..\tcp\ctcpchannel.cpp" />
+    <ClCompile Include="..\..\tcp\ctcpclient.cpp" />
+    <ClCompile Include="..\..\tcp\ctcpserver.cpp" />
+    <ClCompile Include="..\..\tcp\tcphelper.cpp" />
+    <ClCompile Include="..\..\utils\cdatapack.cpp" />
+    <ClCompile Include="..\..\utils\cthread.cpp" />
+    <ClCompile Include="..\..\utils\platform\sleep.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\comm\cpplrpcchannel.hpp" />
+    <ClInclude Include="..\..\comm\cpplstreamrw.hpp" />
+    <ClInclude Include="..\..\comm\tcprpcchannel.hpp" />
+    <ClInclude Include="..\..\comm\tcpstreamrw.hpp" />
+    <ClInclude Include="..\..\cppl\bufferprocessor.hpp" />
+    <ClInclude Include="..\..\cppl\helper.hpp" />
+    <ClInclude Include="..\..\cppl\pipechannel.hpp" />
+    <ClInclude Include="..\..\cppl\pipeclient.hpp" />
+    <ClInclude Include="..\..\cppl\pipeserver.hpp" />
+    <ClInclude Include="..\..\network\ccapsule.hpp" />
+    <ClInclude Include="..\..\network\cinetiface.hpp" />
+    <ClInclude Include="..\..\network\nettypedef.hpp" />
+    <ClInclude Include="..\..\network\sockdefs.h" />
+    <ClInclude Include="..\..\rpc\cirpcchannel.hpp" />
+    <ClInclude Include="..\..\rpc\cirpcfunction.hpp" />
+    <ClInclude Include="..\..\rpc\crpcexecutor.hpp" />
+    <ClInclude Include="..\..\rpc\rpcerror.hpp" />
+    <ClInclude Include="..\..\stream\cimessageseparator.hpp" />
+    <ClInclude Include="..\..\stream\cistreamrw.hpp" />
+    <ClInclude Include="..\..\stream\clenvalueseparator.hpp" />
+    <ClInclude Include="..\..\tcp\citcpbuffer.hpp" />
+    <ClInclude Include="..\..\tcp\ctcpchannel.hpp" />
+    <ClInclude Include="..\..\tcp\ctcpclient.hpp" />
+    <ClInclude Include="..\..\tcp\ctcpserver.hpp" />
+    <ClInclude Include="..\..\tcp\tcphelper.hpp" />
+    <ClInclude Include="..\..\utils\cdatapack.hpp" />
+    <ClInclude Include="..\..\utils\cproducerconsumer.hpp" />
+    <ClInclude Include="..\..\utils\cthread.hpp" />
+    <ClInclude Include="..\..\utils\cthreadmanager.hpp" />
+    <ClInclude Include="..\..\utils\cvector.hpp" />
+    <ClInclude Include="..\..\utils\flag.hpp" />
+    <ClInclude Include="..\..\utils\platform\basictypes.hpp" />
+    <ClInclude Include="..\..\utils\platform\sleep.hpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{191FA64D-B727-48F5-87C3-D2173D5B430B}</ProjectGuid>
+    <ProjectGuid>{D57D6A15-FE5F-42F8-BD92-FDAA3958444A}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>san2</RootNamespace>
   </PropertyGroup>
@@ -67,19 +127,15 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)../;$(IncludePath)</IncludePath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(SolutionDir)../;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(SolutionDir)../;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>$(SolutionDir)../;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LinkIncremental>false</LinkIncremental>
     <IncludePath>$(SolutionDir)../;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -88,12 +144,10 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WINDOWS;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>
-      </AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WINDOWS;WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
@@ -103,12 +157,10 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WINDOWS;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>
-      </AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WINDOWS;WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
@@ -120,12 +172,10 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WINDOWS;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>
-      </AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WINDOWS;WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
@@ -139,42 +189,15 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WINDOWS;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>
-      </AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WINDOWS;WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClInclude Include="..\..\network\ccapsule.hpp" />
-    <ClInclude Include="..\..\network\cinetiface.hpp" />
-    <ClInclude Include="..\..\network\ctcpsocket.hpp" />
-    <ClInclude Include="..\..\network\nettypedef.hpp" />
-    <ClInclude Include="..\..\network\sockdefs.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\..\network\ccapsule.cpp" />
-    <ClCompile Include="..\..\network\ctcpsocket.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\comm\comm.vcxproj">
-      <Project>{638f4643-4abe-43c8-bfdc-6071c5c3c4ec}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\cppl\cppl.vcxproj">
-      <Project>{87b3db35-7c35-4ca6-a189-bac3c26b6ae6}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\rpc\rpc.vcxproj">
-      <Project>{b4bf7951-44b1-45dd-b1f8-048e962546f9}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\utils\utils.vcxproj">
-      <Project>{c8491573-6282-4270-ba90-e9a3491d7bdd}</Project>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

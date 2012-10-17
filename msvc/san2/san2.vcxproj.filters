@@ -1,18 +1,134 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <Filter Include="comm">
+      <UniqueIdentifier>{bb698449-6006-4e81-8719-42b092fd1176}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="utils">
+      <UniqueIdentifier>{0069b181-e779-4f78-9caf-68d3d050a2c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="cppl">
+      <UniqueIdentifier>{6e7ad8a7-ef92-4ec6-ad2d-4585d952d6d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="rpc">
+      <UniqueIdentifier>{31931dd4-c8d6-441a-a47f-38ecba37b36d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="stream">
+      <UniqueIdentifier>{44b449c4-7fa2-4da5-b99f-e9d9b2fd16fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tcp">
+      <UniqueIdentifier>{77e862ea-282f-45d3-81fd-e8c45bd6173c}</UniqueIdentifier>
+    </Filter>
     <Filter Include="network">
-      <UniqueIdentifier>{92aa3ab9-1b72-4b71-b414-a587b84e4fdf}</UniqueIdentifier>
+      <UniqueIdentifier>{e491d4e0-58c0-4349-a70e-1def35a2c133}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="utils\platform">
+      <UniqueIdentifier>{ef1a102e-bf46-4d1e-87ac-22406282d6b0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\comm\cpplrpcchannel.cpp">
+      <Filter>comm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\comm\cpplstreamrw.cpp">
+      <Filter>comm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\comm\tcprpcchannel.cpp">
+      <Filter>comm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\comm\tcpstreamrw.cpp">
+      <Filter>comm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\cppl\bufferprocessor.cpp">
+      <Filter>cppl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\cppl\helper.cpp">
+      <Filter>cppl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\cppl\pipeclient.cpp">
+      <Filter>cppl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\cppl\pipechannel.cpp">
+      <Filter>cppl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\cppl\pipeserver.cpp">
+      <Filter>cppl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\network\ccapsule.cpp">
+      <Filter>network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tcp\citcpbuffer.cpp">
+      <Filter>tcp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tcp\ctcpclient.cpp">
+      <Filter>tcp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tcp\ctcpchannel.cpp">
+      <Filter>tcp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tcp\ctcpserver.cpp">
+      <Filter>tcp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tcp\tcphelper.cpp">
+      <Filter>tcp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\utils\cdatapack.cpp">
+      <Filter>utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\utils\cthread.cpp">
+      <Filter>utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\utils\platform\sleep.cpp">
+      <Filter>utils\platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\rpc\cirpcfunction.cpp">
+      <Filter>rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\rpc\cirpcchannel.cpp">
+      <Filter>rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\rpc\crpcexecutor.cpp">
+      <Filter>rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\stream\cistreamrw.cpp">
+      <Filter>stream</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\stream\clenvalueseparator.cpp">
+      <Filter>stream</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\comm\cpplrpcchannel.hpp">
+      <Filter>comm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\comm\cpplstreamrw.hpp">
+      <Filter>comm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\comm\tcprpcchannel.hpp">
+      <Filter>comm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\comm\tcpstreamrw.hpp">
+      <Filter>comm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\cppl\bufferprocessor.hpp">
+      <Filter>cppl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\cppl\helper.hpp">
+      <Filter>cppl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\cppl\pipeclient.hpp">
+      <Filter>cppl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\cppl\pipechannel.hpp">
+      <Filter>cppl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\cppl\pipeserver.hpp">
+      <Filter>cppl</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\network\ccapsule.hpp">
       <Filter>network</Filter>
     </ClInclude>
     <ClInclude Include="..\..\network\cinetiface.hpp">
-      <Filter>network</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\network\ctcpsocket.hpp">
       <Filter>network</Filter>
     </ClInclude>
     <ClInclude Include="..\..\network\nettypedef.hpp">
@@ -21,13 +137,65 @@
     <ClInclude Include="..\..\network\sockdefs.h">
       <Filter>network</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\..\network\ccapsule.cpp">
-      <Filter>network</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\network\ctcpsocket.cpp">
-      <Filter>network</Filter>
-    </ClCompile>
+    <ClInclude Include="..\..\tcp\citcpbuffer.hpp">
+      <Filter>tcp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tcp\ctcpclient.hpp">
+      <Filter>tcp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tcp\ctcpchannel.hpp">
+      <Filter>tcp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tcp\ctcpserver.hpp">
+      <Filter>tcp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tcp\tcphelper.hpp">
+      <Filter>tcp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\utils\cdatapack.hpp">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\utils\cproducerconsumer.hpp">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\utils\cthread.hpp">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\utils\cthreadmanager.hpp">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\utils\cvector.hpp">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\utils\flag.hpp">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\utils\platform\basictypes.hpp">
+      <Filter>utils\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\utils\platform\sleep.hpp">
+      <Filter>utils\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\rpc\cirpcfunction.hpp">
+      <Filter>rpc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\rpc\cirpcchannel.hpp">
+      <Filter>rpc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\rpc\crpcexecutor.hpp">
+      <Filter>rpc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\rpc\rpcerror.hpp">
+      <Filter>rpc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\stream\cimessageseparator.hpp">
+      <Filter>stream</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\stream\cistreamrw.hpp">
+      <Filter>stream</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\stream\clenvalueseparator.hpp">
+      <Filter>stream</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -5,9 +5,11 @@
     #include <unistd.h>
 #endif
 
-#ifdef WINDOWS
-    #include <windows.h> // Tenhle header dela problemy kvuli WinSocku (redefinition)
+#ifdef WIN32
+    #include <WinSock2.h>
+	#include <windows.h>
 #endif
+
 
 namespace San2
 {

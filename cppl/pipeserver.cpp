@@ -11,9 +11,11 @@
 	#include <signal.h>
 #endif
 
-#ifdef WINDOWS
-	#include <windows.h> 
+#ifdef WIN32
+    #include <WinSock2.h>
+	#include <windows.h>
 #endif
+
 
 #include <string>
 #include <functional>
@@ -150,7 +152,7 @@ namespace San2 { namespace Cppl {
 	#ifdef WINDOWS
 	PipeServer::PipeServer(const char *pipeName, std::function<PipeChannel* (CPPL_PIPETYPE, unsigned int, unsigned int)> proc, unsigned int timCON, unsigned int timRX, unsigned int timTX):
 		pipename(pipeName),
-		m_proc(proc)
+		m_proc(proc),
 		mTimCON(timCON),
 		mTimRX(timRX),
 		mTimTX(timTX),

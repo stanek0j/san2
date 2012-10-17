@@ -4,11 +4,6 @@
 #include <string.h>
 #include <assert.h>
 
-#ifdef WINDOWS
-	#include <windows.h>
-#endif
-
-
 #ifdef LINUX
 	#define CPPL_PIPETYPE int
 #endif

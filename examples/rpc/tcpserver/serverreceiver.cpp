@@ -12,8 +12,8 @@
 
 #include "serverreceiver.hpp"
 
-ServerReceiver::ServerReceiver(SNET_SOCKTYPE handle, unsigned long s_addr, unsigned int timRX, unsigned int timTX) :
-	San2::Tcp::CTcpChannel(handle, s_addr, timRX, timTX),
+ServerReceiver::ServerReceiver(SNET_SOCKTYPE handle, unsigned long addr, unsigned int timRX, unsigned int timTX) :
+	San2::Tcp::CTcpChannel(handle, addr, timRX, timTX),
 	m_rpcChannel(NULL),
 	m_rpcexec(NULL)
 {

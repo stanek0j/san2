@@ -8,10 +8,12 @@
 	#include <unistd.h>
 #endif
 
-#ifdef WINDOWS
-	#include <windows.h>
+#ifdef WIN32
+	#pragma comment(lib, "wsock32.lib")
+    #include <winsock2.h>
+	#include <Ws2tcpip.h>
+	#include <Wspiapi.h>
 #endif
-
 
 #include "clientreceiver.hpp"
 
@@ -27,6 +29,16 @@
 
 int main(int argc, char *argv[])
 {
+	#ifdef WIN32
+		WSADATA wsaData;
+		int ret = WSAStartup(0x202, &wsaData);
+		if (ret)
+		{
+			printf("WSAStartup failed: %d", ret);
+			return -1;
+		}
+	#endif
+
 	printf("RpcClient\n");
 	/*
 	char data[50];
@@ -56,5 +68,10 @@ int main(int argc, char *argv[])
 
 	pc.join();
 	
+	#ifdef WIN32
+		// TODO: Error checking
+		WSACleanup();
+	#endif
+
 	return 0;
 }

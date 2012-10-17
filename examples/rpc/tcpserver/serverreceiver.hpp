@@ -11,7 +11,7 @@
 class ServerReceiver : public San2::Tcp::CTcpChannel
 {
   public:
-	ServerReceiver(SNET_SOCKTYPE handle, unsigned long s_addr, unsigned int timRX, unsigned int timTX);
+	ServerReceiver(SNET_SOCKTYPE handle, unsigned long addr, unsigned int timRX, unsigned int timTX);
 	virtual ~ServerReceiver();
   protected:
 	

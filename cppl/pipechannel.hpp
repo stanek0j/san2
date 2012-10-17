@@ -3,10 +3,6 @@
 
 #include <functional>
 
-#ifdef WINDOWS
-	#include <windows.h> 
-#endif
-
 #include "bufferprocessor.hpp"
 #include "helper.hpp"
 

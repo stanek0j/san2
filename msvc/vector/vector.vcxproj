@@ -19,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{38C7E820-8AC2-4F0C-B7DF-240EA786FE0D}</ProjectGuid>
+    <ProjectGuid>{3BE6A336-DFA8-4403-9793-304B94708E6B}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>vector</RootNamespace>
   </PropertyGroup>
@@ -146,8 +146,8 @@
     <ClCompile Include="..\..\examples\utils\vector\vector.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\utils\utils.vcxproj">
-      <Project>{c8491573-6282-4270-ba90-e9a3491d7bdd}</Project>
+    <ProjectReference Include="..\san2\san2.vcxproj">
+      <Project>{d57d6a15-fe5f-42f8-bd92-fdaa3958444a}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

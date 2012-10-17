@@ -37,7 +37,7 @@ namespace San2 { namespace Tcp {
     TcpErrorCode CTcpClient::runProc()
 	{
 	   TcpErrorCode rval = receive();    
-	   close(m_sock);
+       SNET_SOCKCLOSE(m_sock);
 	   m_sock = SNET_BADSOCKET;
 	   return rval;
 	}
@@ -70,7 +70,7 @@ namespace San2 { namespace Tcp {
 
 			if (connect(m_sock, p->ai_addr, p->ai_addrlen) == -1) 
 			{
-				close(m_sock);
+				SNET_SOCKCLOSE(m_sock);
 				perror("client: connect");
 				continue;
 			}

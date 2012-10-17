@@ -9,7 +9,7 @@
 	#include <netdb.h>
 #endif
 
-#ifdef WINDOWS
+#ifdef WIN32
     #include <winsock2.h>
 	#include <Ws2tcpip.h>
 	#include <Wspiapi.h>

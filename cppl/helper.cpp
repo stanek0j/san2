@@ -1,14 +1,15 @@
 
 #include <string.h>
 #include <assert.h>
+#include <stdio.h>
 
 #ifdef LINUX
 	#include <sys/types.h>
 	#include <sys/socket.h>
 #endif
 
-#ifdef WINDOWS
-	#include <stdio.h>
+#ifdef WIN32
+    #include <WinSock2.h>
 	#include <windows.h>
 #endif
 

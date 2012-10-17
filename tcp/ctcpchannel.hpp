@@ -17,7 +17,7 @@ namespace San2
 		class CTcpChannel : public CITcpBuffer
 		{
 		public:
-			CTcpChannel(SNET_SOCKTYPE sock, unsigned long s_addr, unsigned int timRX, unsigned int timTX);
+			CTcpChannel(SNET_SOCKTYPE sock, unsigned long addr, unsigned int timRX, unsigned int timTX);
 			virtual ~CTcpChannel();
 		protected:
 			void run();
@@ -29,6 +29,7 @@ namespace San2
 			TcpErrorCode read(char *data, unsigned int dataSize, unsigned int *bytesRead);
 
 			SNET_SOCKTYPE m_sock;
+            unsigned long m_addr;
 			unsigned int m_timRX, m_timTX;
 			TcpErrorCode errcode;
 			

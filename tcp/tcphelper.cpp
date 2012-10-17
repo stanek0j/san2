@@ -8,9 +8,11 @@
 	#include <sys/socket.h>
 #endif
 
-#ifdef WINDOWS
+#ifdef WIN32
+    #include <WinSock2.h>
 	#include <windows.h>
 #endif
+
 
 #include "tcphelper.hpp"
 
@@ -45,6 +47,7 @@ namespace San2 { namespace Tcp {
 				errno = 0;
 				selRval = select(sock+1, NULL, &fds, NULL, &tv);
 				
+        #ifdef LUNIX
 				if (errno == EINTR) 
 				{
 					if (thr->isTerminated()) return TcpErrorCode::TERMINATED;
@@ -58,7 +61,29 @@ namespace San2 { namespace Tcp {
 				errno = 0;
 				n = send(sock, buf+total, bytesleft, 0);
 				if (errno == EPIPE || errno == ECONNRESET) return TcpErrorCode::PEER_DISCONNECT;
-				if (n == -1) break;
+				
+        #endif 
+
+        #ifdef WINDOWS
+                if (thr->isTerminated()) return TcpErrorCode::TERMINATED;
+
+                if (selRval == SOCKET_ERROR)
+                {
+                    DWORD gla = GetLastError();
+                    if (gla == WSAEINTR || gla == WSAETIMEDOUT) continue; // INTERRUPT continue
+                    // printf(.....);
+                    return TcpErrorCode::FAILURE;
+                }
+
+                n = send(sock, buf+total, bytesleft, 0);
+                if (n == SOCKET_ERROR)
+                {
+                    DWORD gla = GetLastError();
+				    if (gla == WSAESHUTDOWN || gla == WSAECONNRESET) return TcpErrorCode::PEER_DISCONNECT;
+                    n = -1; // indicate error
+                }
+        #endif
+                if (n == -1) break;
 				total += n;
 				bytesleft -= n;
 			}
@@ -84,7 +109,7 @@ namespace San2 { namespace Tcp {
 				
 				errno = 0;
 				selRval = select(sock+1, &fds, NULL, NULL, &tv);
-				
+            #ifdef LINUX
 				if (errno == EINTR) 
 				{
 					// MUST not AFFECT errno
@@ -96,12 +121,37 @@ namespace San2 { namespace Tcp {
 				
 				if (selRval == 0) continue; // timeout, terminated check already performed
 				if (selRval < 0) return TcpErrorCode::FAILURE;
+            #endif
+
+            #ifdef WINDOWS
+                if (thr->isTerminated()) return TcpErrorCode::TERMINATED;
+
+                if (selRval == SOCKET_ERROR)
+                {
+                    DWORD gla = GetLastError();
+                    if (gla == WSAEINTR || gla == WSAETIMEDOUT) continue; // INTERRUPT continue
+                    // printf(.....);
+                    return TcpErrorCode::FAILURE;
+                }
+            #endif
+
 				break; // success
 			}
 			
 			*bytesRead = recv(sock, data, dataSize, 0);
+        #ifdef LINUX
 			if (*bytesRead == 0) return TcpErrorCode::PEER_DISCONNECT;
 			if (*bytesRead < 0) return TcpErrorCode::FAILURE;
+        #endif
+
+        #ifdef WINDOWS
+            if (*bytesRead == SOCKET_ERROR)
+            {
+                DWORD gla = GetLastError();
+                if (gla == WSAESHUTDOWN || gla == WSAECONNRESET) return TcpErrorCode::PEER_DISCONNECT;
+                return TcpErrorCode::FAILURE;
+            }
+        #endif
 			return TcpErrorCode::SUCCESS;
 		}
 }} // ns
