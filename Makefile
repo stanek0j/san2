@@ -37,6 +37,10 @@ OBJS-TCP =  tcp/ctcpchannel.o \
 			tcp/tcphelper.o \
 			tcp/ctcpserver.o \
 			tcp/citcpbuffer.o
+			
+OBJS-INTERFACES = interfaces/tcp_in/ccapsulereceiver.o \
+				  interfaces/tcp_in/ctcpinputinterface.o \
+				  interfaces/sendcapsulefunc.o
 
 
 OBJS-EXAMPLES-CPPL-SERVER = examples/cppl/server/server.o \
@@ -63,7 +67,7 @@ OBJS-TEST-FUNC = examples/rpc/testfunc.o examples/rpc/multiply.o
 
 all:: components examples
 
-components: utils cppl stream network rpc comm tcp
+components: utils cppl stream network rpc comm tcp interfaces
 
 utils: $(OBJS-UTILS)
 cppl: $(OBJS-CPPL)
@@ -72,6 +76,7 @@ network: $(OBJS-NETWORK)
 rpc: $(OBJS-RPC)
 comm: $(OBJS-COMM)
 tcp: $(OBJS-TCP)
+interfaces: $(OBJS-INTERFACES)
 
 examples: examples-utils examples-cppl examples-rpc
 
