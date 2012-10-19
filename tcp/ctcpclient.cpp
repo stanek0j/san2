@@ -45,6 +45,7 @@ namespace San2 { namespace Tcp {
 	// TODO: socket closing in open() and receive(), add cleanup() and destructor again
 	TcpErrorCode CTcpClient::open()
 	{
+		if (m_sock != SNET_BADSOCKET) SNET_SOCKCLOSE(m_sock);
 		m_sock = SNET_BADSOCKET;
 		struct addrinfo hints, *servinfo, *p;
 		int ret;

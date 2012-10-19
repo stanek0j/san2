@@ -40,7 +40,8 @@ OBJS-TCP =  tcp/ctcpchannel.o \
 			
 OBJS-INTERFACES = interfaces/tcp_in/ccapsulereceiver.o \
 				  interfaces/tcp_in/ctcpinputinterface.o \
-				  interfaces/sendcapsulefunc.o
+				  interfaces/sendcapsulefunc.o \
+				  interfaces/tcp_out/ctcpoutputinterface.o
 
 
 OBJS-EXAMPLES-CPPL-SERVER = examples/cppl/server/server.o \

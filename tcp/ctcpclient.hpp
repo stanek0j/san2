@@ -24,9 +24,10 @@ namespace San2
 				TcpErrorCode open();
 				TcpErrorCode send(char *data, int len);
 				TcpErrorCode getErrorCode();
+				void run();
 				
 			protected:
-				void run();
+				
 				virtual TcpErrorCode receive()=0;
 				TcpErrorCode runProc();
 				
