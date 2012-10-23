@@ -32,6 +32,7 @@ void CTcpOutputInterface::up()
 	start();
 }
 
+// this overwrites TcpClient completely, its ugly and should be avoided in future
 void CTcpOutputInterface::run()
 {
 	
@@ -82,8 +83,8 @@ bool CTcpOutputInterface::sendCapsule(std::shared_ptr<San2::Network::CCapsule> &
 {
 	// push to output queue
 	// parameter must be calling thread!
-	m_outputQueue.push<int>(capsule, thr, m_duration);
-	return true;
+	int r = m_outputQueue.try_push<int>(capsule, thr, m_duration);
+	return r == 0;
 }
 
 San2::Network::SanAddress CTcpOutputInterface::getInterfaceAddress()
