@@ -38,10 +38,9 @@ OBJS-TCP =  tcp/ctcpchannel.o \
 			tcp/ctcpserver.o \
 			tcp/citcpbuffer.o
 			
-OBJS-INTERFACES = interfaces/tcp_in/ccapsulereceiver.o \
-				  interfaces/tcp_in/ctcpinputinterface.o \
+OBJS-INTERFACES = interfaces/tcp/ccapsulereceiver.o \
 				  interfaces/sendcapsulefunc.o \
-				  interfaces/tcp_out/ctcpoutputinterface.o
+				  interfaces/tcp/ctcpinterface.o
 
 
 OBJS-EXAMPLES-CPPL-SERVER = examples/cppl/server/server.o \
@@ -128,6 +127,8 @@ clean::
 	rm -f network/*.o
 	rm -f stream/*.o
 	rm -f tcp/*.o
+	rm -f interafces/*.o
+	rm -f interafces/tcp/*.o
 	rm -f examples/*.o
 	rm -f examples/utils/*.o
 	rm -f examples/utils/vector/*.o

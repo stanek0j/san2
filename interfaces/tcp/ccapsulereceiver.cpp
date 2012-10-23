@@ -16,8 +16,8 @@
 
 namespace San2 { namespace Interfaces {
 	
-CCapsuleReceiver::CCapsuleReceiver(SNET_SOCKTYPE handle, unsigned long addr, unsigned int timRX, unsigned int timTX, San2::Utils::CProducerConsumer<std::shared_ptr<San2::Network::CCapsule> >& inputQueue) :
-	San2::Tcp::CTcpChannel(handle, addr, timRX, timTX),
+CCapsuleReceiver::CCapsuleReceiver(const std::string &ip, const std::string &port, unsigned int timCON, unsigned int timRX, unsigned int timTX, San2::Utils::CProducerConsumer<std::shared_ptr<San2::Network::CCapsule> >& inputQueue) :
+	San2::Tcp::CSingleTcpServer(ip, port, timCON, timRX, timTX),
 	m_rpcChannel(NULL),
 	m_rpcexec(NULL),
 	m_inputQueue(inputQueue)

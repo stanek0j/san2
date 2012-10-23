@@ -1,9 +1,12 @@
 
 #include "ctcpinterface.hpp"
+#include "interfaces/sendcapsulefunc.hpp"
+#include "utils/platform/sleep.hpp"
 
 namespace San2 { namespace Interfaces {
 
 CTcpInterface::CTcpInterface(const std::string &localIp, const std::string &localPort, const std::string &remoteIp, const std::string &remotePort, unsigned int timeCON, unsigned int timeRX, unsigned int timeTX, San2::Utils::CProducerConsumer<std::shared_ptr<San2::Network::CCapsule> >& inputQueue, unsigned long maxOutputQueueSize) :
+	San2::Tcp::CTcpClient(remoteIp, remotePort, timeCON, timeRX, timeTX),
 	m_localIp(localIp),
 	m_localPort(localPort),
 	m_remoteIp(remoteIp),
@@ -12,7 +15,8 @@ CTcpInterface::CTcpInterface(const std::string &localIp, const std::string &loca
 	m_timeRX(timeRX),
 	m_timeTX(timeTX),
 	m_inputQueue(inputQueue),
-	srv(localIp, localPort, timCON, timRX, timTX, inputQueue),
+	m_outputQueue(maxOutputQueueSize),
+	srv(localIp, localPort, timeCON, timeRX, timeTX, inputQueue),
 	m_rpcChannel(NULL),
 	m_rpcexec(NULL)
 {

@@ -5,6 +5,7 @@
 #include "network/nettypedef.hpp"
 #include "network/cnetinterface.hpp"
 #include "network/ccapsule.hpp"
+#include "tcp/ctcpclient.hpp"
 #include "utils/cproducerconsumer.hpp"
 #include "ccapsulereceiver.hpp"
 
@@ -37,7 +38,7 @@ namespace San2
 		class CTcpInterface : public San2::Network::CNetInterface, public San2::Tcp::CTcpClient
 		{
 		public:
-			CTcpInterface(const std::string &localIp, const std::string &localPort, const std::string &remoteIp, const std::string &remotePort, unsigned int timeCON, unsigned int timeRX, unsigned int timeTX, San2::Utils::CProducerConsumer<std::shared_ptr<San2::Network::CCapsule> >& inputQueue);
+			CTcpInterface(const std::string &localIp, const std::string &localPort, const std::string &remoteIp, const std::string &remotePort, unsigned int timeCON, unsigned int timeRX, unsigned int timeTX, San2::Utils::CProducerConsumer<std::shared_ptr<San2::Network::CCapsule> >& inputQueue, unsigned long maxOutputQueueSize);
 			San2::Utils::CThread* getThread();
 			
 			// No idea how to fix this mess 
@@ -56,6 +57,8 @@ namespace San2
 			
 			// Receiver part
 			San2::Utils::CProducerConsumer<std::shared_ptr<San2::Network::CCapsule> >& m_inputQueue;
+			San2::Utils::CProducerConsumer<std::shared_ptr<San2::Network::CCapsule> > m_outputQueue;
+			
 			CCapsuleReceiver srv;
 			
 			// Sender part

@@ -17,7 +17,7 @@ namespace San2
 		class CCapsuleReceiver : public San2::Tcp::CSingleTcpServer
 		{
 		  public:
-			CCapsuleReceiver(const std::string &ip, const std::string &port, unsigned int timCON, unsigned int timRX, unsigned int timTX, San2::Utils::CProducerConsumer<std::shared_ptr<San2::Network::CCapsule> >& inputQueue, unsigned long maxOutputQueueSize);
+			CCapsuleReceiver(const std::string &ip, const std::string &port, unsigned int timCON, unsigned int timRX, unsigned int timTX, San2::Utils::CProducerConsumer<std::shared_ptr<San2::Network::CCapsule> >& inputQueue);
 			virtual ~CCapsuleReceiver();
 		  protected:
 			
@@ -34,7 +34,6 @@ namespace San2
 			San2::Rpc::CRpcExecutor *m_rpcexec;
 			
 			San2::Utils::CProducerConsumer<std::shared_ptr<San2::Network::CCapsule> >& m_inputQueue;
-			San2::Utils::CProducerConsumer<std::shared_ptr<San2::Network::CCapsule> > m_outputQueue;
 		};
 	}
 }

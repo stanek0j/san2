@@ -17,7 +17,7 @@ namespace San2
 {
 	namespace Tcp
 	{	
-		class CSingleTcpServer : public San2::Utils::CThread, public CITcpBuffer
+		class CSingleTcpServer : public CITcpBuffer
 		{
 			public:
 				CSingleTcpServer(const std::string &ip, const std::string &port, unsigned int timCON, unsigned int timRX, unsigned int timTX);
@@ -29,6 +29,9 @@ namespace San2
 				virtual TcpErrorCode receive()=0;
 				struct sockaddr_in getRemoteAddress();
 				
+				TcpErrorCode send(char *data, int len);
+				TcpErrorCode read(char *data, unsigned int dataSize, unsigned int *bytesRead);
+	
 			private:
 				
 				std::string m_ip;
