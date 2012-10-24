@@ -2,6 +2,7 @@
 #include <algorithm>
 #include "sendcapsulefunc.hpp"
 #include "utils/cdatapack.hpp"
+#include "network/ccapsule.hpp"
 
 namespace San2 { namespace Interfaces {
 

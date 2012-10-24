@@ -79,13 +79,13 @@ void CTcpInterface::run()
 	printf("client exit\n");
 }
 
-void CTcpInterface::received()
+San2::Tcp::TcpErrorCode CTcpInterface::receive()
 {
 	// intentionally empty as the client only sends
 	// we dont call client.start() so this is NEVER called (because we have overridden run())
 	// but must be implemented, becouse it is a pure virtual function in CTcpClient
 	// (again very confusing, sorry for that)
-	return;
+	return San2::Tcp::TcpErrorCode::SUCCESS;
 }
 
 bool CTcpInterface::sendCapsule(std::shared_ptr<San2::Network::CCapsule> &capsule, San2::Utils::CThread *thr)
@@ -100,6 +100,9 @@ bool CTcpInterface::sendCapsule(std::shared_ptr<San2::Network::CCapsule> &capsul
 	return r == 0;
 }
 
-
+San2::Network::SanAddress CTcpInterface::getInterfaceAddress()
+{
+	return San2::Network::SanAddress(); // TODO: fix
+}
 
 }} // ns

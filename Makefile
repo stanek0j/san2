@@ -36,12 +36,15 @@ OBJS-TCP =  tcp/ctcpchannel.o \
 			tcp/ctcpclient.o \
 			tcp/tcphelper.o \
 			tcp/ctcpserver.o \
-			tcp/citcpbuffer.o
+			tcp/citcpbuffer.o \
+			tcp/csingletcpserver.o
 			
 OBJS-INTERFACES = interfaces/tcp/ccapsulereceiver.o \
 				  interfaces/sendcapsulefunc.o \
 				  interfaces/tcp/ctcpinterface.o
 
+
+OBJS-NODE = node/cnode.o node/main.o
 
 OBJS-EXAMPLES-CPPL-SERVER = examples/cppl/server/server.o \
 							examples/cppl/server/cchannel.o
@@ -65,7 +68,7 @@ OBJS-EXAMPLES-RPC-TCPCLIENT = examples/rpc/tcpclient/main.o \
 						   
 OBJS-TEST-FUNC = examples/rpc/testfunc.o examples/rpc/multiply.o
 
-all:: components examples
+all:: components examples node
 
 components: utils cppl stream network rpc comm tcp interfaces
 
@@ -111,6 +114,9 @@ examples-rpc-tcpserver: utils cppl tcp stream comm rpc $(OBJS-EXAMPLES-RPC-TCPSE
 examples-rpc-tcpclient: utils cppl tcp stream comm rpc $(OBJS-EXAMPLES-RPC-TCPCLIENT) $(OBJS-TEST-FUNC)
 	$(CCC) $(OBJS-UTILS) $(OBJS-CPPL)  $(OBJS-TCP) $(OBJS-STREAM) $(OBJS-COMM) $(OBJS-RPC) $(OBJS-EXAMPLES-RPC-TCPCLIENT) $(OBJS-TEST-FUNC)  -o ./tcprpc_client $(LIBS) $(LDFLAGS)
 	
+node: utils cppl tcp stream comm rpc network interfaces $(OBJS-NODE)
+	$(CCC) $(OBJS-UTILS) $(OBJS-CPPL)  $(OBJS-TCP) $(OBJS-STREAM) $(OBJS-COMM) $(OBJS-RPC) $(OBJS-NETWORK) $(OBJS-INTERFACES) $(OBJS-NODE)  -o ./sanode $(LIBS) $(LDFLAGS)
+
 
 #tells how to make an *.o object file from an *.c file
 %.o: %.cpp
@@ -119,6 +125,7 @@ examples-rpc-tcpclient: utils cppl tcp stream comm rpc $(OBJS-EXAMPLES-RPC-TCPCL
 	
 clean::
 	rm -f *.o
+	rm -f sanode
 	rm -f rpc/*.o
 	rm -f comm/*.o
 	rm -f utils/*.o

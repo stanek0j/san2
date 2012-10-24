@@ -68,7 +68,7 @@ bool San2::Network::CCapsule::unpack(const San2::Utils::bytes &capsule)
 	return true; // rewri
 }
 
-San2::Utils::bytes hop2bytes(SAN_UINT16 hop)
+San2::Utils::bytes San2::Network::CCapsule::hop2bytes(SAN_UINT16 hop)
 {
 	// Ugly but i dont know, how to do it better
 	SAN_UINT16 netorder;

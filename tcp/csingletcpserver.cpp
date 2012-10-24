@@ -135,7 +135,7 @@ namespace San2 { namespace Tcp {
 			//unsigned long ipa = ((struct sockaddr_in) m_remoteAddress).sin_addr.s_addr;
 
 			TcpErrorCode rc = receive();
-			if (rc != TcpErrorCode::SUCESS)
+			if (rc != TcpErrorCode::SUCCESS)
 			{
 				if (acceptSocket != SNET_BADSOCKET) SNET_SOCKCLOSE(acceptSocket);
 				if (listenSocket != SNET_BADSOCKET) SNET_SOCKCLOSE(listenSocket);
@@ -150,12 +150,12 @@ namespace San2 { namespace Tcp {
 	
 	TcpErrorCode CSingleTcpServer::send(char *data, int len)
 	{
-		return sock_sendall_stream(acceptSocket, data, &len, m_timTX, this);
+		return sock_sendall_stream(acceptSocket, data, &len, mTimTX, this);
 	}
 	
 	TcpErrorCode CSingleTcpServer::read(char *data, unsigned int dataSize, unsigned int *bytesRead)
 	{
-		return sock_read_stream(acceptSocket, this, data, dataSize, bytesRead, m_timRX);
+		return sock_read_stream(acceptSocket, this, data, dataSize, bytesRead, mTimRX);
 	}
 	
 	struct sockaddr_in CSingleTcpServer::getRemoteAddress()

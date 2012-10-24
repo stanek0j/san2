@@ -44,9 +44,10 @@ namespace San2
 			// No idea how to fix this mess 
 			void up(); // CTcpInterface
 			void run(); // CThread
-			void received(); // CTcpClient
+			San2::Tcp::TcpErrorCode receive(); // CTcpClient
 			
 			bool sendCapsule(std::shared_ptr<San2::Network::CCapsule> &capsule, San2::Utils::CThread *thr);
+			San2::Network::SanAddress getInterfaceAddress();
 		protected:
 					
 		private:

@@ -3,24 +3,33 @@
 
 namespace San2 { namespace Node {
 
-int CNode::startNode()
+CNode::CNode(unsigned int inputQueueMaxSize) :
+	m_inputQueue(inputQueueMaxSize),
+	m_duration(3)
 {
+
+}
+
+void CNode::run()
+{
+	std::shared_ptr<San2::Network::CCapsule> capsule;
 	
+	while(1)
+	{
+		m_inputQueue.pop<int>(&capsule, this, m_duration);
+		printf("CNode::run()::pop() SUCCESS\n");
+	}
 }
 
-int CNode::addInterface(std::shared_ptr<San2::Network::CInputInterface> iface)
+int CNode::addInterface(std::shared_ptr<San2::Network::CNetInterface> iface)
 {
 	iface->up();
-	m_inputInterfaces.insert(iface);
+	m_interfaces.insert(iface);
+	return 0;
 }
 
-int CNode::addInterface(std::shared_ptr<San2::Network::COutputInterface> iface)
-{
-	iface->up();
-	m_outputInterfaces.insert(iface);
-}
 
-San2::Utils::CProducerConsumer<std::shared_ptr<San2::Network::CCapsule> >& getInputQueue()
+San2::Utils::CProducerConsumer<std::shared_ptr<San2::Network::CCapsule> >& CNode::getInputQueue()
 {
 	return m_inputQueue;
 }
