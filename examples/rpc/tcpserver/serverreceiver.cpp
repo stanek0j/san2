@@ -11,6 +11,7 @@
 
 
 #include "serverreceiver.hpp"
+#include "comm/tcpstreamrw.hpp"
 
 ServerReceiver::ServerReceiver(SNET_SOCKTYPE handle, unsigned long addr, unsigned int timRX, unsigned int timTX) :
 	San2::Tcp::CTcpChannel(handle, addr, timRX, timTX),
@@ -30,7 +31,8 @@ San2::Tcp::TcpErrorCode ServerReceiver::receive()
 {
     printf("ServerReceiver::run()\n");
 	
-	m_rpcChannel = new San2::Comm::TcpRpcChannel(this);
+	San2::Comm::TcpStreamRW stream(2000, this);
+	m_rpcChannel = new San2::Comm::StreamRpcChannel(stream);
 	m_rpcexec = new San2::Rpc::CRpcExecutor(*m_rpcChannel, 5000);
 	
 	bool ret = m_rpcexec->registerFunction([](){return new TestFunc();});

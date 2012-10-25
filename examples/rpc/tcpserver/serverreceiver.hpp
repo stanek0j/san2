@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include "comm/tcprpcchannel.hpp"
+#include "comm/streamrpcchannel.hpp"
 #include "rpc/crpcexecutor.hpp"
 #include "examples/rpc/testfunc.hpp"
 #include "examples/rpc/multiply.hpp"
@@ -23,6 +23,6 @@ class ServerReceiver : public San2::Tcp::CTcpChannel
 		ServerReceiver(const ServerReceiver& copyFromMe)=delete;
 		ServerReceiver& operator=(const ServerReceiver& copyFromMe)=delete;
 	#endif
-	San2::Comm::TcpRpcChannel *m_rpcChannel;
+	San2::Comm::StreamRpcChannel *m_rpcChannel;
 	San2::Rpc::CRpcExecutor *m_rpcexec;
 };

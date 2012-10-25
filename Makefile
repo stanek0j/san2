@@ -28,10 +28,10 @@ OBJS-EXAMPLES-UTILS-VECTOR = examples/utils/vector/vector.o
 OBJS-STREAM = stream/cistreamrw.o \
 			  stream/clenvalueseparator.o
 			  
-OBJS-COMM = comm/cpplrpcchannel.o \
-			comm/cpplstreamrw.o \
-			comm/tcprpcchannel.o \
-			comm/tcpstreamrw.o
+OBJS-COMM = comm/cpplstreamrw.o \
+			comm/tcpstreamrw.o \
+			comm/streamrpcchannel.o
+			
 
 OBJS-TCP =  tcp/ctcpchannel.o \
 			tcp/ctcpclient.o \

@@ -2,6 +2,7 @@
 #include "ctcpinterface.hpp"
 #include "interfaces/sendcapsulefunc.hpp"
 #include "utils/platform/sleep.hpp"
+#include "comm/tcpstreamrw.hpp"
 
 namespace San2 { namespace Interfaces {
 
@@ -41,7 +42,9 @@ void CTcpInterface::run()
 	// Now the client=sender stuff
 	
 	printf("CTcpInterface::run()\n");
-	m_rpcChannel = new San2::Comm::TcpRpcChannel(this);
+	
+	San2::Comm::TcpStreamRW stream(2000, this);
+	m_rpcChannel = new San2::Comm::StreamRpcChannel(stream);
 	m_rpcexec = new San2::Rpc::CRpcExecutor(*m_rpcChannel, 5000);
 	bool ret = m_rpcexec->registerFunction([this](){return new SendCapsuleFunc(NULL, this);});
 	if (ret) printf("reg success\n");

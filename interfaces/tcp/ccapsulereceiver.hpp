@@ -3,7 +3,7 @@
 
 #include <memory>
 
-#include "comm/tcprpcchannel.hpp"
+#include "comm/streamrpcchannel.hpp"
 #include "rpc/crpcexecutor.hpp"
 #include "tcp/csingletcpserver.hpp"
 #include "tcp/tcphelper.hpp"
@@ -30,7 +30,7 @@ namespace San2
 				CCapsuleReceiver& operator=(const CCapsuleReceiver& copyFromMe)=delete;
 			#endif
 			
-			San2::Comm::TcpRpcChannel *m_rpcChannel;
+			San2::Comm::StreamRpcChannel *m_rpcChannel;
 			San2::Rpc::CRpcExecutor *m_rpcexec;
 			
 			San2::Utils::CProducerConsumer<std::shared_ptr<San2::Network::CCapsule> >& m_inputQueue;

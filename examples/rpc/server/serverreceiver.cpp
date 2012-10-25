@@ -12,7 +12,7 @@
 
 #include "cppl/pipechannel.hpp"
 #include "cppl/helper.hpp"
-
+#include "comm/cpplstreamrw.hpp"
 #include "serverreceiver.hpp"
 
 
@@ -34,7 +34,8 @@ San2::Cppl::ErrorCode ServerReceiver::receive()
 {
     printf("ServerReceiver::run()\n");
 	
-	m_rpcChannel = new San2::Comm::CpplRpcChannel(this);
+	San2::Comm::CpplStreamRW stream(2000, this);
+	m_rpcChannel = new San2::Comm::StreamRpcChannel(stream);
 	m_rpcexec = new San2::Rpc::CRpcExecutor(*m_rpcChannel, 5000);
 	
 	bool ret = m_rpcexec->registerFunction([](){return new TestFunc();});

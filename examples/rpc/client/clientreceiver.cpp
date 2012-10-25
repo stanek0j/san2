@@ -9,6 +9,7 @@
 #endif
 
 #include "clientreceiver.hpp"
+#include "comm/cpplstreamrw.hpp"
 
 ClientReceiver::ClientReceiver(const char *pipeName, unsigned int timCON, unsigned int timRX, unsigned int timTX) :
 	San2::Cppl::PipeClient(pipeName, timCON, timRX, timTX),
@@ -26,7 +27,8 @@ ClientReceiver::~ClientReceiver()
 
 San2::Cppl::ErrorCode ClientReceiver::receive()
 {
-	m_rpcChannel = new San2::Comm::CpplRpcChannel(this);
+	San2::Comm::CpplStreamRW stream(2000, this);
+	m_rpcChannel = new San2::Comm::StreamRpcChannel(stream);
 	m_rpcexec = new San2::Rpc::CRpcExecutor(*m_rpcChannel, 5000);
 	
 	bool ret = m_rpcexec->registerFunction([](){return new TestFunc();});

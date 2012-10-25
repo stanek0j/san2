@@ -13,6 +13,7 @@
 #include "ccapsulereceiver.hpp"
 #include "interfaces/sendcapsulefunc.hpp"
 #include "rpc/cirpcfunction.hpp"
+#include "comm/tcpstreamrw.hpp"
 
 namespace San2 { namespace Interfaces {
 	
@@ -35,7 +36,8 @@ San2::Tcp::TcpErrorCode CCapsuleReceiver::receive()
 {
     printf("CCapsuleReceiver::receive()\n");
     
-	m_rpcChannel = new San2::Comm::TcpRpcChannel(this);
+    San2::Comm::TcpStreamRW stream(2000, this);
+	m_rpcChannel = new San2::Comm::StreamRpcChannel(stream);
 	m_rpcexec = new San2::Rpc::CRpcExecutor(*m_rpcChannel, 5000);
 	
 	bool ret = m_rpcexec->registerFunction([&m_inputQueue, this](){return new SendCapsuleFunc(&m_inputQueue, this);});

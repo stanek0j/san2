@@ -9,6 +9,7 @@
 #endif
 
 #include "clientreceiver.hpp"
+#include "comm/tcpstreamrw.hpp"
 
 ClientReceiver::ClientReceiver(const char *ip, const char *port, unsigned int timCON, unsigned int timRX, unsigned int timTX) :
 	San2::Tcp::CTcpClient(ip, port,timCON, timRX, timTX),
@@ -26,7 +27,8 @@ ClientReceiver::~ClientReceiver()
 
 San2::Tcp::TcpErrorCode ClientReceiver::receive()
 {
-	m_rpcChannel = new San2::Comm::TcpRpcChannel(this);
+	San2::Comm::TcpStreamRW stream(2000, this);
+	m_rpcChannel = new San2::Comm::StreamRpcChannel(stream);
 	m_rpcexec = new San2::Rpc::CRpcExecutor(*m_rpcChannel, 5000);
 	
 	bool ret = m_rpcexec->registerFunction([](){return new TestFunc();});

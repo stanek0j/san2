@@ -1,7 +1,7 @@
 
 #pragma once
 #include "cppl/pipechannel.hpp"
-#include "comm/cpplrpcchannel.hpp"
+#include "comm/streamrpcchannel.hpp"
 #include "rpc/crpcexecutor.hpp"
 #include "examples/rpc/testfunc.hpp"
 #include "examples/rpc/multiply.hpp"
@@ -21,6 +21,6 @@ class ServerReceiver : public San2::Cppl::PipeChannel
 		ServerReceiver(const ServerReceiver& copyFromMe)=delete;
 		ServerReceiver& operator=(const ServerReceiver& copyFromMe)=delete;
 	#endif
-	San2::Comm::CpplRpcChannel *m_rpcChannel;
+	San2::Comm::StreamRpcChannel *m_rpcChannel;
 	San2::Rpc::CRpcExecutor *m_rpcexec;
 };

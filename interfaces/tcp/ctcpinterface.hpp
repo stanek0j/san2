@@ -31,6 +31,8 @@
 // Both client and server are (i hope) designed as fault-tolerant
 // so if the remote and disconnects it should reconnect successfully later
 
+#include "comm/streamrpcchannel.hpp"
+
 namespace San2
 {
 	namespace Interfaces
@@ -63,7 +65,7 @@ namespace San2
 			CCapsuleReceiver srv;
 			
 			// Sender part
-			San2::Comm::TcpRpcChannel *m_rpcChannel;
+			San2::Comm::StreamRpcChannel *m_rpcChannel;
 			San2::Rpc::CRpcExecutor *m_rpcexec;
 			std::chrono::duration<int> m_duration;
 		};

@@ -3,31 +3,25 @@
 
 #include "rpc/cirpcchannel.hpp"
 #include "stream/clenvalueseparator.hpp"
-#include "cpplstreamrw.hpp"
+#include "stream/cistreamrw.hpp"
 
 namespace San2
 {
 	namespace Comm
 	{
-		class CpplRpcChannel : public San2::Rpc::CIRpcChannel
+		class StreamRpcChannel : public San2::Rpc::CIRpcChannel
 		{
 		public:
-			CpplRpcChannel(San2::Cppl::BufferProcessor *bp);
+			StreamRpcChannel(San2::Stream::CIStreamRW &rw);
 			// destructor must be virtual!
-			
-			virtual ~CpplRpcChannel()
-			{ 
-				delete m_separator;
-			}
+			virtual ~StreamRpcChannel(){};
 
 			// TRUE = success
 			virtual bool sendDatagram(const San2::Utils::bytes &data);
 			virtual bool recvDatagram(San2::Utils::bytes &out, unsigned int timeoutMsec);
-
 		private:
-			San2::Cppl::BufferProcessor *m_bp;
-			CpplStreamRW m_rw;
-			San2::Stream::CLenValueSeparator *m_separator;
+			//San2::Stream::CIStreamRW &m_rw;
+			San2::Stream::CLenValueSeparator m_separator;
 		};
 	}
 }
