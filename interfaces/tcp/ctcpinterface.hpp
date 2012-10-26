@@ -54,7 +54,7 @@ namespace San2
 			void run(); // CThread
 			San2::Tcp::TcpErrorCode receive(); // CTcpClient
 			
-			bool sendCapsule(std::shared_ptr<San2::Network::CCapsule> &capsule, San2::Utils::CThread *thr);
+			bool sendCapsule(std::shared_ptr<San2::Network::CCapsule> capsule, San2::Utils::CThread *thr);
 			
 			
 			San2::Network::SanAddress getPeerAddress(); // mutexed

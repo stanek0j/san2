@@ -18,6 +18,7 @@
 #include "utils/cvector.hpp"
 #include "network/nettypedef.hpp"
 #include "ctcpinterface.hpp"
+#include "utils/log.h"
 
 namespace San2 { namespace Interfaces {
 	
@@ -48,8 +49,9 @@ bool CCapsuleReceiver::parseFirstMessage(const San2::Utils::bytes &data)
 
 	San2::Network::SanAddress adr;
 
-	std::copy(data.begin(), data.begin() + 4, adr.begin());
+	std::copy(data.begin() + 4, data.end(), adr.begin());
 	m_iface.setPeerAddress(adr); // thread-safe function
+	return true;
 }
 
 San2::Tcp::TcpErrorCode CCapsuleReceiver::receive()
@@ -66,17 +68,22 @@ San2::Tcp::TcpErrorCode CCapsuleReceiver::receive()
 	
 	San2::Utils::bytes firstMessage;
 	
+//	printf("@@@@@@@@@@@@@@@@@ 1 \n");
 	if (stream.readExactNumBytesAppend(firstMessage, 4 + San2::Network::sanAddressSize) != true)
 	{
 		// fail, close connection
 		// have in mind, that this return will not shut down the server
 		// it will only close this connection and listen for another one
 		// (again fault-tolerant)
+		FILE_LOG(logDEBUG2) << "CCapsuleReceiver::receive(): reading first message *FAILED*";
 		return San2::Tcp::TcpErrorCode::SUCCESS; // Must be SUCCESS, otherwise server will shutdown completely
 	}
 	
+//	printf("@@@@@@@@@@@@@@@@@ 20 \n");
+	
 	if (parseFirstMessage(firstMessage) != true)
 	{
+		FILE_LOG(logDEBUG2) << "CCapsuleReceiver::receive():parseFirstMessage *FAILED*";
 		return San2::Tcp::TcpErrorCode::SUCCESS; // Must be SUCCESS, otherwise server will shutdown completely
 	}
 	

@@ -24,13 +24,13 @@ namespace San2
 		class CCapsule
 		{
 		public:
-			void setFromInterfaceAddress(const SanAddress &interfaceAddress);
-			void setSourceAddress(const SanAddress &srcAddress);
-			void setDestinationAddress(const SanAddress &dstAddress);
+			void setFromInterfaceAddress(SanAddress interfaceAddress);
+			void setSourceAddress(SanAddress srcAddress);
+			void setDestinationAddress(SanAddress dstAddress);
 			void setHop(SAN_UINT16 hop);
 			void setDX(bool dx); // Destination eXecute
 			void setEX(bool ex); // Everywhere eXecute
-			void setApplicationId(const SanApplicationId &appId);
+			void setApplicationId(SanApplicationId appId);
 			
 			SanAddress getFromInterfaceAddress();
 			SanAddress getSourceAddress();
@@ -44,7 +44,7 @@ namespace San2
 			// possibility is provide data by value
 			// and that is what we want in producer-consumer
 			// multi-thread environment
-			void setData(const San2::Utils::bytes &data);
+			void setData(San2::Utils::bytes data);
 			
 			// NOTE: Only one thread must access the
 			// const data reference only as there is

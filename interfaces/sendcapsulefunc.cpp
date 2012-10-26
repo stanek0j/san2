@@ -1,9 +1,11 @@
 
 #include <algorithm>
+#include <assert.h>
 #include "sendcapsulefunc.hpp"
 #include "utils/cdatapack.hpp"
 #include "network/ccapsule.hpp"
-
+#include "network/nettypedef.hpp"
+#include "utils/log.h"
 
 namespace San2 { namespace Interfaces {
 
@@ -18,9 +20,10 @@ SendCapsuleFunc::SendCapsuleFunc(const San2::Network::SanAddress &interfaceAddre
 	
 }
 
-void SendCapsuleFunc::setCapsuleToSend(std::shared_ptr<San2::Network::CCapsule> capsule)
+bool SendCapsuleFunc::setCapsuleToSend(std::shared_ptr<San2::Network::CCapsule> capsule)
 {
-	m_capsule = capsule;
+	capsule->pack(m_SerializedCapsule);
+	return true;
 }
 
 unsigned int SendCapsuleFunc::getUniqueId()const
@@ -30,20 +33,28 @@ unsigned int SendCapsuleFunc::getUniqueId()const
 
 bool SendCapsuleFunc::operator()(void)
 {	
-	m_capsule->setFromInterfaceAddress(m_interfaceAddress);
-	(*m_inputQueue).push<int>(m_capsule, m_thr, m_duration);
+	std::shared_ptr<San2::Network::CCapsule> capsule(new San2::Network::CCapsule);
+	if (capsule->unpack(m_SerializedCapsule) != true)
+	{
+		 FILE_LOG(logWARNING) << "SendCapsuleFunc::operator(): cannot unpack capsule\n";
+		 return false;
+	}
+	
+	capsule->setFromInterfaceAddress(m_interfaceAddress);
+	assert((*m_inputQueue).push<int>(capsule, m_thr, m_duration) == 0);
 	return true;
 }
 
 bool SendCapsuleFunc::pack(San2::Utils::bytes &out)
 {
-	m_capsule->pack(out); // TODO: fix rval from void to bool
+	out = m_SerializedCapsule;
 	return true;
 }
 
 bool SendCapsuleFunc::unpack(const San2::Utils::bytes &in)
 {
-	return m_capsule->unpack(in);
+	m_SerializedCapsule = in;
+	return true;
 }
 
 }} // ns

@@ -4,12 +4,12 @@
 			
 namespace San2 { namespace Network {			
 						
-void CCapsule::setSourceAddress(const SanAddress &srcAddress)
+void CCapsule::setSourceAddress(SanAddress srcAddress)
 {
 	m_srcAddress = srcAddress;
 }
 
-void CCapsule::setDestinationAddress(const SanAddress &dstAddress)
+void CCapsule::setDestinationAddress(SanAddress dstAddress)
 {
 	m_dstAddress = dstAddress;
 }
@@ -44,7 +44,7 @@ SAN_UINT16 CCapsule::getHop()
 	return m_hop;
 }
 
-void CCapsule::setData(const San2::Utils::bytes &data)
+void CCapsule::setData(San2::Utils::bytes data)
 {
 	m_data = data; // so nice
 }
@@ -81,7 +81,7 @@ San2::Utils::bytes CCapsule::hop2bytes(SAN_UINT16 hop)
 	return b;
 }
 
-void San2::Network::CCapsule::setApplicationId(const San2::Network::SanApplicationId &appId)
+void San2::Network::CCapsule::setApplicationId(San2::Network::SanApplicationId appId)
 {
 	m_appId = appId;
 }
@@ -99,7 +99,7 @@ unsigned char CCapsule::constructFlags()
 	return flags;
 }
 
-void CCapsule::setFromInterfaceAddress(const SanAddress &interfaceAddress)
+void CCapsule::setFromInterfaceAddress(SanAddress interfaceAddress)
 {
 	m_interfaceAddress = interfaceAddress;
 }

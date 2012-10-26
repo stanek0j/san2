@@ -1,6 +1,7 @@
 
 
 #include "ctcpclient.hpp"
+#include "utils/log.h"
 
 #define TCP_CTCPCLIENT_RXBUFSIZE 1500
 #define TCP_CTCPCLIENT_WIN_MAXFNAMEBYTES 512
@@ -37,8 +38,7 @@ namespace San2 { namespace Tcp {
     TcpErrorCode CTcpClient::runProc()
 	{
 	   TcpErrorCode rval = receive();    
-       SNET_SOCKCLOSE(m_sock);
-	   m_sock = SNET_BADSOCKET;
+       san_cleanup_socket(&m_sock);
 	   return rval;
 	}
 
@@ -71,7 +71,7 @@ namespace San2 { namespace Tcp {
 
 			if (connect(m_sock, p->ai_addr, p->ai_addrlen) == -1) 
 			{
-				SNET_SOCKCLOSE(m_sock);
+				san_cleanup_socket(&m_sock);
 				perror("client: connect");
 				continue;
 			}
@@ -81,7 +81,8 @@ namespace San2 { namespace Tcp {
 
 		if (p == NULL) 
 		{
-			fprintf(stderr, "client: failed to connect\n");
+			FILE_LOG(logDEBUG3) << "CTcpClient::open(): failed to connect";
+			san_cleanup_socket(&m_sock);
 			return TcpErrorCode::FAILURE;
 		}
 

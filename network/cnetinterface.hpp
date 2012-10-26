@@ -23,7 +23,7 @@ namespace San2
 			
 			// NON-BLOCKING, return value (true - queue was not full, false - queue full, drop occured)
 			// NOTE: should likely put the capsule to its output queue, if queue is full then drop
-			virtual bool sendCapsule(std::shared_ptr<San2::Network::CCapsule> &capsule, San2::Utils::CThread *thr)=0;
+			virtual bool sendCapsule(std::shared_ptr<San2::Network::CCapsule> capsule, San2::Utils::CThread *thr)=0;
 			
 			// NON-BLOCKING, MULTI-READ THREAD SAFE
 			// returns pointer to the underlying thread, NULL if not availible

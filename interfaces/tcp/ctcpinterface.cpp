@@ -96,9 +96,17 @@ void CTcpInterface::run()
 		{
 			std::shared_ptr<San2::Network::CCapsule> capsule;
 			m_outputQueue.pop<int>(&capsule, this, m_duration);
-			func.setCapsuleToSend(capsule);
+			if (func.setCapsuleToSend(capsule) != true)
+			{
+				FILE_LOG(logWARNING) << "CTcpInterface::run(): capsule packing failed()";	
+			}
+			
 			bool rval = m_rpcexec->invokeFunction(func);
-			if (!rval) break;
+			if (!rval)
+			{
+				FILE_LOG(logDEBUG4) << "CTcpInterface::run(): failed to invoke remote function";
+				 break;
+			}
 		}
 		
 		printf("CTcpOutputInterface::run(): CONNECTION FAILURE\n");
@@ -116,7 +124,7 @@ San2::Tcp::TcpErrorCode CTcpInterface::receive()
 	return San2::Tcp::TcpErrorCode::SUCCESS;
 }
 
-bool CTcpInterface::sendCapsule(std::shared_ptr<San2::Network::CCapsule> &capsule, San2::Utils::CThread *thr)
+bool CTcpInterface::sendCapsule(std::shared_ptr<San2::Network::CCapsule> capsule, San2::Utils::CThread *thr)
 {
 	// push to output queue
 	// parameter must be calling thread, not the clientClass itself!

@@ -1,3 +1,6 @@
+#include <algorithm>
+#include <assert.h>
+#include <stdlib.h>
 
 #include "cnode.hpp"
 #include "utils/log.h"
@@ -17,29 +20,78 @@ void CNode::run()
 	
 	// there should be a router implementation
 	
-	// however there is only simple algorithm which checks
-	// if the destination SanAddress matches one of our 
-	// direct peers SanAddress and sends the capsule that way.
+	
 	
 	std::shared_ptr<San2::Network::CCapsule> capsule;
 	
 	while(1)
 	{
-		m_inputQueue.pop<int>(&capsule, this, m_duration);
-		FILE_LOG(logDEBUG4) << "CNode::run()::pop() SUCCESS ######";
-		
-		/*
-		San2::Network::SanAddress adr = capsule.getDestinationAddress();
-	
 		bool rval;
-	
-		// this is dangerous, race-condition might occur in future
 		
+		m_inputQueue.pop<int>(&capsule, this, m_duration);
+		FILE_LOG(logDEBUG4) << "CNode::run()::pop(): gotCapsule ######";
+		
+	
+		// check if we reached destination
+		rval = false;
 		{
-			std::locked_guard<std::mutex> lock(m_mutexInterfaces);
-			std::for_each(m_interface.begin(), m_interface.end(), [&adr, &rval](std::shared_ptr<San2::Network::CNetInterface> iface){if (adr == iface.getPeerAddress(); rval = iface.sendCapsule())})
+			std::lock_guard<std::mutex> lock(m_mutexInterfaces);
+			
+			std::for_each(m_interfaces.begin(), m_interfaces.end(), 
+				[&rval, capsule](std::shared_ptr<San2::Network::CNetInterface> iface) 
+			{
+				if (capsule->getDestinationAddress() == iface->getInterfaceAddress()) rval = true;
+			});
 		}
-		*/
+		
+		
+		
+		if (rval == true)
+		{
+			FILE_LOG(logDEBUG4) << "CNode::run():: capsule reached its final destination ######";
+			continue;
+		}
+	
+		// very simple routing algorithm which checks
+		// if the destination SanAddress matches one of our 
+		// direct peers SanAddress and sends the capsule that way.	
+		{
+			std::lock_guard<std::mutex> lock(m_mutexInterfaces);
+			
+			FILE_LOG(logDEBUG4) << "KK3";
+			std::for_each(m_interfaces.begin(), m_interfaces.end(), [&rval, capsule, this](std::shared_ptr<San2::Network::CNetInterface> iface)
+			{
+				FILE_LOG(logDEBUG4) << "KK4";
+				
+				printf("capsule->getDestinationAddress(): ");
+				San2::Network::SanAddress tmp = capsule->getDestinationAddress();
+				for (unsigned int v = 0 ; v < San2::Network::sanAddressSize ; ++v ) printf("%02X", tmp[v]);
+				printf("\n");
+				
+				printf("iface->getPeerAddress(): ");
+				tmp = iface->getPeerAddress();
+				for (unsigned int v = 0 ; v < San2::Network::sanAddressSize ; ++v ) printf("%02X", tmp[v]);
+				printf("\n");
+				printf("\n");
+				
+				if (capsule->getDestinationAddress() == iface->getPeerAddress()) 
+				{
+					
+					
+					FILE_LOG(logDEBUG4) << "KK5";
+					rval = iface->sendCapsule(capsule, this); 
+					if (!rval) 
+					{
+						FILE_LOG(logDEBUG4) << "CNode::run(): iface->sendCapsule failed";
+					}
+				}
+			});
+		}
+		
+		if (rval == true) 
+		{
+			FILE_LOG(logDEBUG4) << "CNode::run():: rerouting capsule";
+		}
 		
 	}
 }
@@ -61,18 +113,21 @@ San2::Utils::CProducerConsumer<std::shared_ptr<San2::Network::CCapsule> >& CNode
 // do not confuse with routing, just puts capsule into the inputQueue
 bool CNode::injectCapsule(std::shared_ptr<San2::Network::CCapsule> capsule)
 {
+	assert(capsule != NULL);
 	return m_inputQueue.push(capsule);
 }
 
 template <class Rep, class Period>
 bool CNode::injectCapsule(std::shared_ptr<San2::Network::CCapsule> capsule, San2::Utils::CThread *thr, std::chrono::duration<Rep, Period> dur)
 {
+	assert(capsule != NULL);
 	return m_inputQueue.push(capsule, this, dur);
 }
 
 template <class Rep, class Period>
 bool CNode::tryInjectCapsule(std::shared_ptr<San2::Network::CCapsule> capsule, San2::Utils::CThread *thr, std::chrono::duration<Rep, Period> dur)
 {
+	assert(capsule != NULL);
 	return m_inputQueue.try_push(capsule, this, dur);
 }
 

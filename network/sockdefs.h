@@ -38,3 +38,9 @@ inline void *san_get_in_addr(struct sockaddr *sa)
     if (sa->sa_family == AF_INET) return &(((struct sockaddr_in*)sa)->sin_addr);
     return &(((struct sockaddr_in6*)sa)->sin6_addr);
 }
+
+inline void san_cleanup_socket(SNET_SOCKTYPE *sock)
+{
+	if (*sock != SNET_BADSOCKET) SNET_SOCKCLOSE(*sock);
+	*sock = -1;
+}

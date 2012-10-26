@@ -13,6 +13,7 @@
 #include "utils/log.h"
 #include "utils/hex.hpp"
 #include "network/ccapsule.hpp"
+#include "network/nettypedef.hpp"
 
 #define TIME_CON 1000
 #define TIME_RX  1000
@@ -113,14 +114,29 @@ int main(int argc, char *argv[])
 	
 	node.start();
 	
-	std::shared_ptr<San2::Network::CCapsule> cap(new San2::Network::CCapsule);
-	node.injectCapsule(cap);
 	
 	
 	printf("\ninfinite loop\n");
+	
+	std::string strx = cfg.getValue("testsend");
+	
 	while(1)
 	{
-		San2::Utils::SanSleep(10);
+		if (strx.compare(std::string("")))
+		{
+			std::shared_ptr<San2::Network::CCapsule> cap(new San2::Network::CCapsule);
+			
+			San2::Network::SanAddress dstAddress;
+			if (string2address("000000000000000000000000000000000000000000000000000000000000FF31", dstAddress) != true)
+			{
+				FILE_LOG(logDEBUG2) << "failed to parse destination address";
+			}
+			cap->setDestinationAddress(dstAddress);
+			
+			FILE_LOG(logDEBUG4) << "@@@ sending";
+			node.injectCapsule(cap);
+		}
+		San2::Utils::SanSleep(3);
 	}
 	
 	return 0;
