@@ -24,6 +24,7 @@ namespace San2
 		class CCapsule
 		{
 		public:
+			void setFromInterfaceAddress(const SanAddress &interfaceAddress);
 			void setSourceAddress(const SanAddress &srcAddress);
 			void setDestinationAddress(const SanAddress &dstAddress);
 			void setHop(SAN_UINT16 hop);
@@ -31,6 +32,7 @@ namespace San2
 			void setEX(bool ex); // Everywhere eXecute
 			void setApplicationId(const SanApplicationId &appId);
 			
+			SanAddress getFromInterfaceAddress();
 			SanAddress getSourceAddress();
 			SanAddress getDestinationAddress();
 			SAN_UINT16 getHop();
@@ -69,6 +71,7 @@ namespace San2
 			bool m_flagDX;
 			bool m_flagEX;
 		
+			SanAddress m_interfaceAddress;
 			SanAddress m_srcAddress;
 			SanAddress m_dstAddress;
 			SanApplicationId m_appId;

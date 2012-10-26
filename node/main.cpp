@@ -12,6 +12,7 @@
 #include "utils/config.hpp"
 #include "utils/log.h"
 #include "utils/hex.hpp"
+#include "network/ccapsule.hpp"
 
 #define TIME_CON 1000
 #define TIME_RX  1000
@@ -110,7 +111,13 @@ int main(int argc, char *argv[])
 		node.addInterface(tcpif);
 	}
 	
-	printf("infinite loop\n");
+	node.start();
+	
+	std::shared_ptr<San2::Network::CCapsule> cap(new San2::Network::CCapsule);
+	node.injectCapsule(cap);
+	
+	
+	printf("\ninfinite loop\n");
 	while(1)
 	{
 		San2::Utils::SanSleep(10);

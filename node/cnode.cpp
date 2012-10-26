@@ -1,5 +1,6 @@
 
 #include "cnode.hpp"
+#include "utils/log.h"
 
 namespace San2 { namespace Node {
 
@@ -14,12 +15,32 @@ void CNode::run()
 {
 	// there should be capsule executor/worker implementation
 	
+	// there should be a router implementation
+	
+	// however there is only simple algorithm which checks
+	// if the destination SanAddress matches one of our 
+	// direct peers SanAddress and sends the capsule that way.
+	
 	std::shared_ptr<San2::Network::CCapsule> capsule;
 	
 	while(1)
 	{
 		m_inputQueue.pop<int>(&capsule, this, m_duration);
-		printf("CNode::run()::pop() SUCCESS\n");
+		FILE_LOG(logDEBUG4) << "CNode::run()::pop() SUCCESS ######";
+		
+		/*
+		San2::Network::SanAddress adr = capsule.getDestinationAddress();
+	
+		bool rval;
+	
+		// this is dangerous, race-condition might occur in future
+		
+		{
+			std::locked_guard<std::mutex> lock(m_mutexInterfaces);
+			std::for_each(m_interface.begin(), m_interface.end(), [&adr, &rval](std::shared_ptr<San2::Network::CNetInterface> iface){if (adr == iface.getPeerAddress(); rval = iface.sendCapsule())})
+		}
+		*/
+		
 	}
 }
 
@@ -37,27 +58,23 @@ San2::Utils::CProducerConsumer<std::shared_ptr<San2::Network::CCapsule> >& CNode
 	return m_inputQueue;
 }
 
-/*
-// TRUE - capsule MIGHT be send (depends on interface behaviour)
-// FALSE - capsule was definitely not send
-bool CNode::sendCapsule(std::shared_ptr<San2::Network::CCapsule> &capsule)
+// do not confuse with routing, just puts capsule into the inputQueue
+bool CNode::injectCapsule(std::shared_ptr<San2::Network::CCapsule> capsule)
 {
-	
-	// there should be a router implementation
-	
-	// however there is only simple algorithm which checks
-	// if the destination SanAddress matches one of our 
-	// direct peers SanAddress and sends the capsule that way.
-	
-	San2::Network::SanAddress adr = capsule.getDestinationAddress();
-	
-	bool rval;
-	
-	// this is dangerous, race-condition might occur in future
-	std::locked_guard<std::mutex> lock(m_mutexInterfaces);
-	std::for_each(m_interface.begin(), m_interface.end(), [&adr, &rval](std::shared_ptr<San2::Network::CNetInterface> iface){if (adr == iface.getPeerAddress(); rval = iface.sendCapsule())})
-	
+	return m_inputQueue.push(capsule);
 }
-*/
+
+template <class Rep, class Period>
+bool CNode::injectCapsule(std::shared_ptr<San2::Network::CCapsule> capsule, San2::Utils::CThread *thr, std::chrono::duration<Rep, Period> dur)
+{
+	return m_inputQueue.push(capsule, this, dur);
+}
+
+template <class Rep, class Period>
+bool CNode::tryInjectCapsule(std::shared_ptr<San2::Network::CCapsule> capsule, San2::Utils::CThread *thr, std::chrono::duration<Rep, Period> dur)
+{
+	return m_inputQueue.try_push(capsule, this, dur);
+}
+
 
 }} // ns

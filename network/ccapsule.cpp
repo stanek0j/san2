@@ -1,58 +1,60 @@
 			
 #include "ccapsule.hpp"
 #include "utils/flag.hpp"												
+			
+namespace San2 { namespace Network {			
 						
-void San2::Network::CCapsule::setSourceAddress(const San2::Network::SanAddress &srcAddress)
+void CCapsule::setSourceAddress(const SanAddress &srcAddress)
 {
 	m_srcAddress = srcAddress;
 }
 
-void San2::Network::CCapsule::setDestinationAddress(const San2::Network::SanAddress &dstAddress)
+void CCapsule::setDestinationAddress(const SanAddress &dstAddress)
 {
 	m_dstAddress = dstAddress;
 }
 
-void San2::Network::CCapsule::setHop(SAN_UINT16 hop)
+void CCapsule::setHop(SAN_UINT16 hop)
 {
 	m_hop = hop;
 }
 						
-void San2::Network::CCapsule::setDX(bool dx)
+void CCapsule::setDX(bool dx)
 {
 	m_flagDX = dx;
 }					
 					
-void San2::Network::CCapsule::setEX(bool ex)
+void CCapsule::setEX(bool ex)
 {
 	m_flagEX = ex;
 }					
 	
-San2::Network::SanAddress San2::Network::CCapsule::getSourceAddress()
+SanAddress CCapsule::getSourceAddress()
 {
 	return m_srcAddress;
 }
 
-San2::Network::SanAddress San2::Network::CCapsule::getDestinationAddress()
+SanAddress CCapsule::getDestinationAddress()
 {
 	return m_dstAddress;
 }
 
-SAN_UINT16 San2::Network::CCapsule::getHop()
+SAN_UINT16 CCapsule::getHop()
 {
 	return m_hop;
 }
 
-void San2::Network::CCapsule::setData(const San2::Utils::bytes &data)
+void CCapsule::setData(const San2::Utils::bytes &data)
 {
 	m_data = data; // so nice
 }
 
-const San2::Utils::bytes& San2::Network::CCapsule::getData()
+const San2::Utils::bytes& CCapsule::getData()
 {
 	return m_data;
 }
 
-void San2::Network::CCapsule::pack(San2::Utils::bytes &out)
+void CCapsule::pack(San2::Utils::bytes &out)
 {
 	out.clear();
 	out.resize(minimumCapsuleHeaderSize + m_data.size());
@@ -63,12 +65,12 @@ void San2::Network::CCapsule::pack(San2::Utils::bytes &out)
 	out += m_data;
 }
 
-bool San2::Network::CCapsule::unpack(const San2::Utils::bytes &capsule)
+bool CCapsule::unpack(const San2::Utils::bytes &capsule)
 {
 	return true; // rewri
 }
 
-San2::Utils::bytes San2::Network::CCapsule::hop2bytes(SAN_UINT16 hop)
+San2::Utils::bytes CCapsule::hop2bytes(SAN_UINT16 hop)
 {
 	// Ugly but i dont know, how to do it better
 	SAN_UINT16 netorder;
@@ -84,12 +86,12 @@ void San2::Network::CCapsule::setApplicationId(const San2::Network::SanApplicati
 	m_appId = appId;
 }
 
-San2::Network::SanApplicationId San2::Network::CCapsule::getAppId()
+SanApplicationId CCapsule::getAppId()
 {
 	return m_appId;
 }
 
-unsigned char San2::Network::CCapsule::constructFlags()
+unsigned char CCapsule::constructFlags()
 {
 	unsigned char flags = 0; // 0 - null all flags
 	San2::Utils::Flag::setFlag(flags, SAN_FLAGPOS_DX_POSITION, m_flagDX);
@@ -97,3 +99,14 @@ unsigned char San2::Network::CCapsule::constructFlags()
 	return flags;
 }
 
+void CCapsule::setFromInterfaceAddress(const SanAddress &interfaceAddress)
+{
+	m_interfaceAddress = interfaceAddress;
+}
+
+SanAddress CCapsule::getFromInterfaceAddress()
+{
+	return m_interfaceAddress;
+}
+
+}} // ns

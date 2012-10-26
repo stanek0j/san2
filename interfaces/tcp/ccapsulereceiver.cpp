@@ -60,7 +60,7 @@ San2::Tcp::TcpErrorCode CCapsuleReceiver::receive()
 	m_rpcChannel = new San2::Comm::StreamRpcChannel(stream);
 	m_rpcexec = new San2::Rpc::CRpcExecutor(*m_rpcChannel, 5000);
 	
-	bool ret = m_rpcexec->registerFunction([&m_inputQueue, this](){return new SendCapsuleFunc(&m_inputQueue, this);});
+	bool ret = m_rpcexec->registerFunction([&m_inputQueue, this, &m_iface](){return new SendCapsuleFunc(m_iface.getInterfaceAddress(), &m_inputQueue, this);});
 	if (ret) printf("reg success\n");
 	else printf("reg fail\n");
 	

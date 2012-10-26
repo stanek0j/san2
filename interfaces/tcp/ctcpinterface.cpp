@@ -63,11 +63,11 @@ void CTcpInterface::run()
 	San2::Comm::TcpStreamRW stream(2000, this);
 	m_rpcChannel = new San2::Comm::StreamRpcChannel(stream);
 	m_rpcexec = new San2::Rpc::CRpcExecutor(*m_rpcChannel, 5000);
-	bool ret = m_rpcexec->registerFunction([this](){return new SendCapsuleFunc(NULL, this);});
+	bool ret = m_rpcexec->registerFunction([this, &m_sanaddr](){return new SendCapsuleFunc(m_sanaddr, NULL, this);});
 	if (ret) printf("reg success\n");
 	else printf("reg fail\n");
 	
-	SendCapsuleFunc func(NULL, this);
+	SendCapsuleFunc func(m_sanaddr, NULL, this);
 	
 	// get item from outputQueue and send it
 	

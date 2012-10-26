@@ -4,11 +4,13 @@
 #include "utils/cdatapack.hpp"
 #include "network/ccapsule.hpp"
 
+
 namespace San2 { namespace Interfaces {
 
 const int SendCapsuleFunc::timeoutSec = 3;
 
-SendCapsuleFunc::SendCapsuleFunc(San2::Utils::CProducerConsumer<std::shared_ptr<San2::Network::CCapsule> > *inputQueue, San2::Utils::CThread *thr) :
+SendCapsuleFunc::SendCapsuleFunc(const San2::Network::SanAddress &interfaceAddress, San2::Utils::CProducerConsumer<std::shared_ptr<San2::Network::CCapsule> > *inputQueue, San2::Utils::CThread *thr) :
+	m_interfaceAddress(interfaceAddress),
 	m_inputQueue(inputQueue),
 	m_duration(timeoutSec),
 	m_thr(thr)
@@ -28,6 +30,7 @@ unsigned int SendCapsuleFunc::getUniqueId()const
 
 bool SendCapsuleFunc::operator()(void)
 {	
+	m_capsule->setFromInterfaceAddress(m_interfaceAddress);
 	(*m_inputQueue).push<int>(m_capsule, m_thr, m_duration);
 	return true;
 }

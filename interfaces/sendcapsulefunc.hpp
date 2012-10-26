@@ -3,6 +3,7 @@
 #include "rpc/cirpcfunction.hpp"
 #include "utils/cproducerconsumer.hpp"
 #include "network/ccapsule.hpp"
+#include "network/nettypedef.hpp"
 
 namespace San2 {
 	namespace Interfaces
@@ -12,7 +13,7 @@ namespace San2 {
 		public:
 			static const int timeoutSec;
 		
-			SendCapsuleFunc(San2::Utils::CProducerConsumer<std::shared_ptr<San2::Network::CCapsule> > *inputQueue, San2::Utils::CThread* thr);
+			SendCapsuleFunc(const San2::Network::SanAddress &interfaceAddress, San2::Utils::CProducerConsumer<std::shared_ptr<San2::Network::CCapsule> > *inputQueue, San2::Utils::CThread* thr);
 			void setCapsuleToSend(std::shared_ptr<San2::Network::CCapsule> capsule);
 			unsigned int getUniqueId()const;
 			bool operator()(void);
@@ -20,6 +21,7 @@ namespace San2 {
 			bool pack(San2::Utils::bytes &out);
 			bool unpack(const San2::Utils::bytes &in);
 		private:
+			const San2::Network::SanAddress &m_interfaceAddress;
 			std::shared_ptr<San2::Network::CCapsule> m_capsule;
 			San2::Utils::CProducerConsumer<std::shared_ptr<San2::Network::CCapsule> > *m_inputQueue;
 			std::chrono::duration<int> m_duration;

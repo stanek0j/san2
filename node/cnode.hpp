@@ -21,8 +21,13 @@ namespace San2
 			void run(); // start receiving capsules
 			int addInterface(std::shared_ptr<San2::Network::CNetInterface> iface);
 			
-			// might block for certain period of time
-			bool sendCapsule(std::shared_ptr<San2::Network::CCapsule> &capsule);
+			bool injectCapsule(std::shared_ptr<San2::Network::CCapsule> capsule);
+			
+			template <class Rep, class Period>
+			bool injectCapsule(std::shared_ptr<San2::Network::CCapsule> capsule, San2::Utils::CThread *thr, std::chrono::duration<Rep, Period> dur);
+			
+			template <class Rep, class Period>
+			bool tryInjectCapsule(std::shared_ptr<San2::Network::CCapsule> capsule, San2::Utils::CThread *thr, std::chrono::duration<Rep, Period> dur);
 			
 			San2::Utils::CProducerConsumer<std::shared_ptr<San2::Network::CCapsule> >& getInputQueue();
 		protected:

@@ -8,17 +8,12 @@ namespace San2
 		public class CLocalInterface
 		{
 		public:
-			San2::Utils::CThread* getThread();
-			
-			// No idea how to fix this mess 
-			void up(); // CTcpInterface
-			
-			
-			
+			// non blocking
 			bool injectCapsule(std::shared_ptr<San2::Network::CCapsule> &capsule);
+			
+			void up();
 			bool sendCapsule(std::shared_ptr<San2::Network::CCapsule> &capsule, San2::Utils::CThread *thr);
-			
-			
+			San2::Utils::CThread* getThread();
 			San2::Network::SanAddress getPeerAddress();
 			San2::Network::SanAddress getInterfaceAddress();
 		protected:
@@ -29,13 +24,7 @@ namespace San2
 			San2::Utils::CProducerConsumer<std::shared_ptr<San2::Network::CCapsule> > m_outputQueue;
 			std::chrono::duration<int> m_duration;
 			
-			std::mutex m_mutexPeerAddress;
-			
 			CTcpInterface& self(){return *this;}
-			
-			friend class CCapsuleReceiver;
-			void setPeerAddress(const San2::Network::SanAddress &address); // mutexed
-			
 		}
 	}
 
