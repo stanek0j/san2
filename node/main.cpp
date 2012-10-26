@@ -4,12 +4,14 @@
 #include <stdlib.h>
 #include <iostream>
 #include <memory>
+#include <algorithm>
 
 #include "cnode.hpp"
 #include "interfaces/tcp/ctcpinterface.hpp"
 #include "utils/platform/sleep.hpp"
 #include "utils/config.hpp"
 #include "utils/log.h"
+#include "utils/hex.hpp"
 
 #define TIME_CON 1000
 #define TIME_RX  1000
@@ -39,8 +41,28 @@ std::string getPeerConfig(San2::Utils::Config::ConfigFile &cfg, int x, const std
 	return cfg.getValue(getKeyTextString(x, key));
 }
 
+// ugly conversion
+bool string2address(const std::string & strAddress, San2::Network::SanAddress &sanAddress)
+{
+	San2::Utils::bytes b;
+	if (San2::Utils::hexToBytes(strAddress, b) != true) // string -> bytes
+	{
+		FILE_LOG(logDEBUG3) << "Cannot convert hex digits (string2address)\n";
+		return false;
+	}
+	
+	printf("b.size(): %d\n", b.size());
+	if (b.size() != San2::Network::sanAddressSize) return false;
+	std::copy(b.begin(), b.end(), sanAddress.begin()); // bytes -> SanAddress
+	return true;
+}
+
+
 int main(int argc, char *argv[])
 {
+	FILELog::ReportingLevel() = logDEBUG4;
+	FILE_LOG(logDEBUG3) << "logger working";
+	
 	if (argc != 2)
 	{
 		printf("Missing parameter: configuration file\nUsage: sanode <configFile>\n");
@@ -57,25 +79,33 @@ int main(int argc, char *argv[])
 		return -1;
 	}
 	
-	std::string localIp, localPort, remoteIp, remotePort;
+	std::string localIp, localPort, remoteIp, remotePort, ifAddress;
+    
+    San2::Utils::bytes ba;
+    San2::Network::SanAddress sanaddr;
 		
 	int i;
 	for (i = 1; ; i++)
 	{
+		ifAddress = getPeerConfig(cfg, i, "ifAddress"); 
 		localIp = getPeerConfig(cfg, i, "localIp");
 		localPort = getPeerConfig(cfg, i, "localPort");
 		remoteIp = getPeerConfig(cfg, i, "remoteIp");
 		remotePort = getPeerConfig(cfg, i, "remotePort");
 		
-		if (!localIp.compare(std::string("")) || !localPort.compare(std::string("")) || !remoteIp.compare(std::string("")) || !remotePort.compare(std::string("")))
+		if (!ifAddress.compare(std::string("")) || !localIp.compare(std::string("")) || !localPort.compare(std::string("")) || !remoteIp.compare(std::string("")) || !remotePort.compare(std::string("")))
 		{
-			printf("failed to load interface %d", i);
+			printf("failed to parse interface %d", i);
 			break;
 		}
 		
+		if (string2address(ifAddress, sanaddr) != true)
+		{
+			printf("failed to parse peer.%d.ifAddress from config\n", i);
+			continue; //skip
+		}
 		
-		
-		std::shared_ptr<San2::Interfaces::CTcpInterface> tcpif(new San2::Interfaces::CTcpInterface(localIp, localPort, remoteIp, remotePort, TIME_CON, TIME_RX, TIME_TX, node.getInputQueue(), TCP_QUEUESIZE));
+		std::shared_ptr<San2::Interfaces::CTcpInterface> tcpif(new San2::Interfaces::CTcpInterface(sanaddr, localIp, localPort, remoteIp, remotePort, TIME_CON, TIME_RX, TIME_TX, node.getInputQueue(), TCP_QUEUESIZE));
 		printf("adding peer #%d\n", i);
 		node.addInterface(tcpif);
 	}

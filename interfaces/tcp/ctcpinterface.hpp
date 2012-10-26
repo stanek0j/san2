@@ -31,16 +31,22 @@
 // Both client and server are (i hope) designed as fault-tolerant
 // so if the remote and disconnects it should reconnect successfully later
 
+#include <mutex>
 #include "comm/streamrpcchannel.hpp"
+#include "ccapsulereceiver.hpp"
+#include "tcp/ctcpclient.hpp"
 
 namespace San2
 {
 	namespace Interfaces
-	{
+	{	
 		class CTcpInterface : public San2::Network::CNetInterface, public San2::Tcp::CTcpClient
 		{
 		public:
-			CTcpInterface(const std::string &localIp, const std::string &localPort, const std::string &remoteIp, const std::string &remotePort, unsigned int timeCON, unsigned int timeRX, unsigned int timeTX, San2::Utils::CProducerConsumer<std::shared_ptr<San2::Network::CCapsule> >& inputQueue, unsigned long maxOutputQueueSize);
+			CTcpInterface(San2::Network::SanAddress sanaddr, const std::string &localIp, const std::string &localPort, const std::string &remoteIp, const std::string &remotePort, unsigned int timeCON, unsigned int timeRX, unsigned int timeTX, San2::Utils::CProducerConsumer<std::shared_ptr<San2::Network::CCapsule> >& inputQueue, unsigned long maxOutputQueueSize);
+			
+			San2::Utils::bytes firstMessage(const San2::Network::SanAddress& addr);
+			
 			San2::Utils::CThread* getThread();
 			
 			// No idea how to fix this mess 
@@ -49,10 +55,21 @@ namespace San2
 			San2::Tcp::TcpErrorCode receive(); // CTcpClient
 			
 			bool sendCapsule(std::shared_ptr<San2::Network::CCapsule> &capsule, San2::Utils::CThread *thr);
+			
+			
+			San2::Network::SanAddress getPeerAddress(); // mutexed
+			
 			San2::Network::SanAddress getInterfaceAddress();
 		protected:
 					
 		private:
+			San2::Network::SanAddress m_sanaddr; // addres of this (local) interface
+			
+			// remote interface address is obtained automatically when remote node TcpClients
+			// connectes to TcpSingleServer. At the beginning the remote end sends
+			// "SAN2" ascii + 16B of his SanAddress
+			San2::Network::SanAddress m_peeraddr;
+			
 			std::string m_localIp, m_localPort;
 			std::string m_remoteIp, m_remotePort;
 			
@@ -68,6 +85,13 @@ namespace San2
 			San2::Comm::StreamRpcChannel *m_rpcChannel;
 			San2::Rpc::CRpcExecutor *m_rpcexec;
 			std::chrono::duration<int> m_duration;
+			
+			std::mutex m_mutexPeerAddress;
+			
+			CTcpInterface& self(){return *this;}
+			
+			friend class CCapsuleReceiver;
+			void setPeerAddress(const San2::Network::SanAddress &address); // mutexed
 		};
 	}
 }

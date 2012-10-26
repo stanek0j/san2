@@ -3,11 +3,16 @@
 #include "interfaces/sendcapsulefunc.hpp"
 #include "utils/platform/sleep.hpp"
 #include "comm/tcpstreamrw.hpp"
+#include "utils/cvector.hpp"
+#include "utils/log.h"
 
 namespace San2 { namespace Interfaces {
+		
 
-CTcpInterface::CTcpInterface(const std::string &localIp, const std::string &localPort, const std::string &remoteIp, const std::string &remotePort, unsigned int timeCON, unsigned int timeRX, unsigned int timeTX, San2::Utils::CProducerConsumer<std::shared_ptr<San2::Network::CCapsule> >& inputQueue, unsigned long maxOutputQueueSize) :
+CTcpInterface::CTcpInterface(San2::Network::SanAddress sanaddr, const std::string &localIp, const std::string &localPort, const std::string &remoteIp, const std::string &remotePort, unsigned int timeCON, unsigned int timeRX, unsigned int timeTX, San2::Utils::CProducerConsumer<std::shared_ptr<San2::Network::CCapsule> >& inputQueue, unsigned long maxOutputQueueSize) :
 	San2::Tcp::CTcpClient(remoteIp, remotePort, timeCON, timeRX, timeTX),
+	m_sanaddr(sanaddr),
+	m_peeraddr(San2::Network::sanDefaultAddress),
 	m_localIp(localIp),
 	m_localPort(localPort),
 	m_remoteIp(remoteIp),
@@ -17,18 +22,30 @@ CTcpInterface::CTcpInterface(const std::string &localIp, const std::string &loca
 	m_timeTX(timeTX),
 	m_inputQueue(inputQueue),
 	m_outputQueue(maxOutputQueueSize),
-	srv(localIp, localPort, timeCON, timeRX, timeTX, inputQueue),
+	srv(self() ,localIp, localPort, timeCON, timeRX, timeTX, inputQueue),
 	m_rpcChannel(NULL),
 	m_rpcexec(NULL)
 {
 	
 }
 
+San2::Utils::bytes CTcpInterface::firstMessage(const San2::Network::SanAddress& addr)
+{
+	// Todo: fix 4
+	San2::Utils::bytes firstMessage;
+	firstMessage.resize(4 + San2::Network::sanAddressSize);
+	firstMessage[0] = 0x53; // S
+	firstMessage[1] = 0x41; // A
+	firstMessage[2] = 0x4E; // N
+	firstMessage[3] = 0x31; // 2
+	std::copy(addr.begin(), addr.end(), firstMessage.begin() + 4);	
+	return firstMessage;
+}
+
 San2::Utils::CThread* CTcpInterface::getThread()
 {
 	return this;
 }
-
 
 void CTcpInterface::up()
 {
@@ -64,6 +81,14 @@ void CTcpInterface::run()
 			if (sleepSec <= 0) sleepSec = 1;
 			
 			San2::Utils::SanSleep(sleepSec);
+			continue;
+		}
+		
+		// TODO: This could block indefinitely. Fix.
+		if (stream.writeAll(firstMessage(m_sanaddr)) != true)
+		{
+			// conection failure, retry
+			// (again, we want to have it fault-tolerant)
 			continue;
 		}
 		
@@ -103,9 +128,23 @@ bool CTcpInterface::sendCapsule(std::shared_ptr<San2::Network::CCapsule> &capsul
 	return r == 0;
 }
 
+void CTcpInterface::setPeerAddress(const San2::Network::SanAddress &address)
+{
+	FILE_LOG(logDEBUG3) << "CTcpInterface::setPeerAddress()";
+	std::unique_lock<std::mutex> lock(m_mutexPeerAddress);
+	m_peeraddr = address;
+}
+
+San2::Network::SanAddress CTcpInterface::getPeerAddress()
+{
+	std::unique_lock<std::mutex> lock(m_mutexPeerAddress);
+	return m_peeraddr; // TODO: fix
+}
+
 San2::Network::SanAddress CTcpInterface::getInterfaceAddress()
 {
-	return San2::Network::SanAddress(); // TODO: fix
+	return m_sanaddr;
 }
+
 
 }} // ns

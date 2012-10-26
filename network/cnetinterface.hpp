@@ -17,6 +17,7 @@ namespace San2
 			// sendCapsule() MUST be implemented as NON-BLOCKING
 			virtual bool sendCapsule(std::shared_ptr<San2::Network::CCapsule> &capsule, San2::Utils::CThread *thr)=0;
 			virtual San2::Utils::CThread* getThread()=0;
+			virtual SanAddress getPeerAddress()=0;
 			virtual SanAddress getInterfaceAddress()=0;			
 		};
 	}

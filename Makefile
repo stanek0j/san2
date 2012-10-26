@@ -7,7 +7,8 @@ LIBS = -lpthread
 OBJS-UTILS = utils/cthread.o \
 			 utils/platform/sleep.o \
 			 utils/cdatapack.o \
-			 utils/config.o
+			 utils/config.o \
+			 utils/hex.o
 
 OBJS-CPPL = cppl/helper.o \
             cppl/pipeclient.o \

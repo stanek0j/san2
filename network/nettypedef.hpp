@@ -3,7 +3,7 @@
 #pragma once
 
 #include <array>
-#include "utils/cvector.hpp"
+#include "utils/cvector.hpp"  
 
 namespace San2
 {
@@ -26,6 +26,9 @@ namespace San2
 		typedef std::array<unsigned char, IPv4Size> IPv4Address;
 		typedef std::array<unsigned char, IPv6Size> IPv6Address;
 		
+		// it is called "aggregate initialization"
+		// and yep, the double brackets are needed
+		const SanAddress sanDefaultAddress{{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}};
 		
 		// flags
 		// DX - destination execute
