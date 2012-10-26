@@ -90,7 +90,7 @@ examples-cppl: examples-cppl-server examples-cppl-client examples-cppl-terminal
 examples-rpc: examples-rpc-server examples-rpc-client examples-rpc-tcpserver examples-rpc-tcpclient
 
 examples-utils-producerconsumer: utils $(OBJS-EXAMPLES-UTILS-PRODUCERCONSUMER)
-	$(CCC) $(OBJS-EXAMPLES-UTILS-PRODUCERCONSUMER) $(OBJS-UTILS) -o ./producerconsumer $(LIBS) $(LDFLAGS)
+	$(CCC) $(OBJS-EXAMPLES-UTILS-PRODUCERCONSUMER) $(OBJS-UTILS) -o ./pctest $(LIBS) $(LDFLAGS)
 
 examples-cppl-server: utils cppl $(OBJS-EXAMPLES-CPPL-SERVER) 
 	$(CCC) $(OBJS-EXAMPLES-CPPL-SERVER) $(OBJS-UTILS) $(OBJS-CPPL) -o ./cppl_server $(LIBS) $(LDFLAGS)

@@ -3,6 +3,7 @@
 
 #include <set>
 #include <memory>
+#include <mutex>
 #include "utils/cproducerconsumer.hpp"
 #include "utils/cthread.hpp"
 #include "network/cnetinterface.hpp"
@@ -20,6 +21,9 @@ namespace San2
 			void run(); // start receiving capsules
 			int addInterface(std::shared_ptr<San2::Network::CNetInterface> iface);
 			
+			// might block for certain period of time
+			bool sendCapsule(std::shared_ptr<San2::Network::CCapsule> &capsule);
+			
 			San2::Utils::CProducerConsumer<std::shared_ptr<San2::Network::CCapsule> >& getInputQueue();
 		protected:
 		 
@@ -28,6 +32,8 @@ namespace San2
 			std::set<std::shared_ptr<San2::Network::CNetInterface> > m_interfaces;
 			
 			std::chrono::duration<int> m_duration;
+			
+			std::mutex m_mutexInterfaces;
 		};
 	}
 

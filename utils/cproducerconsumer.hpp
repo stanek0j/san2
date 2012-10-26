@@ -25,7 +25,8 @@ namespace San2
 			private:
 				unsigned long m_maxQueueSize;
 				std::queue<T, Container> m_que;
-				std::mutex m_mutex; // This is necessary because of MULTIPLE producers and consumers
+				std::mutex m_mutex; 
+				std::mutex m_rwmut;  // This is necessary because of MULTIPLE producers and consumers
 				std::condition_variable m_condNotEmpty;
 				std::condition_variable m_condNotFull;
 				
@@ -65,7 +66,11 @@ namespace San2
 					}
 					
 					if (thr->isTerminated()) return -1;
-					m_que.push(item);
+					
+					m_rwmut.lock();
+						m_que.push(item);
+					m_rwmut.unlock();	
+					
 					m_condNotFull.notify_all();
 					return 0;
 				}
@@ -80,7 +85,24 @@ namespace San2
 						if (thr->isTerminated()) return -1;
 					}
 					if (thr->isTerminated()) return -1;
-					m_que.push(item);
+					
+					m_rwmut.lock();
+						m_que.push(item);
+					m_rwmut.unlock();
+					
+					m_condNotFull.notify_all();
+					return 0;
+				}
+				
+				int push(const T &item)
+				{
+					std::unique_lock<std::mutex> lock(m_mutex);
+					while(isFull())	m_condNotEmpty.wait(lock);
+					
+					m_rwmut.lock();
+						m_que.push(item);
+					m_rwmut.unlock();
+					
 					m_condNotFull.notify_all();
 					return 0;
 				}
@@ -95,9 +117,12 @@ namespace San2
 						if (thr->isTerminated()) return -1; 
 					}
 					if (thr->isTerminated()) return -1; 
+										
+					m_rwmut.lock();
+						*out = m_que.front();
+						m_que.pop();
+					m_rwmut.unlock();
 					
-					*out = m_que.front();
-					m_que.pop();
 					m_condNotEmpty.notify_all();					
 					return 0;
 				}
@@ -113,8 +138,27 @@ namespace San2
 					}
 					
 					if (thr->isTerminated()) return -1;
-					*out = m_que.front();
-					m_que.pop();
+					
+					m_rwmut.lock();
+						*out = m_que.front();
+						m_que.pop();
+					m_rwmut.unlock();
+					
+					m_condNotEmpty.notify_all();					
+					return 0;
+				}
+				
+				
+				int pop(T *out)
+				{
+					std::unique_lock<std::mutex> lock(m_mutex);				
+				    while (isEmpty()) m_condNotFull.wait(lock);
+					
+					m_rwmut.lock();
+						*out = m_que.front();
+						m_que.pop();
+					m_rwmut.unlock();
+					
 					m_condNotEmpty.notify_all();					
 					return 0;
 				}
@@ -122,7 +166,7 @@ namespace San2
 				// informative only
 				unsigned long size()
 				{
-					std::unique_lock<std::mutex> lock(m_mutex);
+					std::lock_guard<std::mutex> lock(m_mutex);
 					return m_que.size();
 				}
 		};

@@ -131,13 +131,13 @@ bool CTcpInterface::sendCapsule(std::shared_ptr<San2::Network::CCapsule> &capsul
 void CTcpInterface::setPeerAddress(const San2::Network::SanAddress &address)
 {
 	FILE_LOG(logDEBUG3) << "CTcpInterface::setPeerAddress()";
-	std::unique_lock<std::mutex> lock(m_mutexPeerAddress);
+	std::lock_guard<std::mutex> lock(m_mutexPeerAddress);
 	m_peeraddr = address;
 }
 
 San2::Network::SanAddress CTcpInterface::getPeerAddress()
 {
-	std::unique_lock<std::mutex> lock(m_mutexPeerAddress);
+	std::lock_guard<std::mutex> lock(m_mutexPeerAddress);
 	return m_peeraddr; // TODO: fix
 }
 
