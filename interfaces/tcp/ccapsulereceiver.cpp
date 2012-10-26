@@ -44,7 +44,7 @@ bool CCapsuleReceiver::parseFirstMessage(const San2::Utils::bytes &data)
 	if (data[0] != 0x53) return false; // S
 	if (data[1] != 0x41) return false; // A
 	if (data[2] != 0x4E) return false; // N
-	if (data[3] != 0x31) return false; // 2
+	if (data[3] != 0x32) return false; // 2
 
 	San2::Network::SanAddress adr;
 

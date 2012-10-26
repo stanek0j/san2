@@ -37,7 +37,7 @@ San2::Utils::bytes CTcpInterface::firstMessage(const San2::Network::SanAddress& 
 	firstMessage[0] = 0x53; // S
 	firstMessage[1] = 0x41; // A
 	firstMessage[2] = 0x4E; // N
-	firstMessage[3] = 0x31; // 2
+	firstMessage[3] = 0x32; // 2
 	std::copy(addr.begin(), addr.end(), firstMessage.begin() + 4);	
 	return firstMessage;
 }
