@@ -22,12 +22,7 @@ void CCapsule::setHop(SAN_UINT16 hop)
 void CCapsule::setDX(bool dx)
 {
 	m_flagDX = dx;
-}					
-					
-void CCapsule::setEX(bool ex)
-{
-	m_flagEX = ex;
-}					
+}							
 	
 SanAddress CCapsule::getSourceAddress()
 {
@@ -56,10 +51,15 @@ const San2::Utils::bytes& CCapsule::getData()
 
 void CCapsule::pack(San2::Utils::bytes &out)
 {
+    //                      dstAddr  srcAddr       hops                  flags                 appId
+    // unsigned int headerSize = 2 * sanAddressSize + sizeof(SAN_UINT16) + sizeof(unsigned char) + sanHashSize;
+
 	out.clear();
-	out.resize(minimumCapsuleHeaderSize + m_data.size());
-	out.insert(out.end(), m_dstAddress.cbegin(), m_dstAddress.cend());
-	out.insert(out.end(), m_srcAddress.cbegin(), m_srcAddress.cend());
+	out.resize(2 * sanAddressSize);	
+	
+	std::copy(m_dstAddress.cbegin(), m_dstAddress.cend(), out.begin());
+	std::copy(m_srcAddress.cbegin(), m_srcAddress.cend(), out.begin() + sanAddressSize);
+	
 	out += hop2bytes(m_hop); 
 	out += constructFlags();
 	out += m_data;
@@ -67,7 +67,37 @@ void CCapsule::pack(San2::Utils::bytes &out)
 
 bool CCapsule::unpack(const San2::Utils::bytes &capsule)
 {
-	return true; // rewri
+    //                        dstAddr  srcAddr       hops                  flags                 appId
+    unsigned int headerSize = 2 * sanAddressSize + sizeof(SAN_UINT16) + sizeof(unsigned char) + sanHashSize;
+	
+	if (capsule.size() < headerSize) return false;
+	
+	San2::Utils::bytes::const_iterator from = capsule.begin();
+	// dstAddr
+	std::copy(from, capsule.begin() + sanAddressSize, m_dstAddress.begin());
+	from += sanAddressSize;
+	
+	// srcAddr
+	std::copy(from, capsule.begin() + sanAddressSize, m_srcAddress.begin());
+	from += sanAddressSize;
+	
+	// hops
+	memcpy(&m_hop, &capsule[0] + 2 * sanAddressSize, sizeof(SAN_UINT16));
+	m_hop = San2::Utils::Endian::san_u_be16toh(m_hop);
+	from += sizeof(SAN_UINT16);
+	
+	// flags
+	parseFlags(capsule[2 * sanAddressSize + sizeof(SAN_UINT16)]);
+	from += sizeof(unsigned char);
+	
+	// hash
+	std::copy(from, from + sanHashSize, m_appId.begin());
+	from += sanHashSize;
+	
+	// data
+	m_data.resize(capsule.size() - headerSize);
+	std::copy(from, capsule.end(), m_data.begin());
+	return true;
 }
 
 San2::Utils::bytes CCapsule::hop2bytes(SAN_UINT16 hop)
@@ -95,8 +125,12 @@ unsigned char CCapsule::constructFlags()
 {
 	unsigned char flags = 0; // 0 - null all flags
 	San2::Utils::Flag::setFlag(flags, SAN_FLAGPOS_DX_POSITION, m_flagDX);
-	San2::Utils::Flag::setFlag(flags, SAN_FLAGPOS_EX_POSITION, m_flagEX);
 	return flags;
+}
+
+void CCapsule::parseFlags(unsigned char flags)
+{
+	m_flagDX = San2::Utils::Flag::getFlag(flags, SAN_FLAGPOS_DX_POSITION);
 }
 
 void CCapsule::setFromInterfaceAddress(SanAddress interfaceAddress)

@@ -115,6 +115,10 @@ int main(int argc, char *argv[])
 	std::string strx = cfg.getValue("testsend");	
 	if (strx.compare(std::string(""))) FILE_LOG(logDEBUG4) << "@@@ sending";
 	
+	
+	San2::Utils::bytes data;
+	data += "DataKapsule"; // pro orientaci v TCP Streamu
+	
 	while(1)
 	{
 		if (strx.compare(std::string("")))
@@ -127,6 +131,15 @@ int main(int argc, char *argv[])
 				FILE_LOG(logDEBUG2) << "failed to parse destination address";
 			}
 			cap->setDestinationAddress(dstAddress);
+			cap->setData(data);
+			
+			/*
+			San2::Utils::bytes x;
+			cap->pack(x);
+			San2::Utils::bytes::printBytesAsString(x);
+			* */
+			
+			
 			node.injectCapsule(cap);
 		}
 		San2::Utils::SanSleep(3);

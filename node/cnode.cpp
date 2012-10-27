@@ -40,7 +40,27 @@ void CNode::run()
 			std::for_each(m_interfaces.begin(), m_interfaces.end(), 
 				[&rval, capsule](std::shared_ptr<San2::Network::CNetInterface> iface) 
 			{
-				if (capsule->getDestinationAddress() == iface->getInterfaceAddress()) rval = true;
+							
+				FILE_LOG(logDEBUG4) << "KK4";
+				
+				printf("capsule->getDestinationAddress(): ");
+				San2::Network::SanAddress tmp = capsule->getDestinationAddress();
+				for (unsigned int v = 0 ; v < San2::Network::sanAddressSize ; ++v ) printf("%02X", tmp[v]);
+				printf("\n");
+				
+				printf("iface->getInterfaceAddress():");
+				tmp = iface->getInterfaceAddress();
+				for (unsigned int v = 0 ; v < San2::Network::sanAddressSize ; ++v ) printf("%02X", tmp[v]);
+				printf("\n");
+				printf("\n");
+				
+				
+				
+				if (capsule->getDestinationAddress() == iface->getInterfaceAddress())
+				{
+					printf("FINAL DESTINATION\n");
+					rval = true;
+				}
 			});
 		}
 		
@@ -55,6 +75,7 @@ void CNode::run()
 		// very simple routing algorithm which checks
 		// if the destination SanAddress matches one of our 
 		// direct peers SanAddress and sends the capsule that way.	
+		rval = false;
 		{
 			std::lock_guard<std::mutex> lock(m_mutexInterfaces);
 			

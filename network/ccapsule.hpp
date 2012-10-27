@@ -5,12 +5,13 @@
 #include "utils/platform/basictypes.hpp"
 
 #define SAN_FLAGPOS_DX_POSITION 0
-#define SAN_FLAGPOS_EX_POSITION 1
 
 namespace San2
 {
 	namespace Network
 	{
+		// const std::size_t minimumCapsuleHeaderSize = sanCapsuleIdSize + (2 * sanAddressSize) + sanHashSize + sanFlagSize + sanHopSize;
+		
 		// NOTE: This class is NOT thread-safe
 		//       only one thread should access instance
 		//       of this class at given time
@@ -29,7 +30,6 @@ namespace San2
 			void setDestinationAddress(SanAddress dstAddress);
 			void setHop(SAN_UINT16 hop);
 			void setDX(bool dx); // Destination eXecute
-			void setEX(bool ex); // Everywhere eXecute
 			void setApplicationId(SanApplicationId appId);
 			
 			SanAddress getFromInterfaceAddress();
@@ -37,7 +37,6 @@ namespace San2
 			SanAddress getDestinationAddress();
 			SAN_UINT16 getHop();
 			bool getDX();
-			bool getEX();
 			SanApplicationId getAppId();
 			
 			// NOTE: this is qutie safe as the only
@@ -67,9 +66,9 @@ namespace San2
 		private:
 			static San2::Utils::bytes hop2bytes(SAN_UINT16 hop);
 			unsigned char constructFlags();
+			void parseFlags(unsigned char flags);
 		
 			bool m_flagDX;
-			bool m_flagEX;
 		
 			SanAddress m_interfaceAddress;
 			SanAddress m_srcAddress;
