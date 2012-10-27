@@ -1,6 +1,7 @@
 
 #include "clenvalueseparator.hpp"
 #include "utils/platform/basictypes.hpp"
+#include "utils/log.h"
 
 namespace San2
 {
@@ -22,7 +23,7 @@ namespace San2
 			San2::Utils::bytes btmp;
 			if (!(m_rw.readExactNumBytesAppend(btmp, sizeof(SAN_UINT32))))
 			{
-				printf("FAIL:CLenValueSeparator::readMessage()::1\n");
+				FILE_LOG(logDEBUG3) << "FAIL:CLenValueSeparator::readMessage()::1";
 				return false;
 			}
 			
@@ -31,11 +32,9 @@ namespace San2
 			memcpy(&iSize, btmp.toArray(), sizeof(SAN_UINT32));			
 			iSize = San2::Utils::Endian::san_u_be32toh(iSize);
 			
-			printf("size is: %d\n", iSize);
-			
 			if (!(m_rw.readExactNumBytesAppend(out, iSize)))
 			{
-				printf("FAIL:CLenValueSeparator::readMessage()::2\n");
+				FILE_LOG(logDEBUG3) << "FAIL:CLenValueSeparator::readMessage()::2";
 				return false;
 			}
 			
@@ -51,7 +50,6 @@ namespace San2
 			San2::Utils::bytes b;
 			std::copy(tmpMessageSize, tmpMessageSize + sizeof(SAN_UINT32), std::back_inserter(b));
 			std::copy(in.begin(), in.end(), std::back_inserter(b));
-			printf("total size: %d\n", b.size());
 			return m_rw.writeAll(b);
 		}
 	}

@@ -49,11 +49,9 @@ bool string2address(const std::string & strAddress, San2::Network::SanAddress &s
 	San2::Utils::bytes b;
 	if (San2::Utils::hexToBytes(strAddress, b) != true) // string -> bytes
 	{
-		FILE_LOG(logDEBUG3) << "Cannot convert hex digits (string2address)\n";
 		return false;
 	}
 	
-	printf("b.size(): %d\n", b.size());
 	if (b.size() != San2::Network::sanAddressSize) return false;
 	std::copy(b.begin(), b.end(), sanAddress.begin()); // bytes -> SanAddress
 	return true;
@@ -97,28 +95,25 @@ int main(int argc, char *argv[])
 		
 		if (!ifAddress.compare(std::string("")) || !localIp.compare(std::string("")) || !localPort.compare(std::string("")) || !remoteIp.compare(std::string("")) || !remotePort.compare(std::string("")))
 		{
-			printf("failed to parse interface %d", i);
+			FILE_LOG(logDEBUG4) << "failed to parse interface" << i;
 			break;
 		}
 		
 		if (string2address(ifAddress, sanaddr) != true)
 		{
-			printf("failed to parse peer.%d.ifAddress from config\n", i);
+			FILE_LOG(logDEBUG4) << "failed to parse peer." << i << ".ifAddress from config";
 			continue; //skip
 		}
 		
 		std::shared_ptr<San2::Interfaces::CTcpInterface> tcpif(new San2::Interfaces::CTcpInterface(sanaddr, localIp, localPort, remoteIp, remotePort, TIME_CON, TIME_RX, TIME_TX, node.getInputQueue(), TCP_QUEUESIZE));
-		printf("adding peer #%d\n", i);
+		FILE_LOG(logDEBUG4) << "adding peer #" << i;
 		node.addInterface(tcpif);
 	}
 	
 	node.start();
 	
-	
-	
-	printf("\ninfinite loop\n");
-	
-	std::string strx = cfg.getValue("testsend");
+	std::string strx = cfg.getValue("testsend");	
+	if (strx.compare(std::string(""))) FILE_LOG(logDEBUG4) << "@@@ sending";
 	
 	while(1)
 	{
@@ -132,8 +127,6 @@ int main(int argc, char *argv[])
 				FILE_LOG(logDEBUG2) << "failed to parse destination address";
 			}
 			cap->setDestinationAddress(dstAddress);
-			
-			FILE_LOG(logDEBUG4) << "@@@ sending";
 			node.injectCapsule(cap);
 		}
 		San2::Utils::SanSleep(3);

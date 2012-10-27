@@ -5,6 +5,7 @@
 #include "comm/tcpstreamrw.hpp"
 #include "utils/cvector.hpp"
 #include "utils/log.h"
+#include "utils/platform/sigignore.hpp"
 
 namespace San2 { namespace Interfaces {
 		
@@ -54,18 +55,25 @@ void CTcpInterface::up()
 
 void CTcpInterface::run()
 {
+	#ifdef LINUX
+		San2::Utils::san_ignore_sigpipe();
+	#endif
+	
 	srv.start(); // start sender thread, it will put received capsules in inputQueue automatically
 	
 	// Now the client=sender stuff
 	
-	printf("CTcpInterface::run()\n");
+	FILE_LOG(logDEBUG4) << "CTcpInterface::run()";
 	
 	San2::Comm::TcpStreamRW stream(2000, this);
 	m_rpcChannel = new San2::Comm::StreamRpcChannel(stream);
 	m_rpcexec = new San2::Rpc::CRpcExecutor(*m_rpcChannel, 5000);
 	bool ret = m_rpcexec->registerFunction([this, &m_sanaddr](){return new SendCapsuleFunc(m_sanaddr, NULL, this);});
-	if (ret) printf("reg success\n");
-	else printf("reg fail\n");
+	if (!ret)
+	{
+		FILE_LOG(logERROR) << "CTcpInterface::run(): registrer function FAILED";
+		return;
+	}	
 	
 	SendCapsuleFunc func(m_sanaddr, NULL, this);
 	
@@ -109,10 +117,10 @@ void CTcpInterface::run()
 			}
 		}
 		
-		printf("CTcpOutputInterface::run(): CONNECTION FAILURE\n");
+		FILE_LOG(logDEBUG4) << "CTcpInterface::run(): CONNECTION FAILURE";
 	}
 	
-	printf("client exit\n");
+	FILE_LOG(logDEBUG4) << "CTcpInterface::run(): returned";
 }
 
 San2::Tcp::TcpErrorCode CTcpInterface::receive()

@@ -2,6 +2,7 @@
 
 #include "ctcpclient.hpp"
 #include "utils/log.h"
+#include "utils/platform/sigignore.hpp"
 
 #define TCP_CTCPCLIENT_RXBUFSIZE 1500
 #define TCP_CTCPCLIENT_WIN_MAXFNAMEBYTES 512
@@ -10,6 +11,9 @@ namespace San2 { namespace Tcp {
 
     void CTcpClient::run()
     {
+		#ifdef LINUX
+			San2::Utils::san_ignore_sigpipe();
+		#endif
         errcode = runProc();
     }
 
@@ -56,7 +60,7 @@ namespace San2 { namespace Tcp {
 
 		if ((ret = getaddrinfo(m_ip.c_str(), m_port.c_str(), &hints, &servinfo)) != 0) 
 		{
-			fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(ret));
+			FILE_LOG(logDEBUG3) << "CTcpClient::open():getaddrinfo: " << gai_strerror(ret);
 			return TcpErrorCode::FAILURE;
 		}
 
@@ -65,14 +69,14 @@ namespace San2 { namespace Tcp {
 		{
 			if ((m_sock = socket(p->ai_family, p->ai_socktype, p->ai_protocol)) == -1) 
 			{
-				perror("client: socket");
+				FILE_LOG(logDEBUG3) << "CTcpClient::open():socket()" << strerror(errno);
 				continue;
 			}
 
 			if (connect(m_sock, p->ai_addr, p->ai_addrlen) == -1) 
 			{
 				san_cleanup_socket(&m_sock);
-				perror("client: connect");
+				// perror("client: connect");
 				continue;
 			}
 
@@ -81,7 +85,7 @@ namespace San2 { namespace Tcp {
 
 		if (p == NULL) 
 		{
-			FILE_LOG(logDEBUG3) << "CTcpClient::open(): failed to connect";
+			// FILE_LOG(logDEBUG3) << "CTcpClient::open(): failed to connect";
 			san_cleanup_socket(&m_sock);
 			return TcpErrorCode::FAILURE;
 		}

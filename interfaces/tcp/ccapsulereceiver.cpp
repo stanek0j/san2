@@ -56,15 +56,18 @@ bool CCapsuleReceiver::parseFirstMessage(const San2::Utils::bytes &data)
 
 San2::Tcp::TcpErrorCode CCapsuleReceiver::receive()
 {
-    printf("CCapsuleReceiver::receive()\n");
+    FILE_LOG(logDEBUG4) << "CCapsuleReceiver::receive()";
     
     San2::Comm::TcpStreamRW stream(2000, this);
 	m_rpcChannel = new San2::Comm::StreamRpcChannel(stream);
 	m_rpcexec = new San2::Rpc::CRpcExecutor(*m_rpcChannel, 5000);
 	
 	bool ret = m_rpcexec->registerFunction([&m_inputQueue, this, &m_iface](){return new SendCapsuleFunc(m_iface.getInterfaceAddress(), &m_inputQueue, this);});
-	if (ret) printf("reg success\n");
-	else printf("reg fail\n");
+	if (!ret)
+	{
+		FILE_LOG(logERROR) << "CCapsuleReceiver::receive(): registrer function FAILED";
+		return San2::Tcp::TcpErrorCode::FAILURE;
+	}	
 	
 	San2::Utils::bytes firstMessage;
 	
@@ -89,7 +92,7 @@ San2::Tcp::TcpErrorCode CCapsuleReceiver::receive()
 	
 	m_rpcexec->run();
 
-	printf("client exit\n");
+	FILE_LOG(logDEBUG4) << "CCapsuleReceiver::receive(): returned";
 	return San2::Tcp::TcpErrorCode::SUCCESS;
 }
 

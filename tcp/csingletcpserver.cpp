@@ -1,5 +1,7 @@
 
 #include "csingletcpserver.hpp"
+#include "utils/log.h"
+#include "utils/platform/sigignore.hpp"
 
 #define CTCP_MAXCONNQUEUE 5
 
@@ -18,6 +20,9 @@ namespace San2 { namespace Tcp {
 	
 	void CSingleTcpServer::run()
     {
+		#ifdef LINUX
+			San2::Utils::san_ignore_sigpipe();
+		#endif
         errcode = runProc();
     }
     
@@ -42,9 +47,9 @@ namespace San2 { namespace Tcp {
 		{
 			#ifdef WINDOWS
 				DWORD gla = GetLastError();
-				printf("GAI_GLA: %d\n", gla);
+				FILE_LOG(logDEBUG3) << "CSingleTcpServer::runProc():getaddrinfo():GetLastError():" << gla;
 			#endif
-			fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(ret));
+			FILE_LOG(logDEBUG3) << "CSingleTcpServer::runProc():getaddrinfo(): " << strerror(errno);
 			return TcpErrorCode::FAILURE;
 		}
 		
@@ -53,7 +58,7 @@ namespace San2 { namespace Tcp {
 		{
 			if ((listenSocket = socket(p->ai_family, p->ai_socktype, p->ai_protocol)) == -1) 
 			{
-				perror("server: socket");
+				FILE_LOG(logDEBUG3) << "CSingleTcpServer::runProc():socket():" << strerror(errno);
 				continue;
 			}
 
@@ -66,14 +71,14 @@ namespace San2 { namespace Tcp {
         	if (setsockopt(listenSocket, SOL_SOCKET, SO_REUSEADDR, (const char *)&yes, sizeof(int)) == -1) 
         #endif
 			{
-				perror("setsockopt");
+				FILE_LOG(logDEBUG3) << "CSingleTcpServer::runProc():setsockopt():" << strerror(errno);
 				return TcpErrorCode::FAILURE;
 			}
 
 			if (bind(listenSocket, p->ai_addr, p->ai_addrlen) == -1) 
 			{
-				SNET_SOCKCLOSE(listenSocket);
-				perror("server: bind");
+				san_cleanup_socket(&listenSocket);
+				FILE_LOG(logDEBUG3) << "CSingleTcpServer::runProc():bind():" << strerror(errno);
 				continue;
 			}
 
@@ -82,7 +87,7 @@ namespace San2 { namespace Tcp {
 
 		if (p == NULL)  
 		{
-			fprintf(stderr, "server: failed to bind\n");
+			FILE_LOG(logDEBUG3) << "CSingleTcpServer::runProc(): failed to bind" << strerror(errno);
 			return TcpErrorCode::FAILURE;
 		}
 
@@ -97,8 +102,8 @@ namespace San2 { namespace Tcp {
 		*/
 		if (listen(listenSocket, CTCP_MAXCONNQUEUE) == -1) 
 		{
-			perror("listen");
-            SNET_SOCKCLOSE(listenSocket);
+			FILE_LOG(logDEBUG3) << "CSingleTcpServer::runProc():listen():" << strerror(errno);
+            san_cleanup_socket(&listenSocket);
 			return TcpErrorCode::FAILURE;
 		}
 	
@@ -137,14 +142,15 @@ namespace San2 { namespace Tcp {
 			TcpErrorCode rc = receive();
 			if (rc != TcpErrorCode::SUCCESS)
 			{
-				if (acceptSocket != SNET_BADSOCKET) SNET_SOCKCLOSE(acceptSocket);
-				if (listenSocket != SNET_BADSOCKET) SNET_SOCKCLOSE(listenSocket);
+				san_cleanup_socket(&acceptSocket);
+				san_cleanup_socket(&listenSocket);
+				FILE_LOG(logDEBUG2) << "CSingleTcpServer::runProc(): exited forever";
 				return rc;
 			}
 		}
 		
-		if (acceptSocket != SNET_BADSOCKET) SNET_SOCKCLOSE(acceptSocket);
-		if (listenSocket != SNET_BADSOCKET) SNET_SOCKCLOSE(listenSocket);
+		san_cleanup_socket(&acceptSocket);
+		san_cleanup_socket(&listenSocket);
 		return TcpErrorCode::SUCCESS;
 	}
 	

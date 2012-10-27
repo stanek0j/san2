@@ -1,6 +1,7 @@
 
 #include <algorithm>
 #include "tcpstreamrw.hpp"
+#include "utils/log.h"
 
 namespace San2 { namespace Comm {
 
@@ -27,14 +28,12 @@ int TcpStreamRW::readSomeAppend(San2::Utils::bytes &data, unsigned int maxCount)
 	
 	if (ret != San2::Tcp::TcpErrorCode::SUCCESS)
 	{ 
-        // TODO: logger
-		printf("FAIL: TcpStreamRW::readSomeAppend::1::::errcode:%d\n", San2::Tcp::errorCodeToInt(ret));
+        FILE_LOG(logDEBUG4) << "FAIL: TcpStreamRW::readSomeAppend():1:errcode:" << San2::Tcp::errorCodeToInt(ret);
 		return -1;
 	}
 	if (bytesRead <= 0)
 	{ 
-        // TODO: logger
-		printf("FAIL: TcpStreamRW::readSomeAppend::2\n");
+		FILE_LOG(logDEBUG4) <<  "FAIL: TcpStreamRW::readSomeAppend::2";
 		return -1;
 	}
 	

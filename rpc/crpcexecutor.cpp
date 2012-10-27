@@ -15,8 +15,6 @@ namespace San2
 		
 		void CRpcExecutor::run()
 		{
-			printf("CRpcExecutor::run() begin\n");
-			
 			San2::Utils::bytes b;
 			unsigned int functionId;
 			
@@ -28,10 +26,8 @@ namespace San2
 					 printf("FAIL: CRpcExecutor::run()::recvData()\n");
 					 break;
 				}
-				printf("b exec\n");
 				if (executeFunction(functionId, b) != RpcError::SUCCESS);
 			}
-			printf("CRpcExecutor::run() end\n");
 		}
 		
 		bool CRpcExecutor::invokeFunction(CIRpcFunction& func)

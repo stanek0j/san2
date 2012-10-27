@@ -58,9 +58,11 @@ void CNode::run()
 		{
 			std::lock_guard<std::mutex> lock(m_mutexInterfaces);
 			
-			FILE_LOG(logDEBUG4) << "KK3";
+			// FILE_LOG(logDEBUG4) << "KK3";
 			std::for_each(m_interfaces.begin(), m_interfaces.end(), [&rval, capsule, this](std::shared_ptr<San2::Network::CNetInterface> iface)
 			{
+				
+				/*
 				FILE_LOG(logDEBUG4) << "KK4";
 				
 				printf("capsule->getDestinationAddress(): ");
@@ -73,12 +75,10 @@ void CNode::run()
 				for (unsigned int v = 0 ; v < San2::Network::sanAddressSize ; ++v ) printf("%02X", tmp[v]);
 				printf("\n");
 				printf("\n");
+				*/
 				
 				if (capsule->getDestinationAddress() == iface->getPeerAddress()) 
 				{
-					
-					
-					FILE_LOG(logDEBUG4) << "KK5";
 					rval = iface->sendCapsule(capsule, this); 
 					if (!rval) 
 					{
