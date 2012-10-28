@@ -20,6 +20,8 @@ namespace San2
 	
 		bool CLenValueSeparator::readMessage(San2::Utils::bytes &out)
 		{
+			out.clear(); // important beacuse of append
+			
 			San2::Utils::bytes btmp;
 			if (!(m_rw.readExactNumBytesAppend(btmp, sizeof(SAN_UINT32))))
 			{
@@ -30,13 +32,17 @@ namespace San2
 			
 			SAN_UINT32 iSize;
 			memcpy(&iSize, btmp.toArray(), sizeof(SAN_UINT32));			
+			
 			iSize = San2::Utils::Endian::san_u_be32toh(iSize);
+			
+			FILE_LOG(logDEBUG4) << "CLenValueSeparator::readMessage:():iSize: " << iSize;
 			
 			if (!(m_rw.readExactNumBytesAppend(out, iSize)))
 			{
 				FILE_LOG(logDEBUG3) << "FAIL:CLenValueSeparator::readMessage()::2";
 				return false;
 			}
+				FILE_LOG(logDEBUG4) << "CLenValueSeparator::readMessage:(): out.size():" << out.size();
 			
 			return true;
 		}
