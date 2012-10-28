@@ -220,6 +220,12 @@ namespace San2
 		};
 		
 		typedef San2::Utils::CVector<unsigned char> bytes;
+		
+		template <class T, std::size_t N>
+		static San2::Utils::CVector<T> arr2vec(const std::array<T, N> &arr)
+		{
+			return San2::Utils::CVector<T> (arr.data(), arr.data() + N);
+		}
 	}
 
 }

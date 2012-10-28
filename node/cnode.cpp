@@ -28,6 +28,7 @@ void CNode::run()
 	{
 		bool rval;
 		
+		FILE_LOG(logDEBUG4) << "CNode::run()::pop(): waiting for pop";
 		m_inputQueue.pop<int>(&capsule, this, m_duration);
 		FILE_LOG(logDEBUG4) << "CNode::run()::pop(): gotCapsule ######";
 		
@@ -40,7 +41,7 @@ void CNode::run()
 			std::for_each(m_interfaces.begin(), m_interfaces.end(), 
 				[&rval, capsule](std::shared_ptr<San2::Network::CNetInterface> iface) 
 			{
-							
+				/*
 				FILE_LOG(logDEBUG4) << "KK4";
 				
 				printf("capsule->getDestinationAddress(): ");
@@ -53,14 +54,9 @@ void CNode::run()
 				for (unsigned int v = 0 ; v < San2::Network::sanAddressSize ; ++v ) printf("%02X", tmp[v]);
 				printf("\n");
 				printf("\n");
+				*/
 				
-				
-				
-				if (capsule->getDestinationAddress() == iface->getInterfaceAddress())
-				{
-					printf("FINAL DESTINATION\n");
-					rval = true;
-				}
+				if (capsule->getDestinationAddress() == iface->getInterfaceAddress()){rval = true;}
 			});
 		}
 		

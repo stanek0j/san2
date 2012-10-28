@@ -139,6 +139,7 @@ clean::
 	rm -f tcp/*.o
 	rm -f interafces/*.o
 	rm -f interafces/tcp/*.o
+	rm -f node/*.o
 	rm -f examples/*.o
 	rm -f examples/utils/*.o
 	rm -f examples/utils/vector/*.o

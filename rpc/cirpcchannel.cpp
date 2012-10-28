@@ -1,6 +1,7 @@
 
 #include "cirpcchannel.hpp"
 #include "utils/platform/basictypes.hpp"
+#include "utils/log.h"
 
 #define SAN_RPC_MAX_FID 65000
 
@@ -25,6 +26,8 @@ namespace San2
 		{
 			if (!recvDatagram(out, timeoutMsec)) return false;
 			if (out.size() < sizeof(SAN_UINT16)) return false;
+			
+			FILE_LOG(logDEBUG4) << "CIRpcChannel::recvData(): out.size(): " << out.size();
 			
 			SAN_UINT16 fid;
 			memcpy(&fid, out.toArray(), sizeof(SAN_UINT16)); // ugly

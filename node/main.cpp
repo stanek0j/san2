@@ -113,7 +113,10 @@ int main(int argc, char *argv[])
 	node.start();
 	
 	std::string strx = cfg.getValue("testsend");	
-	if (strx.compare(std::string(""))) FILE_LOG(logDEBUG4) << "@@@ sending";
+	if (strx.compare(std::string("")))
+	{
+		 FILE_LOG(logDEBUG4) << "@@@ sending";
+	}
 	
 	
 	San2::Utils::bytes data;
@@ -133,11 +136,11 @@ int main(int argc, char *argv[])
 			cap->setDestinationAddress(dstAddress);
 			cap->setData(data);
 			
-			/*
+			
 			San2::Utils::bytes x;
 			cap->pack(x);
-			San2::Utils::bytes::printBytesAsString(x);
-			* */
+			FILE_LOG(logDEBUG4) << "x.size()" << x.size();
+			
 			
 			
 			node.injectCapsule(cap);

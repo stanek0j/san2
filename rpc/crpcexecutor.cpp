@@ -1,6 +1,7 @@
 
 #include <utility>
 #include "crpcexecutor.hpp"
+#include "utils/log.h"
 
 namespace San2
 {
@@ -26,7 +27,11 @@ namespace San2
 					 printf("FAIL: CRpcExecutor::run()::recvData()\n");
 					 break;
 				}
-				if (executeFunction(functionId, b) != RpcError::SUCCESS);
+				
+				if (executeFunction(functionId, b) != RpcError::SUCCESS)
+				{
+					FILE_LOG(logDEBUG3) << "FAIL:CRpcExecutor::run()::executeFunction()";	
+				}
 			}
 		}
 		
@@ -54,8 +59,17 @@ namespace San2
 		{
 			std::shared_ptr<CIRpcFunction> func;
 			bool exists = findFunction(uniqueId, func);
-			if (!exists) return RpcError::FUNCTION_NOT_FOUND;
-			if (!func->unpack(in)) return RpcError::UNPACK_ERROR;
+			
+			if (!exists)
+			{
+				 FILE_LOG(logDEBUG4) << "FAIL: CRpcExecutor::executeFunction(): function not found; funcId:" << uniqueId;		
+				 return RpcError::FUNCTION_NOT_FOUND;
+			}
+			if (!func->unpack(in))
+			{
+				 FILE_LOG(logDEBUG4) << "FAIL: CRpcExecutor::executeFunction(): unpack() error";		
+				 return RpcError::UNPACK_ERROR;
+			}
 			(*func)(); // execute
 			return RpcError::SUCCESS;
 		}

@@ -136,13 +136,15 @@ namespace San2 { namespace Tcp {
 			if (isTerminated())	break;
 			if (acceptSocket == -1) continue; // fault-tolerant
 			
-				
+			
 			//unsigned long ipa = ((struct sockaddr_in) m_remoteAddress).sin_addr.s_addr;
 
+			FILE_LOG(logDEBUG4) << "receiving ========";
 			TcpErrorCode rc = receive();
+			san_cleanup_socket(&acceptSocket);
+			
 			if (rc != TcpErrorCode::SUCCESS)
 			{
-				san_cleanup_socket(&acceptSocket);
 				san_cleanup_socket(&listenSocket);
 				FILE_LOG(logDEBUG2) << "CSingleTcpServer::runProc(): exited forever";
 				return rc;

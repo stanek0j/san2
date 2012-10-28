@@ -113,7 +113,7 @@ void CTcpInterface::run()
 			if (!rval)
 			{
 				FILE_LOG(logDEBUG4) << "CTcpInterface::run(): failed to invoke remote function";
-				 break;
+				break;
 			}
 		}
 		

@@ -51,18 +51,7 @@ const San2::Utils::bytes& CCapsule::getData()
 
 void CCapsule::pack(San2::Utils::bytes &out)
 {
-    //                      dstAddr  srcAddr       hops                  flags                 appId
-    // unsigned int headerSize = 2 * sanAddressSize + sizeof(SAN_UINT16) + sizeof(unsigned char) + sanHashSize;
-
-	out.clear();
-	out.resize(2 * sanAddressSize);	
-	
-	std::copy(m_dstAddress.cbegin(), m_dstAddress.cend(), out.begin());
-	std::copy(m_srcAddress.cbegin(), m_srcAddress.cend(), out.begin() + sanAddressSize);
-	
-	out += hop2bytes(m_hop); 
-	out += constructFlags();
-	out += m_data;
+	out = San2::Utils::arr2vec(m_dstAddress) + San2::Utils::arr2vec(m_srcAddress) + hop2bytes(m_hop) + constructFlags() + San2::Utils::arr2vec(m_appId) + m_data;
 }
 
 bool CCapsule::unpack(const San2::Utils::bytes &capsule)
