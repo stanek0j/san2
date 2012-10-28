@@ -4,7 +4,7 @@ pctest
 cppl_client
 cppl_server
 utils_vector
-terminal
+term
 rpc_server
 rpc_client
 tcprpc_server

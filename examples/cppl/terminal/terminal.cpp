@@ -19,13 +19,6 @@
 
 #define MAX_LINE_LEN 256
 
-#ifdef LINUX
-	#define CLI_PIPENAME "/tmp/asd5345ds1asd315aa"
-#endif
-#ifdef WINDOWS
-	#define CLI_PIPENAME "\\\\.\\pipe\\mynamedpipe"
-#endif
-
 #include "cppl/pipeclient.hpp"
 #include "terminalreceiver.hpp"
 
@@ -38,7 +31,7 @@ int main(int argc, char *argv[])
 	}
 	
 	char line[256];
-	TerminalReceiver pc(CLI_PIPENAME, CLI_TIM_CON, CLI_TIM_RX, CLI_TIM_TX);
+	TerminalReceiver pc(argv[1], CLI_TIM_CON, CLI_TIM_RX, CLI_TIM_TX);
 	San2::Cppl::ErrorCode rval = pc.open();
 	
 	if (rval != San2::Cppl::ErrorCode::SUCCESS) 

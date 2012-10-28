@@ -47,7 +47,7 @@ OBJS-INTERFACES = interfaces/tcp/ccapsulereceiver.o \
 				  interfaces/tcp/ctcpinterface.o
 
 
-OBJS-NODE = node/cnode.o node/main.o
+OBJS-NODE = node/cnode.o node/main.o node/cipcchannel.o
 
 OBJS-EXAMPLES-CPPL-SERVER = examples/cppl/server/server.o \
 							examples/cppl/server/cchannel.o
@@ -100,7 +100,7 @@ examples-cppl-client: utils cppl $(OBJS-EXAMPLES-CPPL-CLIENT)
 	$(CCC) $(OBJS-EXAMPLES-CPPL-CLIENT) $(OBJS-UTILS) $(OBJS-CPPL) -o ./cppl_client $(LIBS) $(LDFLAGS)
 
 examples-cppl-terminal: utils cppl $(OBJS-EXAMPLES-CPPL-TERMINAL) 
-	$(CCC) $(OBJS-EXAMPLES-CPPL-TERMINAL) $(OBJS-UTILS) $(OBJS-CPPL) -o ./terminal $(LIBS) $(LDFLAGS)
+	$(CCC) $(OBJS-EXAMPLES-CPPL-TERMINAL) $(OBJS-UTILS) $(OBJS-CPPL) -o ./term $(LIBS) $(LDFLAGS)
 
 examples-utils-vector: utils $(OBJS-EXAMPLES-UTILS-VECTOR)
 	$(CCC) $(OBJS-EXAMPLES-UTILS-VECTOR) $(OBJS-UTILS) -o ./utils_vector $(LIBS) $(LDFLAGS)
@@ -154,9 +154,11 @@ clean::
 	rm -f cppl_client
 	rm -f utils_vector
 	rm -f producerconsumer
-	rm -f terminal
+	rm -f term
 	rm -f rpc_server
 	rm -f rpc_client
-	
+	rm -f tcprpc_server
+	rm -f tcprpc_client
+	rm -f pctest	
 
 	

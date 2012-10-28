@@ -7,6 +7,7 @@
 #include <algorithm>
 
 #include "cnode.hpp"
+#include "cipcchannel.hpp"
 #include "interfaces/tcp/ctcpinterface.hpp"
 #include "utils/platform/sleep.hpp"
 #include "utils/config.hpp"
@@ -14,6 +15,8 @@
 #include "utils/hex.hpp"
 #include "network/ccapsule.hpp"
 #include "network/nettypedef.hpp"
+#include "cppl/pipeserver.hpp"
+#include "cppl/pipechannel.hpp"
 
 #define TIME_CON 1000
 #define TIME_RX  1000
@@ -60,6 +63,9 @@ bool string2address(const std::string & strAddress, San2::Network::SanAddress &s
 
 int main(int argc, char *argv[])
 {
+	//ps.start();
+	//ps.join();
+	
 	FILELog::ReportingLevel() = logDEBUG4;
 	FILE_LOG(logDEBUG3) << "logger working";
 	
@@ -78,6 +84,19 @@ int main(int argc, char *argv[])
 		printf("failed to load config file: %s\nexiting\n", argv[1]);
 		return -1;
 	}
+	
+	// ---- setup InterProcessComunnication to terminal application
+	
+	std::string ipcAddress = cfg.getValue("ipcAddress");
+	
+	if (!ipcAddress.compare(std::string("")))
+	{
+		printf("failed to parse ipcAddress from configuration file\n");
+		return -2;
+	}
+	
+
+	San2::Cppl::PipeServer ps(ipcAddress.c_str(), [&node] (CPPL_PIPETYPE handle, unsigned int timRX, unsigned int timTX) {return new San2::Node::CIpcChannel(handle, timRX, timTX, node);}, TIME_CON, TIME_RX, TIME_TX);
 	
 	std::string localIp, localPort, remoteIp, remotePort, ifAddress;
     
@@ -111,6 +130,10 @@ int main(int argc, char *argv[])
 	}
 	
 	node.start();
+	printf("starting ipc");
+	ps.start(); // ipc start
+	
+	// ps.join();
 	
 	std::string strx = cfg.getValue("testsend");	
 	if (strx.compare(std::string("")))
