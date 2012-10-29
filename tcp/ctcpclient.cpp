@@ -60,7 +60,14 @@ namespace San2 { namespace Tcp {
 
 		if ((ret = getaddrinfo(m_ip.c_str(), m_port.c_str(), &hints, &servinfo)) != 0) 
 		{
-			FILE_LOG(logDEBUG3) << "CTcpClient::open():getaddrinfo: " << gai_strerror(ret);
+            #ifdef LINUX
+			    FILE_LOG(logDEBUG3) << "CTcpClient::open():getaddrinfo: " << gai_strerror(ret);
+            #endif
+
+            #ifdef WINDOWS
+                FILE_LOG(logDEBUG3) << "CTcpClient::open():getaddrinfo: WSAGetLastError() " <<  WSAGetLastError();
+            #endif
+
 			return TcpErrorCode::FAILURE;
 		}
 

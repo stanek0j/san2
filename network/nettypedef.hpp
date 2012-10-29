@@ -20,8 +20,10 @@ namespace San2
 		
 		// it is called "aggregate initialization"
 		// and yep, the double brackets are needed
-		const SanAddress sanDefaultAddress{{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}};
-		
+        // MSVC again have problems with this
+        // const SanAddress sanDefaultAddress {{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}};
+		const SanAddress sanDefaultAddress = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+
 		// flags
 		// DX - destination execute
 		// EX - each node execute

@@ -1,0 +1,1 @@
+msvc\x64\Debug\sanode.exe winnode3.cfg

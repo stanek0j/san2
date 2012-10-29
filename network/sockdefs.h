@@ -1,5 +1,7 @@
 #pragma once
 
+#pragma comment(lib, "wsock32.lib")
+
 #ifdef UNIX
 	#include <sys/socket.h>
 	#include <sys/types.h>

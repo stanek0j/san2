@@ -62,7 +62,12 @@ San2::Tcp::TcpErrorCode CCapsuleReceiver::receive()
 	m_rpcChannel = new San2::Comm::StreamRpcChannel(stream);
 	m_rpcexec = new San2::Rpc::CRpcExecutor(*m_rpcChannel, 5000);
 	
-	bool ret = m_rpcexec->registerFunction([&m_inputQueue, this, &m_iface](){return new SendCapsuleFunc(m_iface.getInterfaceAddress(), &m_inputQueue, this);});
+    // Another MSVC fix :)
+    // error C3480: a lambda capture variable must be from an enclosing function scope
+    San2::Utils::CProducerConsumer<std::shared_ptr<San2::Network::CCapsule> >& msvc_fix_inputQueue = m_inputQueue;
+    CTcpInterface &msvc_fix_iface = m_iface;
+
+	bool ret = m_rpcexec->registerFunction([&msvc_fix_inputQueue, this, &msvc_fix_iface](){return new SendCapsuleFunc(m_iface.getInterfaceAddress(), &m_inputQueue, this);});
 	if (!ret)
 	{
 		FILE_LOG(logERROR) << "CCapsuleReceiver::receive(): registrer function FAILED";

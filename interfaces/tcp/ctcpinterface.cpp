@@ -68,7 +68,12 @@ void CTcpInterface::run()
 	San2::Comm::TcpStreamRW stream(2000, this);
 	m_rpcChannel = new San2::Comm::StreamRpcChannel(stream);
 	m_rpcexec = new San2::Rpc::CRpcExecutor(*m_rpcChannel, 5000);
-	bool ret = m_rpcexec->registerFunction([this, &m_sanaddr](){return new SendCapsuleFunc(m_sanaddr, NULL, this);});
+
+    // Another MSVC fix :)
+    // error C3480: a lambda capture variable must be from an enclosing function scope
+    San2::Network::SanAddress msvc_fix_sanaddr = m_sanaddr;
+
+	bool ret = m_rpcexec->registerFunction([this, &msvc_fix_sanaddr](){return new SendCapsuleFunc(m_sanaddr, NULL, this);});
 	if (!ret)
 	{
 		FILE_LOG(logERROR) << "CTcpInterface::run(): registrer function FAILED";

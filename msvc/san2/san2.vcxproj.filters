@@ -25,15 +25,15 @@
     <Filter Include="utils\platform">
       <UniqueIdentifier>{ef1a102e-bf46-4d1e-87ac-22406282d6b0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="interfaces">
+      <UniqueIdentifier>{cb4df0e9-7cc4-4b3f-a0b4-d682f38fb035}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="interfaces\tcp">
+      <UniqueIdentifier>{aa0ad635-d0e3-41be-80b7-a26c0e0b5375}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\comm\cpplrpcchannel.cpp">
-      <Filter>comm</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\comm\cpplstreamrw.cpp">
-      <Filter>comm</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\comm\tcprpcchannel.cpp">
       <Filter>comm</Filter>
     </ClCompile>
     <ClCompile Include="..\..\comm\tcpstreamrw.cpp">
@@ -96,15 +96,30 @@
     <ClCompile Include="..\..\stream\clenvalueseparator.cpp">
       <Filter>stream</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\comm\streamrpcchannel.cpp">
+      <Filter>comm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\interfaces\tcp\ccapsulereceiver.cpp">
+      <Filter>interfaces\tcp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\interfaces\tcp\ctcpinterface.cpp">
+      <Filter>interfaces\tcp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\interfaces\sendcapsulefunc.cpp">
+      <Filter>interfaces</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\utils\config.cpp">
+      <Filter>utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\utils\hex.cpp">
+      <Filter>utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tcp\csingletcpserver.cpp">
+      <Filter>tcp</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\comm\cpplrpcchannel.hpp">
-      <Filter>comm</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\comm\cpplstreamrw.hpp">
-      <Filter>comm</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\comm\tcprpcchannel.hpp">
       <Filter>comm</Filter>
     </ClInclude>
     <ClInclude Include="..\..\comm\tcpstreamrw.hpp">
@@ -196,6 +211,27 @@
     </ClInclude>
     <ClInclude Include="..\..\stream\clenvalueseparator.hpp">
       <Filter>stream</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\comm\streamrpcchannel.hpp">
+      <Filter>comm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\interfaces\tcp\ccapsulereceiver.hpp">
+      <Filter>interfaces\tcp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\interfaces\tcp\ctcpinterface.hpp">
+      <Filter>interfaces\tcp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\interfaces\sendcapsulefunc.hpp">
+      <Filter>interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\utils\config.hpp">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\utils\hex.hpp">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tcp\csingletcpserver.hpp">
+      <Filter>tcp</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

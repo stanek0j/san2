@@ -85,6 +85,18 @@ int main(int argc, char *argv[])
 		return -1;
 	}
 	
+    // Start WSA
+
+    #ifdef WIN32
+		WSADATA wsaData;
+		int ret = WSAStartup(0x202, &wsaData);
+		if (ret)
+		{
+			printf("WSAStartup failed: %d", ret);
+			return -1;
+		}
+	#endif
+
 	// ---- setup InterProcessComunnication to terminal application
 	
 	std::string ipcAddress = cfg.getValue("ipcAddress");
@@ -173,5 +185,10 @@ int main(int argc, char *argv[])
 		San2::Utils::SanSleep(3);
 	}
 	
+   	#ifdef WIN32
+		// TODO: Error checking
+		WSACleanup();
+	#endif
+
 	return 0;
 }
