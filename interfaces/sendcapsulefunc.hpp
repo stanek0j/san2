@@ -12,7 +12,7 @@ namespace San2 {
 		class SendCapsuleFunc : public San2::Rpc::CIRpcFunction
 		{
 		public:
-			static const int timeoutSec;
+			static const int timeoutMilisec;
 		
 			SendCapsuleFunc(const San2::Network::SanAddress &interfaceAddress, San2::Utils::CProducerConsumer<std::shared_ptr<San2::Network::CCapsule> > *inputQueue, San2::Utils::CThread* thr);
 			bool setCapsuleToSend(std::shared_ptr<San2::Network::CCapsule> capsule);
@@ -25,7 +25,7 @@ namespace San2 {
 			const San2::Network::SanAddress &m_interfaceAddress;
 			San2::Utils::bytes m_SerializedCapsule;
 			San2::Utils::CProducerConsumer<std::shared_ptr<San2::Network::CCapsule> > *m_inputQueue;
-			std::chrono::duration<int> m_duration;
+			std::chrono::milliseconds m_duration;
 			San2::Utils::CThread* m_thr;
 		};
 	}

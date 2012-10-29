@@ -84,7 +84,7 @@ namespace San2
 			// Sender part
 			San2::Comm::StreamRpcChannel *m_rpcChannel;
 			San2::Rpc::CRpcExecutor *m_rpcexec;
-			std::chrono::duration<int> m_duration;
+			std::chrono::milliseconds m_duration;
 			
 			std::mutex m_mutexPeerAddress;
 			

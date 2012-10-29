@@ -25,7 +25,8 @@ CTcpInterface::CTcpInterface(San2::Network::SanAddress sanaddr, const std::strin
 	m_outputQueue(maxOutputQueueSize),
 	srv(self() ,localIp, localPort, timeCON, timeRX, timeTX, inputQueue),
 	m_rpcChannel(NULL),
-	m_rpcexec(NULL)
+	m_rpcexec(NULL),
+	m_duration(3000) // TODO: fix
 {
 	
 }
@@ -107,7 +108,7 @@ void CTcpInterface::run()
 		while(!isTerminated())
 		{
 			std::shared_ptr<San2::Network::CCapsule> capsule;
-			m_outputQueue.pop<int>(&capsule, this, m_duration);
+			m_outputQueue.pop(&capsule, this, m_duration);
 			if (func.setCapsuleToSend(capsule) != true)
 			{
 				FILE_LOG(logWARNING) << "CTcpInterface::run(): capsule packing failed()";	
@@ -143,7 +144,7 @@ bool CTcpInterface::sendCapsule(std::shared_ptr<San2::Network::CCapsule> capsule
 	
 	// Should not block too long
 	// TODO: Needs fix
-	int r = m_outputQueue.try_push<int>(capsule, thr, m_duration);
+	int r = m_outputQueue.try_push(capsule, thr, m_duration);
 
 	return r == 0;
 }

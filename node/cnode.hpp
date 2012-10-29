@@ -38,7 +38,7 @@ namespace San2
 			San2::Utils::CProducerConsumer<std::shared_ptr<San2::Network::CCapsule> > m_inputQueue;
 			std::set<std::shared_ptr<San2::Network::CNetInterface> > m_interfaces;
 			
-			std::chrono::duration<int> m_duration;
+			std::chrono::milliseconds m_duration;
 			
 			std::mutex m_mutexInterfaces;
 			const std::string m_nodeName; // used for orientation in terminal, nothing else

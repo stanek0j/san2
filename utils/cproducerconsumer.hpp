@@ -14,6 +14,7 @@
 #include <stdio.h>
 
 #include "cthread.hpp"
+#include "utils/log.h"
 
 namespace San2
 {
@@ -54,14 +55,14 @@ namespace San2
 					
 				}
 
-				template <class Rep, class Period>
-				int try_push(const T &item, CThread *thr, std::chrono::duration<Rep, Period> duration)
+				int try_push(const T &item, CThread *thr, std::chrono::milliseconds duration)
 				{
 					std::unique_lock<std::mutex> lock(m_mutex);
 					
 					while(isFull())
 					{
 						if (m_condNotEmpty.wait_for(lock, duration) == std::cv_status::timeout)	return -2;
+						FILE_LOG(logDEBUG4) << "pc.try_push()";
 						if (thr->isTerminated()) return -1;
 					}
 					
@@ -75,13 +76,13 @@ namespace San2
 					return 0;
 				}
 
-				template <class Rep, class Period>
-				int push(const T &item, CThread *thr, std::chrono::duration<Rep, Period> duration)
+				int push(const T &item, CThread *thr, std::chrono::milliseconds duration)
 				{
 					std::unique_lock<std::mutex> lock(m_mutex);
 					while(isFull())
 					{
 						m_condNotEmpty.wait_for(lock, duration);
+						FILE_LOG(logDEBUG4) << "pc.push()";
 						if (thr->isTerminated()) return -1;
 					}
 					if (thr->isTerminated()) return -1;
@@ -107,13 +108,13 @@ namespace San2
 					return 0;
 				}
 
-				template <class Rep, class Period>
-				int try_pop(T *out, CThread *thr, std::chrono::duration<Rep, Period> duration)
+				int try_pop(T *out, CThread *thr, std::chrono::milliseconds duration)
 				{
 					std::unique_lock<std::mutex> lock(m_mutex);				
 				    while (isEmpty())
 				    { 
 						if (m_condNotFull.wait_for(lock, duration) == std::cv_status::timeout) return -2;
+						FILE_LOG(logDEBUG4) << "pc.try_pop()";
 						if (thr->isTerminated()) return -1; 
 					}
 					if (thr->isTerminated()) return -1; 
@@ -127,13 +128,13 @@ namespace San2
 					return 0;
 				}
 
-				template <class Rep, class Period>
-				int pop(T *out, CThread *thr, std::chrono::duration<Rep, Period> duration)
+				int pop(T *out, CThread *thr, std::chrono::milliseconds duration)
 				{
 					std::unique_lock<std::mutex> lock(m_mutex);				
 				    while (isEmpty())
 				    { 
 						m_condNotFull.wait_for(lock, duration);
+						FILE_LOG(logDEBUG4) << "pc.pop()";
 						if (thr->isTerminated()) return -1;
 					}
 					

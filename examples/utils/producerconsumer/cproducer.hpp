@@ -23,12 +23,12 @@ namespace San2
 				
 				void run()
 				{
-					std::chrono::duration<int, std::milli> dur(100);
+					std::chrono::milliseconds dur(2000);
 					//printf("producer started\n");
 					T t;
 					while (!isTerminated()) 
 					{
-						m_pc.template push<int>(t, this, dur);
+						m_pc.push(t, this, dur);
 					}
 				}
 			

@@ -1,4 +1,5 @@
 
+#include <string>
 #include "bufferprocessor.hpp"
 
 namespace San2 { namespace Cppl {

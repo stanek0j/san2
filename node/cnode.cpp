@@ -9,7 +9,7 @@ namespace San2 { namespace Node {
 
 CNode::CNode(unsigned int inputQueueMaxSize, std::string nodeName) :
 	m_inputQueue(inputQueueMaxSize),
-	m_duration(3),
+	m_duration(3000),
 	m_nodeName(nodeName)
 {
 
@@ -30,7 +30,7 @@ void CNode::run()
 		bool rval;
 		
 		FILE_LOG(logDEBUG4) << "CNode::run()::pop(): waiting for pop";
-		m_inputQueue.pop<int>(&capsule, this, m_duration);
+		m_inputQueue.pop(&capsule, this, m_duration);
 		FILE_LOG(logDEBUG4) << "CNode::run()::pop(): gotCapsule ######";
 		
 	
