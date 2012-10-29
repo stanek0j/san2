@@ -233,5 +233,8 @@
     <ClInclude Include="..\..\tcp\csingletcpserver.hpp">
       <Filter>tcp</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\utils\log.h">
+      <Filter>utils</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

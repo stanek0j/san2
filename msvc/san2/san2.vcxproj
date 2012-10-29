@@ -85,6 +85,7 @@
     <ClInclude Include="..\..\utils\cvector.hpp" />
     <ClInclude Include="..\..\utils\flag.hpp" />
     <ClInclude Include="..\..\utils\hex.hpp" />
+    <ClInclude Include="..\..\utils\log.h" />
     <ClInclude Include="..\..\utils\platform\basictypes.hpp" />
     <ClInclude Include="..\..\utils\platform\sleep.hpp" />
   </ItemGroup>
