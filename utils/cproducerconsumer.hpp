@@ -14,7 +14,6 @@
 #include <stdio.h>
 
 #include "cthread.hpp"
-#include "utils/log.h"
 
 namespace San2
 {
@@ -62,7 +61,6 @@ namespace San2
 					while(isFull())
 					{
 						if (m_condNotEmpty.wait_for(lock, duration) == std::cv_status::timeout)	return -2;
-						FILE_LOG(logDEBUG4) << "pc.try_push()";
 						if (thr->isTerminated()) return -1;
 					}
 					
@@ -82,7 +80,6 @@ namespace San2
 					while(isFull())
 					{
 						m_condNotEmpty.wait_for(lock, duration);
-						FILE_LOG(logDEBUG4) << "pc.push()";
 						if (thr->isTerminated()) return -1;
 					}
 					if (thr->isTerminated()) return -1;
@@ -114,7 +111,6 @@ namespace San2
 				    while (isEmpty())
 				    { 
 						if (m_condNotFull.wait_for(lock, duration) == std::cv_status::timeout) return -2;
-						FILE_LOG(logDEBUG4) << "pc.try_pop()";
 						if (thr->isTerminated()) return -1; 
 					}
 					if (thr->isTerminated()) return -1; 
@@ -134,7 +130,6 @@ namespace San2
 				    while (isEmpty())
 				    { 
 						m_condNotFull.wait_for(lock, duration);
-						FILE_LOG(logDEBUG4) << "pc.pop()";
 						if (thr->isTerminated()) return -1;
 					}
 					
