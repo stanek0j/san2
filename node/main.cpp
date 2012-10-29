@@ -147,13 +147,18 @@ int main(int argc, char *argv[])
 	printf("starting ipc");
 	ps.start(); // ipc start
 	
-	// ps.join();
-	
+
+    // --- TEST ODESILANI KAPSULE (PUJDE BRZO PRYC (bude nahrazen prikazem v terminalu))
+
 	std::string strx = cfg.getValue("testsend");	
-	if (strx.compare(std::string("")))
+	if (strx.compare(std::string("")) == 0)
 	{
-		 FILE_LOG(logDEBUG4) << "@@@ sending";
+		node.join();
 	}
+    else
+    {
+        FILE_LOG(logDEBUG4) << "@@@ sending";
+    }
 	
 	
 	San2::Utils::bytes data;
@@ -161,27 +166,18 @@ int main(int argc, char *argv[])
 	
 	while(1)
 	{
-		if (strx.compare(std::string("")))
+        FILE_LOG(logDEBUG4) << "@@@ sending capsule";
+		std::shared_ptr<San2::Network::CCapsule> cap(new San2::Network::CCapsule);
+			
+		San2::Network::SanAddress dstAddress;
+		if (string2address("000000000000000000000000000000000000000000000000000000000000FF31", dstAddress) != true)
 		{
-			std::shared_ptr<San2::Network::CCapsule> cap(new San2::Network::CCapsule);
-			
-			San2::Network::SanAddress dstAddress;
-			if (string2address("000000000000000000000000000000000000000000000000000000000000FF31", dstAddress) != true)
-			{
-				FILE_LOG(logDEBUG2) << "failed to parse destination address";
-			}
-			cap->setDestinationAddress(dstAddress);
-			cap->setData(data);
-			
-			
-			San2::Utils::bytes x;
-			cap->pack(x);
-			FILE_LOG(logDEBUG4) << "x.size()" << x.size();
-			
-			
-			
-			node.injectCapsule(cap);
+			FILE_LOG(logDEBUG2) << "failed to parse destination address";
 		}
+		cap->setDestinationAddress(dstAddress);
+		cap->setData(data);
+						
+		node.injectCapsule(cap);
 		San2::Utils::SanSleep(3);
 	}
 	

@@ -15,6 +15,7 @@
 
 
 #include "tcphelper.hpp"
+#include "utils/log.h"
 
 namespace San2 { namespace Tcp {
 	
@@ -94,7 +95,7 @@ namespace San2 { namespace Tcp {
 		
 		TcpErrorCode sock_read_stream(SNET_SOCKTYPE sock, San2::Utils::CThread *thr, char *data, unsigned int dataSize, unsigned int *bytesRead, unsigned int mTimRX)
 		{
-			if (sock == -1) return TcpErrorCode::FAILURE;
+			if (sock == -1) return TcpErrorCode::FAILURE;  
 			fd_set fds;
 			// struct sockaddr_un remoteAddress;
 			int selRval;
@@ -119,18 +120,19 @@ namespace San2 { namespace Tcp {
 				
 				if (thr->isTerminated()) return TcpErrorCode::TERMINATED;
 				
-				if (selRval == 0) continue; // timeout, terminated check already performed
 				if (selRval < 0) return TcpErrorCode::FAILURE;
             #endif
+
+                if (selRval == 0) continue; // timeout, terminated check already performed
 
             #ifdef WINDOWS
                 if (thr->isTerminated()) return TcpErrorCode::TERMINATED;
 
                 if (selRval == SOCKET_ERROR)
                 {
-                    DWORD gla = GetLastError();
-                    if (gla == WSAEINTR || gla == WSAETIMEDOUT) continue; // INTERRUPT continue
-                    // printf(.....);
+                    DWORD wsaerr = WSAGetLastError();
+                    if (wsaerr == WSAEINTR || wsaerr == WSAETIMEDOUT) continue; // INTERRUPT continue
+                    FILE_LOG(logDEBUG4) << "FAIL: sock_read_stream(): select(): " << wsaerr;
                     return TcpErrorCode::FAILURE;
                 }
             #endif
@@ -147,8 +149,9 @@ namespace San2 { namespace Tcp {
         #ifdef WINDOWS
             if (*bytesRead == SOCKET_ERROR)
             {
-                DWORD gla = GetLastError();
-                if (gla == WSAESHUTDOWN || gla == WSAECONNRESET) return TcpErrorCode::PEER_DISCONNECT;
+                DWORD wsaerr = GetLastError();
+                if (wsaerr == WSAESHUTDOWN || wsaerr == WSAECONNRESET) return TcpErrorCode::PEER_DISCONNECT;
+                FILE_LOG(logDEBUG4) << "FAIL: sock_read_stream(): recv():2: " << wsaerr;
                 return TcpErrorCode::FAILURE;
             }
         #endif

@@ -63,8 +63,6 @@ void CTcpInterface::run()
 	
 	// Now the client=sender stuff
 	
-	FILE_LOG(logDEBUG4) << "CTcpInterface::run()";
-	
 	San2::Comm::TcpStreamRW stream(2000, this);
 	m_rpcChannel = new San2::Comm::StreamRpcChannel(stream);
 	m_rpcexec = new San2::Rpc::CRpcExecutor(*m_rpcChannel, 5000);
@@ -87,6 +85,7 @@ void CTcpInterface::run()
 	// Fault-tolerant client
 	while(!isTerminated()) // When node fails and reconnectes, this ensures connection will be ok
 	{
+        FILE_LOG(logDEBUG4) << "CTcpInterface::run(): client (re)started";
 		if (open() != San2::Tcp::TcpErrorCode::SUCCESS)
 		{
 			unsigned int sleepSec = m_timeCON / 1000;
