@@ -7,9 +7,10 @@
 
 namespace San2 { namespace Node {
 
-CNode::CNode(unsigned int inputQueueMaxSize) :
+CNode::CNode(unsigned int inputQueueMaxSize, std::string nodeName) :
 	m_inputQueue(inputQueueMaxSize),
-	m_duration(3)
+	m_duration(3),
+	m_nodeName(nodeName)
 {
 
 }
@@ -148,5 +149,9 @@ bool CNode::tryInjectCapsule(std::shared_ptr<San2::Network::CCapsule> capsule, S
 	return m_inputQueue.try_push(capsule, this, dur);
 }
 
+std::string CNode::getNodeName() const
+{
+	return m_nodeName;
+}
 
 }} // ns

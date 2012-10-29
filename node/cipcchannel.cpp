@@ -1,5 +1,9 @@
 
+#include <string>
+#include <string.h>
+
 #include "cipcchannel.hpp"
+#include "utils/log.h"
 
 namespace San2 { namespace Node {
 
@@ -15,42 +19,55 @@ CIpcChannel::~CIpcChannel()
 	// empty
 }
 
-San2::Cppl::ErrorCode CIpcChannel::receive()
+void CIpcChannel::printShell()
 {
+	San2::Cppl::BufferProcessor::send(m_node.getNodeName());
+    San2::Cppl::BufferProcessor::send(">");
+}
+
+San2::Cppl::ErrorCode CIpcChannel::receive()
+{	
 	const unsigned int lineSize = 512;
 	char line[lineSize];
 	
+	sendLine("Welcome to SAN node terminal");
+	
 	while (1)
-	{
+	{		
+		printShell();
+			
 		San2::Cppl::ErrorCode rval = readLine(line, lineSize);
+		printf("READLINE\n");
 		if (rval != San2::Cppl::ErrorCode::SUCCESS)
 		{
 			if (rval == San2::Cppl::ErrorCode::PEER_DISCONNECT)
 			{
-				printf("peer disconnected\n");
+				// FILE_LOG(logDEBUG4) <<  "terminal peer disconnected";
 				return rval;
 			}
-			printf("readLine failed errcode: %d\n", errorCodeToInt(rval));
-			
+			FILE_LOG(logDEBUG4) <<  "CIpcChannel::receive():readLine(): failed errorcode: " << errorCodeToInt(rval);
 			break;
 		}
 		
-		unsigned int lineLen = strlen(line); 
-		printf("got line of length: %d\n", lineLen);
-		
-		line[strlen(line)] = 0x0A;
-		lineLen++;
-		
-		San2::Cppl::ErrorCode sendRval = send(line, lineLen);
+		if (strlen(line) == 0)
+        {
+            continue;
+        }
+        
+	    std::string sline(line);
 
-		if (sendRval != San2::Cppl::ErrorCode::SUCCESS) // echo
-		{
-			printf("CServer::receive(): send() error\n");
-			return San2::Cppl::ErrorCode::FAILURE;
-		}
+	    if (!sline.compare("exit"))
+	    {
+           San2::Cppl::BufferProcessor::sendLine("exit requested");
+		   return San2::Cppl::ErrorCode::REQUEST_DISCONNECT;
+	    }
+
+
+	    San2::Cppl::BufferProcessor::sendLine("unknown command");
+	    continue;
+		
 	}
 	
-	printf("server exit\n");
 	return San2::Cppl::ErrorCode::SUCCESS;
 }
 

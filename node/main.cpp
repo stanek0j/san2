@@ -75,7 +75,7 @@ int main(int argc, char *argv[])
 		return -1;
 	}
 	
-	San2::Node::CNode node(INPUT_QUEUE_SIZE);
+	
 	
 	San2::Utils::Config::ConfigFile cfg;
 	
@@ -95,6 +95,8 @@ int main(int argc, char *argv[])
 		return -2;
 	}
 	
+
+	San2::Node::CNode node(INPUT_QUEUE_SIZE, cfg.getValue("nodeName"));
 
 	San2::Cppl::PipeServer ps(ipcAddress.c_str(), [&node] (CPPL_PIPETYPE handle, unsigned int timRX, unsigned int timTX) {return new San2::Node::CIpcChannel(handle, timRX, timTX, node);}, TIME_CON, TIME_RX, TIME_TX);
 	

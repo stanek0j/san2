@@ -16,7 +16,9 @@ namespace San2
 			San2::Cppl::ErrorCode receive();
 
 			private:
-
+			
+			void printShell();
+			
 			 // another msvc fix
 			#ifdef LINUX
 				CIpcChannel(const CIpcChannel& copyFromMe)=delete;

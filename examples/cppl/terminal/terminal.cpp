@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
 		return -1;
 	}
 	
-	char line[256];
+	char line[MAX_LINE_LEN];
 	TerminalReceiver pc(argv[1], CLI_TIM_CON, CLI_TIM_RX, CLI_TIM_TX);
 	San2::Cppl::ErrorCode rval = pc.open();
 	
@@ -46,20 +46,11 @@ int main(int argc, char *argv[])
 	{
 		std::cin.getline(line, MAX_LINE_LEN);
 		
-		rval = pc.send(line, strlen(line));
-		if (rval != San2::Cppl::ErrorCode::SUCCESS)
+		if (pc.sendLine(line) != San2::Cppl::ErrorCode::SUCCESS)
 		{
 			printf("error: sending data from client to server failed\n");
 			break;
 		}
-
-		rval = pc.send("\x0A", 1); // line feed
-		if (rval != San2::Cppl::ErrorCode::SUCCESS)
-		{
-			printf("error: sending data from client to server failed\n");
-			break;
-		} 
-
 	}
 
 	printf("\nTerminating client ...\n");

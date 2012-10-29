@@ -16,7 +16,7 @@ namespace San2
 		class CNode : public San2::Utils::CThread
 		{
 		public:
-			CNode(unsigned int inputQueueMaxSize);
+			CNode(unsigned int inputQueueMaxSize, std::string nodeName);
 		
 			void run(); // start receiving capsules
 			int addInterface(std::shared_ptr<San2::Network::CNetInterface> iface);
@@ -30,6 +30,8 @@ namespace San2
 			bool tryInjectCapsule(std::shared_ptr<San2::Network::CCapsule> capsule, San2::Utils::CThread *thr, std::chrono::duration<Rep, Period> dur);
 			
 			San2::Utils::CProducerConsumer<std::shared_ptr<San2::Network::CCapsule> >& getInputQueue();
+			
+			std::string getNodeName() const;
 		protected:
 		 
 		private:
@@ -39,6 +41,7 @@ namespace San2
 			std::chrono::duration<int> m_duration;
 			
 			std::mutex m_mutexInterfaces;
+			const std::string m_nodeName; // used for orientation in terminal, nothing else
 		};
 	}
 

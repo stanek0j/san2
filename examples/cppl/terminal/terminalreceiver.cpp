@@ -15,7 +15,11 @@ San2::Cppl::ErrorCode TerminalReceiver::receive()
 	unsigned int bytesRead;
 	const unsigned int dataSize = 512;
 	char data[dataSize];
-	while(readSome(data, dataSize, &bytesRead) == San2::Cppl::ErrorCode::SUCCESS) fwrite(data, 1, bytesRead, stdout);	
+	while(readSome(data, dataSize, &bytesRead) == San2::Cppl::ErrorCode::SUCCESS)
+	{
+		 fwrite(data, 1, bytesRead, stdout);	
+		 fflush(stdout); // important, really ! Otherwise it sucks and does not write everything at once.
+	}
 	return San2::Cppl::ErrorCode::SUCCESS;
 }
  
