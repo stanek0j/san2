@@ -180,6 +180,8 @@ namespace San2
 					return *this;
 				}    
 				
+                // ===== "SPECIALIZATION" to usigned char ======
+
 				static CVector<unsigned char> array2bytes(const unsigned char *in, int len)
 				{
 					CVector<unsigned char> ret;
@@ -222,7 +224,7 @@ namespace San2
 		typedef San2::Utils::CVector<unsigned char> bytes;
 		
 		template <class T, std::size_t N>
-		static San2::Utils::CVector<T> arr2vec(const std::array<T, N> &arr)
+		static San2::Utils::CVector<T> arr2vec(const std::array<T, N> &arr) // TODO: why static outside class? typo?
 		{
 			return San2::Utils::CVector<T> (arr.data(), arr.data() + N);
 		}

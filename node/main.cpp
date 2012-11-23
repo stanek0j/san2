@@ -13,6 +13,8 @@
 #include "utils/config.hpp"
 #include "utils/log.h"
 #include "utils/hex.hpp"
+#include "utils/address.hpp"
+
 #include "network/ccapsule.hpp"
 #include "network/nettypedef.hpp"
 #include "cppl/pipeserver.hpp"
@@ -46,19 +48,7 @@ std::string getPeerConfig(San2::Utils::Config::ConfigFile &cfg, int x, const std
 	return cfg.getValue(getKeyTextString(x, key));
 }
 
-// ugly conversion
-bool string2address(const std::string & strAddress, San2::Network::SanAddress &sanAddress)
-{
-	San2::Utils::bytes b;
-	if (San2::Utils::hexToBytes(strAddress, b) != true) // string -> bytes
-	{
-		return false;
-	}
-	
-	if (b.size() != San2::Network::sanAddressSize) return false;
-	std::copy(b.begin(), b.end(), sanAddress.begin()); // bytes -> SanAddress
-	return true;
-}
+
 
 
 int main(int argc, char *argv[])
@@ -132,7 +122,7 @@ int main(int argc, char *argv[])
 			break;
 		}
 		
-		if (string2address(ifAddress, sanaddr) != true)
+		if (San2::Utils::string2address(ifAddress, sanaddr) != true)
 		{
 			FILE_LOG(logDEBUG4) << "failed to parse peer." << i << ".ifAddress from config";
 			continue; //skip
@@ -170,7 +160,7 @@ int main(int argc, char *argv[])
 		std::shared_ptr<San2::Network::CCapsule> cap(new San2::Network::CCapsule);
 			
 		San2::Network::SanAddress dstAddress;
-		if (string2address("000000000000000000000000000000000000000000000000000000000000FF31", dstAddress) != true)
+		if (San2::Utils::string2address("000000000000000000000000000000000000000000000000000000000000FF31", dstAddress) != true)
 		{
 			FILE_LOG(logDEBUG2) << "failed to parse destination address";
 		}

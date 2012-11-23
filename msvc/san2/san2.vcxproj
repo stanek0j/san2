@@ -42,6 +42,7 @@
     <ClCompile Include="..\..\tcp\ctcpclient.cpp" />
     <ClCompile Include="..\..\tcp\ctcpserver.cpp" />
     <ClCompile Include="..\..\tcp\tcphelper.cpp" />
+    <ClCompile Include="..\..\utils\address.cpp" />
     <ClCompile Include="..\..\utils\cdatapack.cpp" />
     <ClCompile Include="..\..\utils\config.cpp" />
     <ClCompile Include="..\..\utils\cstringutils.cpp" />
@@ -62,7 +63,7 @@
     <ClInclude Include="..\..\interfaces\tcp\ccapsulereceiver.hpp" />
     <ClInclude Include="..\..\interfaces\tcp\ctcpinterface.hpp" />
     <ClInclude Include="..\..\network\ccapsule.hpp" />
-    <ClInclude Include="..\..\network\cinetiface.hpp" />
+    <ClInclude Include="..\..\network\cnetinterface.hpp" />
     <ClInclude Include="..\..\network\nettypedef.hpp" />
     <ClInclude Include="..\..\network\sockdefs.h" />
     <ClInclude Include="..\..\rpc\cirpcchannel.hpp" />
@@ -78,6 +79,7 @@
     <ClInclude Include="..\..\tcp\ctcpclient.hpp" />
     <ClInclude Include="..\..\tcp\ctcpserver.hpp" />
     <ClInclude Include="..\..\tcp\tcphelper.hpp" />
+    <ClInclude Include="..\..\utils\address.hpp" />
     <ClInclude Include="..\..\utils\cdatapack.hpp" />
     <ClInclude Include="..\..\utils\config.hpp" />
     <ClInclude Include="..\..\utils\cproducerconsumer.hpp" />

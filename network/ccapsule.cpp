@@ -24,6 +24,11 @@ void CCapsule::setDX(bool dx)
 	m_flagDX = dx;
 }							
 	
+bool CCapsule::getDX()
+{
+	return m_flagDX;
+}		
+
 SanAddress CCapsule::getSourceAddress()
 {
 	return m_srcAddress;

@@ -120,6 +120,9 @@
     <ClCompile Include="..\..\utils\cstringutils.cpp">
       <Filter>utils</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\utils\address.cpp">
+      <Filter>utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\comm\cpplstreamrw.hpp">
@@ -144,9 +147,6 @@
       <Filter>cppl</Filter>
     </ClInclude>
     <ClInclude Include="..\..\network\ccapsule.hpp">
-      <Filter>network</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\network\cinetiface.hpp">
       <Filter>network</Filter>
     </ClInclude>
     <ClInclude Include="..\..\network\nettypedef.hpp">
@@ -240,6 +240,12 @@
       <Filter>utils</Filter>
     </ClInclude>
     <ClInclude Include="..\..\utils\cstringutils.hpp">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\network\cnetinterface.hpp">
+      <Filter>network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\utils\address.hpp">
       <Filter>utils</Filter>
     </ClInclude>
   </ItemGroup>

@@ -25,7 +25,7 @@ namespace San2
 		class CCapsule
 		{
 		public:
-			void setFromInterfaceAddress(SanAddress interfaceAddress);
+			void setFromInterfaceAddress(SanAddress interfaceAddress); // used on localhost only for determining source interface
 			void setSourceAddress(SanAddress srcAddress);
 			void setDestinationAddress(SanAddress dstAddress);
 			void setHop(SAN_UINT16 hop);
@@ -70,7 +70,7 @@ namespace San2
 		
 			bool m_flagDX;
 		
-			SanAddress m_interfaceAddress;
+			SanAddress m_interfaceAddress; // used on localhost only for determining source interface
 			SanAddress m_srcAddress;
 			SanAddress m_dstAddress;
 			SanApplicationId m_appId;
