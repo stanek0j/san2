@@ -4,6 +4,7 @@
 
 #include "cipcchannel.hpp"
 #include "utils/log.h"
+#include "utils/cstringutils.hpp"
 
 namespace San2 { namespace Node {
 
@@ -37,7 +38,7 @@ San2::Cppl::ErrorCode CIpcChannel::receive()
 		printShell();
 			
 		San2::Cppl::ErrorCode rval = readLine(line, lineSize);
-		printf("READLINE\n");
+		
 		if (rval != San2::Cppl::ErrorCode::SUCCESS)
 		{
 			if (rval == San2::Cppl::ErrorCode::PEER_DISCONNECT)
@@ -49,26 +50,43 @@ San2::Cppl::ErrorCode CIpcChannel::receive()
 			break;
 		}
 		
-		if (strlen(line) == 0)
-        {
-            continue;
-        }
+		if (strlen(line) == 0) continue;
+	    
+        std::string sline(line);
         
-	    std::string sline(line);
+        std::vector<std::string> args;
+        San2::Utils::CStringUtils::split(args, sline, 0x20); // space split
 
-	    if (!sline.compare("exit"))
-	    {
-           San2::Cppl::BufferProcessor::sendLine("exit requested");
-		   return San2::Cppl::ErrorCode::REQUEST_DISCONNECT;
-	    }
+        if (args.size() < 1) continue;
 
+        if (!args[0].compare("exit"))
+        {
+            San2::Cppl::BufferProcessor::sendLine("exit requested");
+            return San2::Cppl::ErrorCode::REQUEST_DISCONNECT;
+        }
 
-	    San2::Cppl::BufferProcessor::sendLine("unknown command");
-	    continue;
-		
+        rval = lineParser(args);
+
+        if (rval == San2::Cppl::ErrorCode::SUCCESS) continue;
+        return rval;
 	}
 	
 	return San2::Cppl::ErrorCode::SUCCESS;
+}
+
+
+San2::Cppl::ErrorCode CIpcChannel::lineParser(const std::vector<std::string> &args)
+{
+    if (!args[0].compare("send"))
+    {
+        San2::Cppl::BufferProcessor::sendLine("send command");
+        return San2::Cppl::ErrorCode::SUCCESS;
+    }
+
+
+    San2::Cppl::BufferProcessor::sendLine("unknown command");
+
+    return San2::Cppl::ErrorCode::SUCCESS;
 }
 
 }} // ns

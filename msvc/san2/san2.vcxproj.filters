@@ -117,6 +117,9 @@
     <ClCompile Include="..\..\tcp\csingletcpserver.cpp">
       <Filter>tcp</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\utils\cstringutils.cpp">
+      <Filter>utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\comm\cpplstreamrw.hpp">
@@ -234,6 +237,9 @@
       <Filter>tcp</Filter>
     </ClInclude>
     <ClInclude Include="..\..\utils\log.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\utils\cstringutils.hpp">
       <Filter>utils</Filter>
     </ClInclude>
   </ItemGroup>

@@ -44,6 +44,7 @@
     <ClCompile Include="..\..\tcp\tcphelper.cpp" />
     <ClCompile Include="..\..\utils\cdatapack.cpp" />
     <ClCompile Include="..\..\utils\config.cpp" />
+    <ClCompile Include="..\..\utils\cstringutils.cpp" />
     <ClCompile Include="..\..\utils\cthread.cpp" />
     <ClCompile Include="..\..\utils\hex.cpp" />
     <ClCompile Include="..\..\utils\platform\sleep.cpp" />
@@ -80,6 +81,7 @@
     <ClInclude Include="..\..\utils\cdatapack.hpp" />
     <ClInclude Include="..\..\utils\config.hpp" />
     <ClInclude Include="..\..\utils\cproducerconsumer.hpp" />
+    <ClInclude Include="..\..\utils\cstringutils.hpp" />
     <ClInclude Include="..\..\utils\cthread.hpp" />
     <ClInclude Include="..\..\utils\cthreadmanager.hpp" />
     <ClInclude Include="..\..\utils\cvector.hpp" />
