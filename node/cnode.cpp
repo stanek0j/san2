@@ -7,9 +7,9 @@
 
 namespace San2 { namespace Node {
 
-CNode::CNode(unsigned int inputQueueMaxSize, std::string nodeName) :
+CNode::CNode(unsigned int inputQueueMaxSize, std::string nodeName, unsigned int timePOP) :
 	m_inputQueue(inputQueueMaxSize),
-	m_duration(3000),
+	m_timePOP(timePOP),
 	m_nodeName(nodeName)
 {
 
@@ -30,7 +30,7 @@ void CNode::run()
 		bool rval;
 		
 		FILE_LOG(logDEBUG4) << "CNode::run()::pop(): waiting for pop";
-		m_inputQueue.pop(&capsule, this, m_duration);
+		m_inputQueue.pop(&capsule, this, m_timePOP);
 		FILE_LOG(logDEBUG4) << "CNode::run()::pop(): gotCapsule ######";
 		
 	
@@ -135,18 +135,16 @@ bool CNode::injectCapsule(std::shared_ptr<San2::Network::CCapsule> capsule)
 	return m_inputQueue.push(capsule);
 }
 
-template <class Rep, class Period>
-bool CNode::injectCapsule(std::shared_ptr<San2::Network::CCapsule> capsule, San2::Utils::CThread *thr, std::chrono::duration<Rep, Period> dur)
+bool CNode::injectCapsule(std::shared_ptr<San2::Network::CCapsule> capsule, San2::Utils::CThread *thr, unsigned int timeoutMsec)
 {
 	assert(capsule != NULL);
-	return m_inputQueue.push(capsule, this, dur);
+	return m_inputQueue.push(capsule, this, timeoutMsec);
 }
 
-template <class Rep, class Period>
-bool CNode::tryInjectCapsule(std::shared_ptr<San2::Network::CCapsule> capsule, San2::Utils::CThread *thr, std::chrono::duration<Rep, Period> dur)
+bool CNode::tryInjectCapsule(std::shared_ptr<San2::Network::CCapsule> capsule, San2::Utils::CThread *thr, unsigned int timeoutMsec)
 {
 	assert(capsule != NULL);
-	return m_inputQueue.try_push(capsule, this, dur);
+	return m_inputQueue.try_push(capsule, this, timeoutMsec);
 }
 
 std::string CNode::getNodeName() const

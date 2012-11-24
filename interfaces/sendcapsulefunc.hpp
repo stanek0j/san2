@@ -25,7 +25,6 @@ namespace San2 {
 			const San2::Network::SanAddress &m_interfaceAddress;
 			San2::Utils::bytes m_SerializedCapsule;
 			San2::Utils::CProducerConsumer<std::shared_ptr<San2::Network::CCapsule> > *m_inputQueue;
-			std::chrono::milliseconds m_duration;
 			San2::Utils::CThread* m_thr;
 		};
 	}

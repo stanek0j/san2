@@ -7,10 +7,12 @@
 #include "utils/log.h"
 #include "utils/platform/sigignore.hpp"
 
+#define CTCP_INTERFACE_MAX_SINGLE_READ_SIZE 2000
+
 namespace San2 { namespace Interfaces {
 		
 
-CTcpInterface::CTcpInterface(San2::Network::SanAddress sanaddr, const std::string &localIp, const std::string &localPort, const std::string &remoteIp, const std::string &remotePort, unsigned int timeCON, unsigned int timeRX, unsigned int timeTX, San2::Utils::CProducerConsumer<std::shared_ptr<San2::Network::CCapsule> >& inputQueue, unsigned long maxOutputQueueSize) :
+CTcpInterface::CTcpInterface(San2::Network::SanAddress sanaddr, const std::string &localIp, const std::string &localPort, const std::string &remoteIp, const std::string &remotePort, unsigned int timeCON, unsigned int timeRX, unsigned int timeTX, unsigned int timePOP, San2::Utils::CProducerConsumer<std::shared_ptr<San2::Network::CCapsule> >& inputQueue, unsigned long maxOutputQueueSize) :
 	San2::Tcp::CTcpClient(remoteIp, remotePort, timeCON, timeRX, timeTX),
 	m_sanaddr(sanaddr),
 	m_peeraddr(San2::Network::sanDefaultAddress),
@@ -21,12 +23,12 @@ CTcpInterface::CTcpInterface(San2::Network::SanAddress sanaddr, const std::strin
 	m_timeCON(timeCON),
 	m_timeRX(timeRX),
 	m_timeTX(timeTX),
+    m_timePOP(timePOP),
 	m_inputQueue(inputQueue),
 	m_outputQueue(maxOutputQueueSize),
 	srv(self() ,localIp, localPort, timeCON, timeRX, timeTX, inputQueue),
 	m_rpcChannel(NULL),
-	m_rpcexec(NULL),
-	m_duration(3000) // TODO: fix
+	m_rpcexec(NULL)
 {
 	
 }
@@ -64,9 +66,9 @@ void CTcpInterface::run()
 	
 	// Now the client=sender stuff
 	
-	San2::Comm::TcpStreamRW stream(2000, this);
+	San2::Comm::TcpStreamRW stream(CTCP_INTERFACE_MAX_SINGLE_READ_SIZE, this);
 	m_rpcChannel = new San2::Comm::StreamRpcChannel(stream);
-	m_rpcexec = new San2::Rpc::CRpcExecutor(*m_rpcChannel, 5000);
+	m_rpcexec = new San2::Rpc::CRpcExecutor(*m_rpcChannel, m_timeRX);
 
     // Another MSVC fix :)
     // error C3480: a lambda capture variable must be from an enclosing function scope
@@ -108,7 +110,7 @@ void CTcpInterface::run()
 		while(!isTerminated())
 		{
 			std::shared_ptr<San2::Network::CCapsule> capsule;
-			m_outputQueue.pop(&capsule, this, m_duration);
+            m_outputQueue.pop(&capsule, this, m_timePOP);
 			if (func.setCapsuleToSend(capsule) != true)
 			{
 				FILE_LOG(logWARNING) << "CTcpInterface::run(): capsule packing failed()";	
@@ -141,12 +143,10 @@ bool CTcpInterface::sendCapsule(std::shared_ptr<San2::Network::CCapsule> capsule
 {
 	// push to output queue
 	// parameter must be calling thread, not the clientClass itself!
-	
-	// Should not block too long
-	// TODO: Needs fix
-	int r = m_outputQueue.try_push(capsule, thr, m_duration);
-
-	return r == 0;
+	// MUST NOT block too long, otherwise it will block all other niterfaces in CNode
+    // therfore TAIL DROP is implemented, linke in IPv4 routers
+    // there is nothing we can do about this if we have limited queue space
+    return !(m_outputQueue.try_push(capsule, thr, 0));
 }
 
 void CTcpInterface::setPeerAddress(const San2::Network::SanAddress &address)

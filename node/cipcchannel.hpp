@@ -33,7 +33,6 @@ namespace San2
 
             // command-orient variables
             San2::Network::CCapsule m_capsule; // send command needs this
-
 		};
 	}
 }

@@ -83,7 +83,15 @@ San2::Cppl::ErrorCode CIpcChannel::lineParser(const std::vector<std::string> &ar
 {
     if (!args[0].compare("send"))
     {
-        San2::Cppl::BufferProcessor::sendLine("send command");
+        std::shared_ptr<San2::Network::CCapsule> shCap(new San2::Network::CCapsule);
+        *shCap = m_capsule;
+        m_node.injectCapsule(shCap);
+        
+        CThread *thr = this;
+        unsigned int timeou = 2000;
+
+        m_node.injectCapsule(shCap, thr, timeou);
+        San2::Cppl::BufferProcessor::sendLine("inject");
         return San2::Cppl::ErrorCode::SUCCESS;
     }
 

@@ -43,7 +43,7 @@ namespace San2
 		class CTcpInterface : public San2::Network::CNetInterface, public San2::Tcp::CTcpClient
 		{
 		public:
-			CTcpInterface(San2::Network::SanAddress sanaddr, const std::string &localIp, const std::string &localPort, const std::string &remoteIp, const std::string &remotePort, unsigned int timeCON, unsigned int timeRX, unsigned int timeTX, San2::Utils::CProducerConsumer<std::shared_ptr<San2::Network::CCapsule> >& inputQueue, unsigned long maxOutputQueueSize);
+			CTcpInterface(San2::Network::SanAddress sanaddr, const std::string &localIp, const std::string &localPort, const std::string &remoteIp, const std::string &remotePort, unsigned int timeCON, unsigned int timeRX, unsigned int timeTX, unsigned int timePOP, San2::Utils::CProducerConsumer<std::shared_ptr<San2::Network::CCapsule> >& inputQueue, unsigned long maxOutputQueueSize);
 			
 			San2::Utils::bytes firstMessage(const San2::Network::SanAddress& addr);
 			
@@ -73,7 +73,7 @@ namespace San2
 			std::string m_localIp, m_localPort;
 			std::string m_remoteIp, m_remotePort;
 			
-			unsigned int m_timeCON, m_timeRX, m_timeTX;
+			unsigned int m_timeCON, m_timeRX, m_timeTX, m_timePOP;
 			
 			// Receiver part
 			San2::Utils::CProducerConsumer<std::shared_ptr<San2::Network::CCapsule> >& m_inputQueue;
@@ -84,7 +84,6 @@ namespace San2
 			// Sender part
 			San2::Comm::StreamRpcChannel *m_rpcChannel;
 			San2::Rpc::CRpcExecutor *m_rpcexec;
-			std::chrono::milliseconds m_duration;
 			
 			std::mutex m_mutexPeerAddress;
 			

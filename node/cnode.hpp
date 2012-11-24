@@ -16,18 +16,14 @@ namespace San2
 		class CNode : public San2::Utils::CThread
 		{
 		public:
-			CNode(unsigned int inputQueueMaxSize, std::string nodeName);
+			CNode(unsigned int inputQueueMaxSize, std::string nodeName, unsigned int timePOP);
 		
 			void run(); // start receiving capsules
 			int addInterface(std::shared_ptr<San2::Network::CNetInterface> iface);
 			
 			bool injectCapsule(std::shared_ptr<San2::Network::CCapsule> capsule);
-			
-			template <class Rep, class Period>
-			bool injectCapsule(std::shared_ptr<San2::Network::CCapsule> capsule, San2::Utils::CThread *thr, std::chrono::duration<Rep, Period> dur);
-			
-			template <class Rep, class Period>
-			bool tryInjectCapsule(std::shared_ptr<San2::Network::CCapsule> capsule, San2::Utils::CThread *thr, std::chrono::duration<Rep, Period> dur);
+			bool injectCapsule(std::shared_ptr<San2::Network::CCapsule> capsule, San2::Utils::CThread *thr, unsigned int timeoutMsec);
+			bool tryInjectCapsule(std::shared_ptr<San2::Network::CCapsule> capsule, San2::Utils::CThread *thr, unsigned int timeoutMsec);
 			
 			San2::Utils::CProducerConsumer<std::shared_ptr<San2::Network::CCapsule> >& getInputQueue();
 			
@@ -38,10 +34,9 @@ namespace San2
 			San2::Utils::CProducerConsumer<std::shared_ptr<San2::Network::CCapsule> > m_inputQueue;
 			std::set<std::shared_ptr<San2::Network::CNetInterface> > m_interfaces;
 			
-			std::chrono::milliseconds m_duration;
-			
 			std::mutex m_mutexInterfaces;
 			const std::string m_nodeName; // used for orientation in terminal, nothing else
+            unsigned int m_timePOP;
 		};
 	}
 

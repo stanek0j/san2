@@ -20,9 +20,11 @@
 #include "cppl/pipeserver.hpp"
 #include "cppl/pipechannel.hpp"
 
-#define TIME_CON 1000
-#define TIME_RX  1000
-#define TIME_TX  1000
+#define TIME_CON 2000
+#define TIME_RX  2000
+#define TIME_TX  2000
+#define TIME_POP 2000
+#define TIME_POP_NODE 2000
 #define TCP_QUEUESIZE 50
 #define INPUT_QUEUE_SIZE 50
 
@@ -98,7 +100,7 @@ int main(int argc, char *argv[])
 	}
 	
 
-	San2::Node::CNode node(INPUT_QUEUE_SIZE, cfg.getValue("nodeName"));
+	San2::Node::CNode node(INPUT_QUEUE_SIZE, cfg.getValue("nodeName"), TIME_POP_NODE);
 
 	San2::Cppl::PipeServer ps(ipcAddress.c_str(), [&node] (CPPL_PIPETYPE handle, unsigned int timRX, unsigned int timTX) {return new San2::Node::CIpcChannel(handle, timRX, timTX, node);}, TIME_CON, TIME_RX, TIME_TX);
 	
@@ -128,7 +130,7 @@ int main(int argc, char *argv[])
 			continue; //skip
 		}
 		
-		std::shared_ptr<San2::Interfaces::CTcpInterface> tcpif(new San2::Interfaces::CTcpInterface(sanaddr, localIp, localPort, remoteIp, remotePort, TIME_CON, TIME_RX, TIME_TX, node.getInputQueue(), TCP_QUEUESIZE));
+		std::shared_ptr<San2::Interfaces::CTcpInterface> tcpif(new San2::Interfaces::CTcpInterface(sanaddr, localIp, localPort, remoteIp, remotePort, TIME_CON, TIME_RX, TIME_TX, TIME_POP, node.getInputQueue(), TCP_QUEUESIZE));
 		FILE_LOG(logDEBUG4) << "adding peer #" << i;
 		node.addInterface(tcpif);
 	}

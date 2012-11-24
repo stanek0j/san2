@@ -14,7 +14,6 @@ const int SendCapsuleFunc::timeoutMilisec = 3000;
 SendCapsuleFunc::SendCapsuleFunc(const San2::Network::SanAddress &interfaceAddress, San2::Utils::CProducerConsumer<std::shared_ptr<San2::Network::CCapsule> > *inputQueue, San2::Utils::CThread *thr) :
 	m_interfaceAddress(interfaceAddress),
 	m_inputQueue(inputQueue),
-	m_duration(timeoutMilisec),
 	m_thr(thr)
 {
 	
@@ -41,7 +40,7 @@ bool SendCapsuleFunc::operator()(void)
 	}
 	
 	capsule->setFromInterfaceAddress(m_interfaceAddress);
-	assert((*m_inputQueue).push(capsule, m_thr, m_duration) == 0);
+	assert((*m_inputQueue).push(capsule, m_thr, timeoutMilisec) == 0);
 	return true;
 }
 

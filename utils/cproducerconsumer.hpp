@@ -54,8 +54,10 @@ namespace San2
 					
 				}
 
-				int try_push(const T &item, CThread *thr, std::chrono::milliseconds duration)
+				int try_push(const T &item, CThread *thr, unsigned int timeoutMsec)
 				{
+                    std::chrono::duration<unsigned int, std::milli> duration(timeoutMsec);
+
 					std::unique_lock<std::mutex> lock(m_mutex);
 					
 					while(isFull())
@@ -74,8 +76,10 @@ namespace San2
 					return 0;
 				}
 
-				int push(const T &item, CThread *thr, std::chrono::milliseconds duration)
+				int push(const T &item, CThread *thr, unsigned int timeoutMsec)
 				{
+                    std::chrono::duration<unsigned int, std::milli> duration(timeoutMsec);
+
 					std::unique_lock<std::mutex> lock(m_mutex);
 					while(isFull())
 					{
@@ -105,8 +109,10 @@ namespace San2
 					return 0;
 				}
 
-				int try_pop(T *out, CThread *thr, std::chrono::milliseconds duration)
+				int try_pop(T *out, CThread *thr, unsigned int timeoutMsec)
 				{
+                    std::chrono::duration<unsigned int, std::milli> duration(timeoutMsec);
+
 					std::unique_lock<std::mutex> lock(m_mutex);				
 				    while (isEmpty())
 				    { 
@@ -124,8 +130,10 @@ namespace San2
 					return 0;
 				}
 
-				int pop(T *out, CThread *thr, std::chrono::milliseconds duration)
+				int pop(T *out, CThread *thr, unsigned int timeoutMsec)
 				{
+                    std::chrono::duration<unsigned int, std::milli> duration(timeoutMsec);
+
 					std::unique_lock<std::mutex> lock(m_mutex);				
 				    while (isEmpty())
 				    { 
