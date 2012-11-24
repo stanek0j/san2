@@ -17,7 +17,7 @@ CIpcChannel::CIpcChannel(CPPL_PIPETYPE handle, unsigned int timRX, unsigned int 
 	San2::Cppl::PipeChannel(handle, timRX, timTX),
 	m_node(node)
 {
-	
+	setDefaultCapsule();
 }
 
 CIpcChannel::~CIpcChannel()
@@ -109,7 +109,8 @@ San2::Cppl::ErrorCode CIpcChannel::lineParser(const std::vector<std::string> &ar
 
         if (!args[1].compare("default"))
         {
-             
+            setDefaultCapsule();
+            San2::Cppl::BufferProcessor::sendLine("capsule default values set OK");
         }
 
         if (!args[1].compare("src"))
@@ -325,13 +326,64 @@ San2::Cppl::ErrorCode CIpcChannel::lineParser(const std::vector<std::string> &ar
         for(auto s: ifaces)
         {
             San2::Network::SanAddress addr;
-            San2::Cppl::BufferProcessor::send("IFACE:");    
+            San2::Cppl::BufferProcessor::send("IFACE status RX:");    
+            San2::Cppl::BufferProcessor::send(statusToString(s->getRXstate()));    
+            San2::Cppl::BufferProcessor::send("   TX:");    
+            San2::Cppl::BufferProcessor::sendLine(statusToString(s->getTXstate()));    
+
+            San2::Cppl::BufferProcessor::send(">> iadr: ");    
             San2::Cppl::BufferProcessor::sendLine(San2::Utils::address2string(s->getInterfaceAddress()).c_str());
             San2::Cppl::BufferProcessor::send(">> peer: ");    
             San2::Cppl::BufferProcessor::sendLine(San2::Utils::address2string(s->getPeerAddress()).c_str());
             San2::Cppl::BufferProcessor::sendLine();
         }
 
+        return San2::Cppl::ErrorCode::SUCCESS;
+    }
+
+    if (!args[0].compare("sendmsg"))
+    {
+        // TODO: fix parser to use quotes for parameters including spaces "long long string with spaces"
+
+        if (args.size() < 3)
+        {
+            San2::Cppl::BufferProcessor::sendLine("usage: sendmsg <DestinationSanAddress> <message text>");
+            San2::Cppl::BufferProcessor::sendLine("note: spaces are trimmed (will be fixed in later releases - parser is not so clever)");
+        }
+
+        std::shared_ptr<San2::Network::CCapsule> shCap(new San2::Network::CCapsule);
+        
+        
+        San2::Utils::bytes messageData;
+        for (int i = 2; i < args.size(); i++) messageData += args[i];
+
+        San2::Network::SanAddress msgDestinationAddress;
+        if (!(San2::Utils::string2address(args[1], msgDestinationAddress)))
+        {
+            San2::Cppl::BufferProcessor::sendLine("destination address is in wrong format");
+            return San2::Cppl::ErrorCode::SUCCESS;    
+        }
+
+        shCap->setDestinationAddress(msgDestinationAddress);
+
+        shCap->setSourceAddress(San2::Network::sanDefaultAddress);
+        shCap->setFromInterfaceAddress(San2::Network::sanDefaultAddress);
+
+        shCap->setHop(255);
+        shCap->setApplicationId(San2::Network::sanTestMessageApplicationId);
+        shCap->setDX(true);
+        shCap->setData(messageData);
+
+        m_node.injectCapsule(shCap);
+        if (!(m_node.injectCapsule(shCap, this, SAN2_CIPCCHANNEL_INJECTTIMEOUT_MSEC)))
+        {
+            San2::Cppl::BufferProcessor::sendLine("sendmsg inject OK");
+        }
+        else
+        {
+            San2::Cppl::BufferProcessor::sendLine("sendmsg FAIL (inputQueue full)");
+        }
+        
         return San2::Cppl::ErrorCode::SUCCESS;
     }
 
@@ -347,6 +399,36 @@ San2::Cppl::ErrorCode CIpcChannel::lineParser(const std::vector<std::string> &ar
     San2::Cppl::BufferProcessor::sendLine("unknown command, type help for list of commands");
 
     return San2::Cppl::ErrorCode::SUCCESS;
+}
+
+void CIpcChannel::setDefaultCapsule()
+{
+    San2::Utils::bytes defaultData;
+    defaultData = std::string("default data");
+            
+    m_capsule.setDestinationAddress(San2::Network::sanDefaultAddress);
+    m_capsule.setSourceAddress(San2::Network::sanDefaultAddress);
+    m_capsule.setFromInterfaceAddress(San2::Network::sanDefaultAddress);
+
+    m_capsule.setHop(255);
+    m_capsule.setApplicationId(San2::Network::sanDefaultApplicationId);
+    m_capsule.setDX(false);
+    m_capsule.setData(defaultData);
+}
+
+const char* CIpcChannel::statusToString(San2::Network::InterfaceLineStatus status)
+{
+    switch(status)
+    {
+    case San2::Network::InterfaceLineStatus::CONNECTED:
+        return "conn";
+    case San2::Network::InterfaceLineStatus::DISCONNECTED:
+        return "diss";
+    case San2::Network::InterfaceLineStatus::FAILURE:
+        return "fail";
+    default: // should never happen
+        return "????";
+    }
 }
 
 }} // ns

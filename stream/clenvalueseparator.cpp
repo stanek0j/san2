@@ -35,14 +35,13 @@ namespace San2
 			
 			iSize = San2::Utils::Endian::san_u_be32toh(iSize);
 			
-			FILE_LOG(logDEBUG4) << "CLenValueSeparator::readMessage:():iSize: " << iSize;
+			// FILE_LOG(logDEBUG4) << "CLenValueSeparator::readMessage:():iSize: " << iSize;
 			
 			if (!(m_rw.readExactNumBytesAppend(out, iSize)))
 			{
 				FILE_LOG(logDEBUG3) << "FAIL:CLenValueSeparator::readMessage()::2";
 				return false;
 			}
-				FILE_LOG(logDEBUG4) << "CLenValueSeparator::readMessage:(): out.size():" << out.size();
 			
 			return true;
 		}

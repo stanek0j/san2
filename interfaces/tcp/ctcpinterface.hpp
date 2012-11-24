@@ -2,6 +2,8 @@
 
 #include <string>
 #include <memory>
+#include <atomic>
+
 #include "network/nettypedef.hpp"
 #include "network/cnetinterface.hpp"
 #include "network/ccapsule.hpp"
@@ -60,6 +62,9 @@ namespace San2
 			San2::Network::SanAddress getPeerAddress(); // mutexed
 			
 			San2::Network::SanAddress getInterfaceAddress();
+
+            San2::Network::InterfaceLineStatus getRXstate();
+            San2::Network::InterfaceLineStatus getTXstate();
 		protected:
 					
 		private:
@@ -79,6 +84,8 @@ namespace San2
 			San2::Utils::CProducerConsumer<std::shared_ptr<San2::Network::CCapsule> >& m_inputQueue;
 			San2::Utils::CProducerConsumer<std::shared_ptr<San2::Network::CCapsule> > m_outputQueue;
 			
+            std::atomic<San2::Network::InterfaceLineStatus> m_RXstatus, m_TXstatus;
+
 			CCapsuleReceiver srv;
 			
 			// Sender part

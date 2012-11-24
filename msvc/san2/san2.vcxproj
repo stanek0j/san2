@@ -27,6 +27,7 @@
     <ClCompile Include="..\..\cppl\pipechannel.cpp" />
     <ClCompile Include="..\..\cppl\pipeclient.cpp" />
     <ClCompile Include="..\..\cppl\pipeserver.cpp" />
+    <ClCompile Include="..\..\interfaces\alivefunc.cpp" />
     <ClCompile Include="..\..\interfaces\sendcapsulefunc.cpp" />
     <ClCompile Include="..\..\interfaces\tcp\ccapsulereceiver.cpp" />
     <ClCompile Include="..\..\interfaces\tcp\ctcpinterface.cpp" />
@@ -59,6 +60,7 @@
     <ClInclude Include="..\..\cppl\pipechannel.hpp" />
     <ClInclude Include="..\..\cppl\pipeclient.hpp" />
     <ClInclude Include="..\..\cppl\pipeserver.hpp" />
+    <ClInclude Include="..\..\interfaces\alivefunc.hpp" />
     <ClInclude Include="..\..\interfaces\sendcapsulefunc.hpp" />
     <ClInclude Include="..\..\interfaces\tcp\ccapsulereceiver.hpp" />
     <ClInclude Include="..\..\interfaces\tcp\ctcpinterface.hpp" />

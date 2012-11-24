@@ -29,7 +29,6 @@ void CNode::run()
 	{
 		bool rval;
 		
-		FILE_LOG(logDEBUG4) << "CNode::run()::pop(): waiting for pop";
 		m_inputQueue.pop(&capsule, this, m_timePOP);
 		FILE_LOG(logDEBUG4) << "CNode::run()::pop(): gotCapsule ######";
 		
@@ -65,7 +64,15 @@ void CNode::run()
 		
 		if (rval == true)
 		{
-			FILE_LOG(logDEBUG4) << "CNode::run():: capsule reached its final destination ######";
+			// FILE_LOG(logDEBUG4) << "CNode::run():: capsule reached its final destination ######";
+
+            if (capsule->getAppId() == San2::Network::sanTestMessageApplicationId)
+            {
+                San2::Utils::bytes message = capsule->getData();
+                if (message[message.size()-1] != 0) message.push_back(0);
+                FILE_LOG(logDEBUG1) << "incoming msg:" << message.toArray();
+            }
+
 			continue;
 		}
 	

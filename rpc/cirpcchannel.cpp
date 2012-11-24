@@ -27,8 +27,6 @@ namespace San2
 			if (!recvDatagram(out, timeoutMsec)) return false;
 			if (out.size() < sizeof(SAN_UINT16)) return false;
 			
-			FILE_LOG(logDEBUG4) << "CIRpcChannel::recvData(): out.size(): " << out.size();
-			
 			SAN_UINT16 fid;
 			memcpy(&fid, out.toArray(), sizeof(SAN_UINT16)); // ugly
 			fid = San2::Utils::Endian::san_u_be16toh(fid);

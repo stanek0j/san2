@@ -136,42 +136,9 @@ int main(int argc, char *argv[])
 	}
 	
 	node.start();
-	printf("starting ipc");
 	ps.start(); // ipc start
-	
-
-    // --- TEST ODESILANI KAPSULE (PUJDE BRZO PRYC (bude nahrazen prikazem v terminalu))
-
-	std::string strx = cfg.getValue("testsend");	
-	if (strx.compare(std::string("")) == 0)
-	{
-		node.join();
-	}
-    else
-    {
-        FILE_LOG(logDEBUG4) << "@@@ sending";
-    }
-	
-	
-	San2::Utils::bytes data;
-	data += "DataKapsule"; // pro orientaci v TCP Streamu
-	
-	while(1)
-	{
-        FILE_LOG(logDEBUG4) << "@@@ sending capsule";
-		std::shared_ptr<San2::Network::CCapsule> cap(new San2::Network::CCapsule);
-			
-		San2::Network::SanAddress dstAddress;
-		if (San2::Utils::string2address("000000000000000000000000000000000000000000000000000000000000FF31", dstAddress) != true)
-		{
-			FILE_LOG(logDEBUG2) << "failed to parse destination address";
-		}
-		cap->setDestinationAddress(dstAddress);
-		cap->setData(data);
-						
-		node.injectCapsule(cap);
-		San2::Utils::SanSleep(3);
-	}
+    printf("running\n");
+    node.join();
 	
    	#ifdef WIN32
 		// TODO: Error checking

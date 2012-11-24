@@ -13,6 +13,7 @@
 
 #include "ccapsulereceiver.hpp"
 #include "interfaces/sendcapsulefunc.hpp"
+#include "interfaces/alivefunc.hpp"
 #include "rpc/cirpcfunction.hpp"
 #include "comm/tcpstreamrw.hpp"
 #include "utils/cvector.hpp"
@@ -22,14 +23,15 @@
 
 namespace San2 { namespace Interfaces {
 	
-CCapsuleReceiver::CCapsuleReceiver(CTcpInterface &iface, const std::string &ip, const std::string &port, unsigned int timCON, unsigned int timRX, unsigned int timTX, San2::Utils::CProducerConsumer<std::shared_ptr<San2::Network::CCapsule> >& inputQueue) :
+CCapsuleReceiver::CCapsuleReceiver(CTcpInterface &iface, const std::string &ip, const std::string &port, unsigned int timCON, unsigned int timRX, unsigned int timTX, San2::Utils::CProducerConsumer<std::shared_ptr<San2::Network::CCapsule> >& inputQueue, std::atomic<San2::Network::InterfaceLineStatus> &RXstatus) :
 	San2::Tcp::CSingleTcpServer(ip, port, timCON, timRX, timTX),
 	m_iface(iface),
 	m_rpcChannel(NULL),
 	m_rpcexec(NULL),
-	m_inputQueue(inputQueue)
+	m_inputQueue(inputQueue),
+    m_RXstatus(RXstatus)
 {
-	
+	m_RXstatus = San2::Network::InterfaceLineStatus::DISCONNECTED;
 }
 
 CCapsuleReceiver::~CCapsuleReceiver()
@@ -56,7 +58,8 @@ bool CCapsuleReceiver::parseFirstMessage(const San2::Utils::bytes &data)
 
 San2::Tcp::TcpErrorCode CCapsuleReceiver::receive()
 {
-    FILE_LOG(logDEBUG4) << "CCapsuleReceiver::receive()";
+    m_RXstatus = San2::Network::InterfaceLineStatus::DISCONNECTED;
+    FILE_LOG(logDEBUG4) << "IFACE-TCP: start RX";
     
     San2::Comm::TcpStreamRW stream(2000, this);
 	m_rpcChannel = new San2::Comm::StreamRpcChannel(stream);
@@ -70,13 +73,21 @@ San2::Tcp::TcpErrorCode CCapsuleReceiver::receive()
 	bool ret = m_rpcexec->registerFunction([&msvc_fix_inputQueue, this, &msvc_fix_iface](){return new SendCapsuleFunc(m_iface.getInterfaceAddress(), &m_inputQueue, this);});
 	if (!ret)
 	{
-		FILE_LOG(logERROR) << "CCapsuleReceiver::receive(): registrer function FAILED";
+		FILE_LOG(logERROR) << "CCapsuleReceiver::receive(): registrer function *FAILED*";
+        m_RXstatus = San2::Network::InterfaceLineStatus::FAILURE;
 		return San2::Tcp::TcpErrorCode::FAILURE;
 	}	
 	
+    ret = m_rpcexec->registerFunction([](){return new AliveFunc();});
+	if (!ret)
+	{
+		FILE_LOG(logERROR) << "CTcpInterface::run(): registrer AliveFunc function FAILED";
+        m_RXstatus = San2::Network::InterfaceLineStatus::FAILURE;
+		return San2::Tcp::TcpErrorCode::FAILURE;
+	}	
+
 	San2::Utils::bytes firstMessage;
 	
-//	printf("@@@@@@@@@@@@@@@@@ 1 \n");
 	if (stream.readExactNumBytesAppend(firstMessage, 4 + San2::Network::sanAddressSize) != true)
 	{
 		// fail, close connection
@@ -87,17 +98,19 @@ San2::Tcp::TcpErrorCode CCapsuleReceiver::receive()
 		return San2::Tcp::TcpErrorCode::SUCCESS; // Must be SUCCESS, otherwise server will shutdown completely
 	}
 	
-//	printf("@@@@@@@@@@@@@@@@@ 20 \n");
-	
 	if (parseFirstMessage(firstMessage) != true)
 	{
 		FILE_LOG(logDEBUG2) << "CCapsuleReceiver::receive():parseFirstMessage *FAILED*";
 		return San2::Tcp::TcpErrorCode::SUCCESS; // Must be SUCCESS, otherwise server will shutdown completely
 	}
 	
+    m_RXstatus = San2::Network::InterfaceLineStatus::CONNECTED;
 	m_rpcexec->run();
+    m_RXstatus = San2::Network::InterfaceLineStatus::DISCONNECTED;
 
-	FILE_LOG(logDEBUG4) << "CCapsuleReceiver::receive(): returned";
+    m_iface.setPeerAddress(San2::Network::sanDefaultAddress); // set to zero
+
+	// FILE_LOG(logDEBUG4) << "CCapsuleReceiver::receive(): returned";
 	return San2::Tcp::TcpErrorCode::SUCCESS;
 }
 

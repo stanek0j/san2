@@ -24,6 +24,12 @@ namespace San2
         // const SanAddress sanDefaultAddress {{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}};
 		const SanAddress sanDefaultAddress = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
+        const SanApplicationId sanDefaultApplicationId = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+
+
+        // for debugging only (it is randomly chosen)
+        const SanApplicationId sanTestMessageApplicationId = {95,103,20,66,235,217,66,62,164,152,26,129,132,0,211,90,0,128,182,176};
+
 		// flags
 		// DX - destination execute
 		// EX - each node execute

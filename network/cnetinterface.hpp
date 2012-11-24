@@ -1,6 +1,8 @@
 #pragma once
 
+#include <atomic>
 #include <memory>
+
 #include "nettypedef.hpp"
 #include "utils/cthread.hpp"
 #include "ccapsule.hpp"
@@ -9,6 +11,13 @@ namespace San2
 {
 	namespace Network
 	{
+        enum class InterfaceLineStatus : int
+		{ 
+			CONNECTED = 0, 
+			DISCONNECTED = -1, // interface is ok, but line is not connected
+			FAILURE = -2, // unrecoverable error
+		};
+
 		// It is up to the implementation to satisfy all the requirements.
 		
 		// Receiving is performed by passing InputQueue reference to derived base contructor
@@ -40,6 +49,9 @@ namespace San2
 			// NON-BLOCKING
             // THREAD-SAFE
 			virtual SanAddress getInterfaceAddress()=0;			
+
+            virtual InterfaceLineStatus getRXstate()=0;
+            virtual InterfaceLineStatus getTXstate()=0;
 		};
 	}
 }

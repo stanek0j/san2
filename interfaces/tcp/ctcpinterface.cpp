@@ -1,6 +1,7 @@
 
 #include "ctcpinterface.hpp"
 #include "interfaces/sendcapsulefunc.hpp"
+#include "interfaces/alivefunc.hpp"
 #include "utils/platform/sleep.hpp"
 #include "comm/tcpstreamrw.hpp"
 #include "utils/cvector.hpp"
@@ -26,11 +27,11 @@ CTcpInterface::CTcpInterface(San2::Network::SanAddress sanaddr, const std::strin
     m_timePOP(timePOP),
 	m_inputQueue(inputQueue),
 	m_outputQueue(maxOutputQueueSize),
-	srv(self() ,localIp, localPort, timeCON, timeRX, timeTX, inputQueue),
+    srv(self() ,localIp, localPort, timeCON, timeRX, timeTX, inputQueue, m_RXstatus),
 	m_rpcChannel(NULL),
 	m_rpcexec(NULL)
 {
-	
+    m_TXstatus = San2::Network::InterfaceLineStatus::DISCONNECTED;
 }
 
 San2::Utils::bytes CTcpInterface::firstMessage(const San2::Network::SanAddress& addr)
@@ -78,19 +79,26 @@ void CTcpInterface::run()
 	if (!ret)
 	{
 		FILE_LOG(logERROR) << "CTcpInterface::run(): registrer function FAILED";
+        m_TXstatus = San2::Network::InterfaceLineStatus::FAILURE;
 		return;
 	}	
 	
+    ret = m_rpcexec->registerFunction([](){return new AliveFunc();});
+	if (!ret)
+	{
+		FILE_LOG(logERROR) << "CTcpInterface::run(): registrer AliveFunc function FAILED";
+        m_TXstatus = San2::Network::InterfaceLineStatus::FAILURE;
+		return;
+	}	
+
 	SendCapsuleFunc func(m_sanaddr, NULL, this);
-	
+	AliveFunc aliveFunc;
+
 	// get item from outputQueue and send it
 	
 	// Fault-tolerant client
 	while(!isTerminated()) // When node fails and reconnectes, this ensures connection will be ok
 	{
-        setPeerAddress(San2::Network::sanDefaultAddress);
-        FILE_LOG(logDEBUG4) << "CTcpInterface::run(): client (re)started";
-
 		if (open() != San2::Tcp::TcpErrorCode::SUCCESS)
 		{
 			unsigned int sleepSec = m_timeCON / 1000;
@@ -100,7 +108,7 @@ void CTcpInterface::run()
 			San2::Utils::SanSleep(sleepSec);
 			continue;
 		}
-		
+
 		// TODO: This could block indefinitely. Fix.
 		if (stream.writeAll(firstMessage(m_sanaddr)) != true)
 		{
@@ -109,27 +117,53 @@ void CTcpInterface::run()
 			continue;
 		}
 		
+        FILE_LOG(logDEBUG4) << "IFACE-TCP: connected TX";
+        m_TXstatus = San2::Network::InterfaceLineStatus::CONNECTED;
+
 		while(!isTerminated())
 		{
 			std::shared_ptr<San2::Network::CCapsule> capsule;
-            m_outputQueue.pop(&capsule, this, m_timePOP);
+
+            bool popWasSuccessfull = true;
+
+            while (m_outputQueue.try_pop(&capsule, this, m_timePOP))
+            {
+                if (isTerminated())
+                {
+                    m_TXstatus = San2::Network::InterfaceLineStatus::FAILURE;
+                    return;
+                }
+
+			    if (!m_rpcexec->invokeFunction(aliveFunc)) // test if connection ok (dummy function that sends, but does nothing)
+			    {
+				    FILE_LOG(logDEBUG4) << "TCP-IFACE: connection lost TX";
+                    m_TXstatus = San2::Network::InterfaceLineStatus::DISCONNECTED;
+                    popWasSuccessfull = false;
+                    break;
+			    }   
+            }
+
+            if (popWasSuccessfull == false)
+            {
+                break; // important
+            }
+
 			if (func.setCapsuleToSend(capsule) != true)
 			{
-				FILE_LOG(logWARNING) << "CTcpInterface::run(): capsule packing failed()";	
+				FILE_LOG(logERROR) << "TCP-IFACE: capsule packing failed() ***FAILED*** ";	
 			}
 			
 			bool rval = m_rpcexec->invokeFunction(func);
 			if (!rval)
 			{
-				FILE_LOG(logDEBUG4) << "CTcpInterface::run(): failed to invoke remote function";
+				FILE_LOG(logDEBUG4) << "TCP-IFACE: connection lost TX";
+                m_TXstatus = San2::Network::InterfaceLineStatus::DISCONNECTED;
 				break;
 			}
 		}
-		
-		FILE_LOG(logDEBUG4) << "CTcpInterface::run(): CONNECTION FAILURE";
 	}
 	
-	FILE_LOG(logDEBUG4) << "CTcpInterface::run(): returned";
+	//FILE_LOG(logDEBUG4) << "CTcpInterface::run(): returned";
 }
 
 San2::Tcp::TcpErrorCode CTcpInterface::receive()
@@ -153,7 +187,7 @@ bool CTcpInterface::sendCapsule(std::shared_ptr<San2::Network::CCapsule> capsule
 
 void CTcpInterface::setPeerAddress(const San2::Network::SanAddress &address)
 {
-	FILE_LOG(logDEBUG3) << "CTcpInterface::setPeerAddress()";
+	// FILE_LOG(logDEBUG3) << "CTcpInterface::setPeerAddress()";
 	std::lock_guard<std::mutex> lock(m_mutexPeerAddress);
 	m_peeraddr = address;
 }
@@ -169,5 +203,14 @@ San2::Network::SanAddress CTcpInterface::getInterfaceAddress()
 	return m_sanaddr;
 }
 
+San2::Network::InterfaceLineStatus CTcpInterface::getRXstate()
+{
+    return m_RXstatus;
+}
+
+San2::Network::InterfaceLineStatus CTcpInterface::getTXstate()
+{
+    return m_TXstatus;
+}
 
 }} // ns

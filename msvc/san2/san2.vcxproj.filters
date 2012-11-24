@@ -123,6 +123,9 @@
     <ClCompile Include="..\..\utils\address.cpp">
       <Filter>utils</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\interfaces\alivefunc.cpp">
+      <Filter>interfaces</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\comm\cpplstreamrw.hpp">
@@ -247,6 +250,9 @@
     </ClInclude>
     <ClInclude Include="..\..\utils\address.hpp">
       <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\interfaces\alivefunc.hpp">
+      <Filter>interfaces</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
