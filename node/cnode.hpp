@@ -4,6 +4,7 @@
 #include <set>
 #include <memory>
 #include <mutex>
+#include <vector>
 #include "utils/cproducerconsumer.hpp"
 #include "utils/cthread.hpp"
 #include "network/cnetinterface.hpp"
@@ -28,6 +29,13 @@ namespace San2
 			San2::Utils::CProducerConsumer<std::shared_ptr<San2::Network::CCapsule> >& getInputQueue();
 			
 			std::string getNodeName() const;
+
+            
+            //   it returns by-VALUE a copy of the set which does contain shared_pointers
+            //   so the CNode cannot later affect return value(the set and pointers) be removing/adding interfaces
+            //   >> changes to CNode interface list does not affect return value
+            //   >> changes to interfaces themselves are shared between copy and CNode
+            std::set<std::shared_ptr<San2::Network::CNetInterface> > getInterafces();
 		protected:
 		 
 		private:

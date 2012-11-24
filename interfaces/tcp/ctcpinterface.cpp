@@ -88,7 +88,9 @@ void CTcpInterface::run()
 	// Fault-tolerant client
 	while(!isTerminated()) // When node fails and reconnectes, this ensures connection will be ok
 	{
+        setPeerAddress(San2::Network::sanDefaultAddress);
         FILE_LOG(logDEBUG4) << "CTcpInterface::run(): client (re)started";
+
 		if (open() != San2::Tcp::TcpErrorCode::SUCCESS)
 		{
 			unsigned int sleepSec = m_timeCON / 1000;

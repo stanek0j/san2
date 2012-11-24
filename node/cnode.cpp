@@ -152,4 +152,10 @@ std::string CNode::getNodeName() const
 	return m_nodeName;
 }
 
+std::set<std::shared_ptr<San2::Network::CNetInterface> > CNode::getInterafces()
+{
+    std::lock_guard<std::mutex> lock(m_mutexInterfaces);
+    return m_interfaces;
+}
+
 }} // ns
