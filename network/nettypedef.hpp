@@ -22,13 +22,19 @@ namespace San2
 		// and yep, the double brackets are needed
         // MSVC again have problems with this
         // const SanAddress sanDefaultAddress {{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}};
-		const SanAddress sanDefaultAddress = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-
-        const SanApplicationId sanDefaultApplicationId = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-
-
-        // for debugging only (it is randomly chosen)
-        const SanApplicationId sanTestMessageApplicationId = {95,103,20,66,235,217,66,62,164,152,26,129,132,0,211,90,0,128,182,176};
+        
+        #if (defined WIN32 || defined WINDOWS)
+			const SanAddress sanDefaultAddress = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+			const SanApplicationId sanDefaultApplicationId = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+			const SanApplicationId sanTestMessageApplicationId = {95,103,20,66,235,217,66,62,164,152,26,129,132,0,211,90,0,128,182,176};
+		#endif
+		
+		#ifdef LINUX
+			const SanAddress sanDefaultAddress {{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}};
+			const SanApplicationId sanDefaultApplicationId {{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}};
+			const SanApplicationId sanTestMessageApplicationId {{95,103,20,66,235,217,66,62,164,152,26,129,132,0,211,90,0,128,182,176}};
+		#endif
+        
 
 		// flags
 		// DX - destination execute

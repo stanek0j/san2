@@ -44,8 +44,8 @@ namespace San2
 			
 			// another msvc fix
 		    #ifdef LINUX
-			    CRpcExecutor(const CRpcExecutor& copyFromMe)=delete;
-			    CRpcExecutor& operator=(const CRpcExecutor& copyFromMe)=delete;
+			    CRpcInvoker(const CRpcInvoker& copyFromMe)=delete;
+			    CRpcInvoker& operator=(const CRpcInvoker& copyFromMe)=delete;
 		    #endif
 		};
 	}

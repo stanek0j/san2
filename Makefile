@@ -9,6 +9,8 @@ OBJS-UTILS = utils/cthread.o \
 			 utils/cdatapack.o \
 			 utils/config.o \
 			 utils/hex.o \
+			 utils/address.o \
+			 utils/cstringutils.o \
 			 utils/platform/sigignore.o
 
 OBJS-CPPL = cppl/helper.o \
@@ -21,7 +23,9 @@ OBJS-NETWORK = network/ccapsule.o
 
 OBJS-RPC = rpc/cirpcchannel.o \
 		   rpc/crpcexecutor.o \
-		   rpc/cirpcfunction.o
+		   rpc/crpcinvoker.o \
+		   rpc/cirpcfunctionin.o \
+		   rpc/cirpcfunctionout.o
 
 OBJS-EXAMPLES-UTILS-PRODUCERCONSUMER = examples/utils/producerconsumer/pctest.o
 
@@ -43,7 +47,10 @@ OBJS-TCP =  tcp/ctcpchannel.o \
 			tcp/csingletcpserver.o
 			
 OBJS-INTERFACES = interfaces/tcp/ccapsulereceiver.o \
-				  interfaces/sendcapsulefunc.o \
+				  interfaces/sendcapsulefuncin.o \
+				  interfaces/sendcapsulefuncout.o \
+				  interfaces/alivefuncin.o \
+				  interfaces/alivefuncout.o \
 				  interfaces/tcp/ctcpinterface.o
 
 
@@ -69,7 +76,8 @@ OBJS-EXAMPLES-RPC-TCPSERVER = examples/rpc/tcpserver/main.o \
 OBJS-EXAMPLES-RPC-TCPCLIENT = examples/rpc/tcpclient/main.o \
 						   examples/rpc/tcpclient/clientreceiver.o
 						   
-OBJS-TEST-FUNC = examples/rpc/testfunc.o examples/rpc/multiply.o
+OBJS-TEST-FUNC = examples/rpc/testfuncin.o  examples/rpc/multiplyin.o \
+		 examples/rpc/testfuncout.o examples/rpc/multiplyout.o
 
 all:: components examples node
 

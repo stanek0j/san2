@@ -20,6 +20,7 @@
 
 #include "pipechannel.hpp"
 #include "helper.hpp"
+#include "network/sockdefs.h"
 
 #define CPPL_PIPECHANN_RXBUFSIZE 1500
 
@@ -49,8 +50,7 @@ namespace San2 { namespace Cppl {
 		void PipeChannel::run()
 		{
 			errcode = receive();
-			close(sock);
-			sock = -1;
+			san_cleanup_socket(&sock);
 		}
 
 		ErrorCode PipeChannel::send(char *data, int len)

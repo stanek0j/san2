@@ -1,7 +1,5 @@
 #pragma once
 
-#pragma comment(lib, "wsock32.lib")
-
 #ifdef UNIX
 	#include <sys/socket.h>
 	#include <sys/types.h>
@@ -12,6 +10,7 @@
 #endif
 
 #ifdef WIN32
+	#pragma comment(lib, "wsock32.lib")
     #include <winsock2.h>
 	#include <Ws2tcpip.h>
 	#include <Wspiapi.h>

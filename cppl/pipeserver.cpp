@@ -21,6 +21,7 @@
 #include <functional>
 
 #include "pipeserver.hpp"
+#include "network/sockdefs.h"
 
 #define CPPL_PIPESERV_UNIX_MAXCONNQUEUE 5
 #define CPPL_PIPESERV_WIN_OUTBUFSIZE 512

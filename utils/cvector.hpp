@@ -53,53 +53,53 @@ namespace San2
 				void append(const T &item)
 				{
 					// this-> is necessary, otherwise error
-					reserve(this->size() + sizeof(T));
-					push_back(item);
+					this->reserve(this->size() + sizeof(T));
+					this->push_back(item);
 				}
 				
 				void append(const std::vector<T, Allocator> &toAppend)
 				{
 					// this-> is necessary, otherwise error
-					reserve(this->size() + toAppend.size());
-					insert(this->end(), toAppend.begin(), toAppend.end());
+					this->reserve(this->size() + toAppend.size());
+					this->insert(this->end(), toAppend.begin(), toAppend.end());
 				}
 				
 				void append(const std::string &toAppend)
 				{
 					// this-> is necessary, otherwise error
-					reserve(this->size() + toAppend.size());
-					insert(this->end(), toAppend.begin(), toAppend.end());
+					this->reserve(this->size() + toAppend.size());
+					this->insert(this->end(), toAppend.begin(), toAppend.end());
 				}
 				
 				void append(const std::wstring &toAppend)
 				{
 					// this-> is necessary, otherwise error
-					reserve(this->size() + toAppend.size());
-					insert(this->end(), toAppend.begin(), toAppend.end());
+					this->reserve(this->size() + toAppend.size());
+					this->insert(this->end(), toAppend.begin(), toAppend.end());
 				}
 				
 				void prepend(const T &item)
 				{
-					reserve(sizeof(T) + this.size());
-					insert(this->begin(), item);
+					this->reserve(sizeof(T) + this.size());
+					this->insert(this->begin(), item);
 				}
 				
 				void prepend(const std::vector<T, Allocator> &toPrepend)
 				{
-					reserve(toPrepend.size() + this->size());
-					insert(this->begin(), toPrepend.begin(), toPrepend.end());
+					this->reserve(toPrepend.size() + this->size());
+					this->insert(this->begin(), toPrepend.begin(), toPrepend.end());
 				}
 				
 				void prepend(const std::string &toPrepend)
 				{
-					reserve(toPrepend.size() + this->size());
-					insert(this->begin(), toPrepend.begin(), toPrepend.end());
+					this->reserve(toPrepend.size() + this->size());
+					this->insert(this->begin(), toPrepend.begin(), toPrepend.end());
 				}
 				
 				void prepend(const std::wstring &toPrepend)
 				{
-					reserve(toPrepend.size() + this->size());
-					insert(this->begin(), toPrepend.begin(), toPrepend.end());
+					this->reserve(toPrepend.size() + this->size());
+					this->insert(this->begin(), toPrepend.begin(), toPrepend.end());
 				}
 				
 				CVector<T, Allocator> & operator+=(const T &rhs) 

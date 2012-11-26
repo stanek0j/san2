@@ -22,6 +22,7 @@
 
 #include "pipeclient.hpp"
 #include "helper.hpp"
+#include "network/sockdefs.h"
 
 #define CPPL_PIPECLI_RXBUFSIZE 1500
 #define CPPL_PIPECLI_WIN_MAXFNAMEBYTES 512
@@ -55,8 +56,7 @@ namespace San2 { namespace Cppl {
     void PipeClient::run()
     {
         errcode = receive();
-        close(sock);
-		sock = -1;
+        san_cleanup_socket(&sock);
     }
 
 	// TODO: socket closing in open() and receive(), add cleanup() and destructor again
