@@ -23,10 +23,9 @@ namespace San2
 				
 				void run()
 				{
-					std::chrono::milliseconds dur(2000);
 					//printf("consumer started\n");
 					T t;
-					while (!isTerminated()) m_pc.pop(&t, this, dur);
+					while (!isTerminated()) m_pc.pop(&t, this, 2000);
 				}
 			protected:
 				

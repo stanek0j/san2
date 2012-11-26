@@ -1,9 +1,6 @@
 
 #pragma once
 
-#include <chrono>
-#include <ratio>
-
 #include "utils/cthread.hpp"
 #include "utils/cproducerconsumer.hpp"
 
@@ -23,12 +20,11 @@ namespace San2
 				
 				void run()
 				{
-					std::chrono::milliseconds dur(2000);
 					//printf("producer started\n");
 					T t;
 					while (!isTerminated()) 
 					{
-						m_pc.push(t, this, dur);
+						m_pc.push(t, this, 2000);
 					}
 				}
 			
