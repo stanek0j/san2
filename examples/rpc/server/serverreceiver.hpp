@@ -3,8 +3,8 @@
 #include "cppl/pipechannel.hpp"
 #include "comm/streamrpcchannel.hpp"
 #include "rpc/crpcexecutor.hpp"
-#include "examples/rpc/testfunc.hpp"
-#include "examples/rpc/multiply.hpp"
+#include "examples/rpc/testfuncin.hpp"
+#include "examples/rpc/multiplyin.hpp"
 
 class ServerReceiver : public San2::Cppl::PipeChannel
 {

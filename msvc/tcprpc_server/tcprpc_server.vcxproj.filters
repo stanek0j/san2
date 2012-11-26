@@ -3,12 +3,37 @@
   <ItemGroup>
     <ClCompile Include="..\..\examples\rpc\tcpserver\main.cpp" />
     <ClCompile Include="..\..\examples\rpc\tcpserver\serverreceiver.cpp" />
-    <ClCompile Include="..\..\examples\rpc\multiply.cpp" />
-    <ClCompile Include="..\..\examples\rpc\testfunc.cpp" />
+    <ClCompile Include="..\..\examples\rpc\multiplyin.cpp">
+      <Filter>functions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\examples\rpc\multiplyout.cpp">
+      <Filter>functions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\examples\rpc\testfuncin.cpp">
+      <Filter>functions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\examples\rpc\testfuncout.cpp">
+      <Filter>functions</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\examples\rpc\tcpserver\serverreceiver.hpp" />
-    <ClInclude Include="..\..\examples\rpc\multiply.hpp" />
-    <ClInclude Include="..\..\examples\rpc\testfunc.hpp" />
+    <ClInclude Include="..\..\examples\rpc\multiplyin.hpp">
+      <Filter>functions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\examples\rpc\multiplyout.hpp">
+      <Filter>functions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\examples\rpc\testfuncin.hpp">
+      <Filter>functions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\examples\rpc\testfuncout.hpp">
+      <Filter>functions</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="functions">
+      <UniqueIdentifier>{b4ea294f-19e5-44d9-ac1c-bf37681b178c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

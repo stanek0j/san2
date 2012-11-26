@@ -3,9 +3,9 @@
 
 #include "cppl/pipeclient.hpp"
 #include "comm/streamrpcchannel.hpp"
-#include "rpc/crpcexecutor.hpp"
-#include "examples/rpc/testfunc.hpp"
-#include "examples/rpc/multiply.hpp"
+#include "rpc/crpcinvoker.hpp"
+#include "examples/rpc/testfuncout.hpp"
+#include "examples/rpc/multiplyout.hpp"
 
 class ClientReceiver : public San2::Cppl::PipeClient
 {
@@ -22,5 +22,5 @@ class ClientReceiver : public San2::Cppl::PipeClient
 	#endif
 	
 	San2::Comm::StreamRpcChannel *m_rpcChannel;
-	San2::Rpc::CRpcExecutor *m_rpcexec;
+	San2::Rpc::CRpcInvoker *m_rpci;
 };

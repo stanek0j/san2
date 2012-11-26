@@ -1,14 +1,39 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="..\..\examples\rpc\multiply.cpp" />
-    <ClCompile Include="..\..\examples\rpc\testfunc.cpp" />
     <ClCompile Include="..\..\examples\rpc\tcpclient\clientreceiver.cpp" />
     <ClCompile Include="..\..\examples\rpc\tcpclient\main.cpp" />
+    <ClCompile Include="..\..\examples\rpc\multiplyin.cpp">
+      <Filter>functions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\examples\rpc\multiplyout.cpp">
+      <Filter>functions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\examples\rpc\testfuncin.cpp">
+      <Filter>functions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\examples\rpc\testfuncout.cpp">
+      <Filter>functions</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\examples\rpc\multiply.hpp" />
-    <ClInclude Include="..\..\examples\rpc\testfunc.hpp" />
     <ClInclude Include="..\..\examples\rpc\tcpclient\clientreceiver.hpp" />
+    <ClInclude Include="..\..\examples\rpc\multiplyin.hpp">
+      <Filter>functions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\examples\rpc\multiplyout.hpp">
+      <Filter>functions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\examples\rpc\testfuncin.hpp">
+      <Filter>functions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\examples\rpc\testfuncout.hpp">
+      <Filter>functions</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="functions">
+      <UniqueIdentifier>{51a397e2-954f-46f3-b4ab-e6ca88e22106}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

@@ -38,11 +38,11 @@ San2::Cppl::ErrorCode ServerReceiver::receive()
 	m_rpcChannel = new San2::Comm::StreamRpcChannel(stream);
 	m_rpcexec = new San2::Rpc::CRpcExecutor(*m_rpcChannel, 5000);
 	
-	bool ret = m_rpcexec->registerFunction([](){return new TestFunc();});
+	bool ret = m_rpcexec->registerFunction([](){return new TestFuncIn;});
 	if (ret) printf("reg success\n");
 	else printf("reg fail\n");
 	
-	ret = m_rpcexec->registerFunction([](){return new Multiply();});
+	ret = m_rpcexec->registerFunction([](){return new MultiplyIn;});
 	if (ret) printf("reg success\n");
 	else printf("reg fail\n");
 	

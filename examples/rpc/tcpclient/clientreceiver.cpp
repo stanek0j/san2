@@ -14,7 +14,7 @@
 ClientReceiver::ClientReceiver(const char *ip, const char *port, unsigned int timCON, unsigned int timRX, unsigned int timTX) :
 	San2::Tcp::CTcpClient(ip, port,timCON, timRX, timTX),
 	m_rpcChannel(NULL),
-	m_rpcexec(NULL)
+	m_rpci(NULL)
 {
 	
 }
@@ -22,31 +22,31 @@ ClientReceiver::ClientReceiver(const char *ip, const char *port, unsigned int ti
 ClientReceiver::~ClientReceiver()
 {
 	if (m_rpcChannel != NULL) delete m_rpcChannel;
-	if (m_rpcexec != NULL) delete m_rpcexec;
+	if (m_rpci != NULL) delete m_rpci;
 }
 
 San2::Tcp::TcpErrorCode ClientReceiver::receive()
 {
 	San2::Comm::TcpStreamRW stream(2000, this);
 	m_rpcChannel = new San2::Comm::StreamRpcChannel(stream);
-	m_rpcexec = new San2::Rpc::CRpcExecutor(*m_rpcChannel, 5000);
+	m_rpci = new San2::Rpc::CRpcInvoker(*m_rpcChannel, 5000);
 	
-	bool ret = m_rpcexec->registerFunction([](){return new TestFunc();});
+	bool ret = m_rpci->registerFunction([](){return new TestFuncOut;});
 	if (ret) printf("reg success\n");
 	else printf("reg fail\n");
 	
 	
-	ret = m_rpcexec->registerFunction([](){return new Multiply();});
+	ret = m_rpci->registerFunction([](){return new MultiplyOut;});
 	if (ret) printf("reg success\n");
 	else printf("reg fail\n");
 	
-	TestFunc tf;
-	bool x = m_rpcexec->invokeFunction(tf);
+	TestFuncOut tf;
+	bool x = m_rpci->invokeFunction(tf);
 	if (!x) printf("Invoke fail\n");
 	
 	
-	Multiply mp(3, 5);
-	x = m_rpcexec->invokeFunction(mp);
+	MultiplyOut mp(3, 5);
+	x = m_rpci->invokeFunction(mp);
 	if (!x) printf("Invoke fail\n");
 	//---------------------------------
 

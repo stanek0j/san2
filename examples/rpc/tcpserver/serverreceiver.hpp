@@ -3,8 +3,8 @@
 
 #include "comm/streamrpcchannel.hpp"
 #include "rpc/crpcexecutor.hpp"
-#include "examples/rpc/testfunc.hpp"
-#include "examples/rpc/multiply.hpp"
+#include "examples/rpc/testfuncin.hpp"
+#include "examples/rpc/multiplyin.hpp"
 #include "tcp/ctcpchannel.hpp"
 #include "tcp/tcphelper.hpp"
 

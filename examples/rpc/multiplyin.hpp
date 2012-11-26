@@ -1,16 +1,13 @@
 
-#include "rpc/cirpcfunction.hpp"
+#include "rpc/cirpcfunctionin.hpp"
 #include "utils/platform/basictypes.hpp"
 
-class Multiply : public San2::Rpc::CIRpcFunction
+class MultiplyIn : public San2::Rpc::CIRpcFunctionIn
 {
 public:
-	Multiply();
-	Multiply(int x, int y);
+	MultiplyIn();
 	unsigned int getUniqueId()const;
 	bool operator()(void);
-	
-	bool pack(San2::Utils::bytes &out);
 	bool unpack(const San2::Utils::bytes &in);
 	
 	SAN_INT32 m_x, m_y;
