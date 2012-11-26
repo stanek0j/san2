@@ -35,29 +35,17 @@ namespace San2
 			}
 		}
 		
-		bool CRpcExecutor::invokeFunction(CIRpcFunction& func)
+		bool CRpcExecutor::registerFunction(std::function<CIRpcFunctionIn* (void)> createFunction)
 		{
-			San2::Utils::bytes b;
-			if (!func.pack(b))
-			{
-				printf("Func pack failed\n");
-				return false;
-			}
-			
-			return m_channel.sendData(func.getUniqueId(), b);
-		}	
-		
-		bool CRpcExecutor::registerFunction(std::function<CIRpcFunction* (void)> createFunction)
-		{
-			std::shared_ptr<CIRpcFunction> sharedFuncPtr(createFunction()); // must be on separate line!!! otherwise mem leak
-			std::pair<std::map<unsigned int, std::shared_ptr<CIRpcFunction> >::iterator, bool> ret;
-			ret = m_functions.insert(std::pair<unsigned int, std::shared_ptr<CIRpcFunction> > (sharedFuncPtr->getUniqueId(), sharedFuncPtr));
+			std::shared_ptr<CIRpcFunctionIn> sharedFuncPtr(createFunction()); // must be on separate line!!! otherwise mem leak
+			std::pair<std::map<unsigned int, std::shared_ptr<CIRpcFunctionIn> >::iterator, bool> ret;
+			ret = m_functions.insert(std::pair<unsigned int, std::shared_ptr<CIRpcFunctionIn> > (sharedFuncPtr->getUniqueId(), sharedFuncPtr));
 			return ret.second;	
 		}
 		
 		RpcError CRpcExecutor::executeFunction(unsigned int uniqueId, const San2::Utils::bytes &in)
 		{
-			std::shared_ptr<CIRpcFunction> func;
+			std::shared_ptr<CIRpcFunctionIn> func;
 			bool exists = findFunction(uniqueId, func);
 			
 			if (!exists)
@@ -74,9 +62,9 @@ namespace San2
 			return RpcError::SUCCESS;
 		}
 		
-		bool CRpcExecutor::findFunction(unsigned int uniqueId, std::shared_ptr<CIRpcFunction> &function)
+		bool CRpcExecutor::findFunction(unsigned int uniqueId, std::shared_ptr<CIRpcFunctionIn> &function)
 		{
-			std::map<unsigned int, std::shared_ptr<CIRpcFunction> >::iterator it;
+			std::map<unsigned int, std::shared_ptr<CIRpcFunctionIn> >::iterator it;
 			it = m_functions.find(uniqueId);
 			if (it == m_functions.end()) return false; // function not found
 			function = it->second;

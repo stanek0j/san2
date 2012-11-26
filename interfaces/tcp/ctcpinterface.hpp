@@ -3,13 +3,16 @@
 #include <string>
 #include <memory>
 #include <atomic>
+#include <mutex>
 
+#include "ccapsulereceiver.hpp"
 #include "network/nettypedef.hpp"
 #include "network/cnetinterface.hpp"
 #include "network/ccapsule.hpp"
 #include "tcp/ctcpclient.hpp"
+#include "comm/streamrpcchannel.hpp"
 #include "utils/cproducerconsumer.hpp"
-#include "ccapsulereceiver.hpp"
+#include "rpc/crpcinvoker.hpp"
 
 // This is very confusing class as it combines both - client and server.
 // Server is an instance of CCapsuleReceiver
@@ -33,10 +36,7 @@
 // Both client and server are (i hope) designed as fault-tolerant
 // so if the remote and disconnects it should reconnect successfully later
 
-#include <mutex>
-#include "comm/streamrpcchannel.hpp"
-#include "ccapsulereceiver.hpp"
-#include "tcp/ctcpclient.hpp"
+
 
 namespace San2
 {
@@ -90,7 +90,7 @@ namespace San2
 			
 			// Sender part
 			San2::Comm::StreamRpcChannel *m_rpcChannel;
-			San2::Rpc::CRpcExecutor *m_rpcexec;
+			San2::Rpc::CRpcInvoker *m_rpci;
 			
 			std::mutex m_mutexPeerAddress;
 			

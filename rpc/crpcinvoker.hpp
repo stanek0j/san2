@@ -7,7 +7,7 @@
 
 #include "utils/cvector.hpp"
 #include "utils/cthread.hpp"
-#include "cirpcfunctionin.hpp"
+#include "cirpcfunctionout.hpp"
 #include "cirpcchannel.hpp"
 #include "rpcerror.hpp"
 
@@ -23,21 +23,22 @@ namespace San2
 {
 	namespace Rpc
 	{
-		class CRpcExecutor : San2::Utils::CThread
+		class CRpcInvoker
 		{
 		public:
-			CRpcExecutor(CIRpcChannel& channel, unsigned int timRX);
-			void run();
+            CRpcInvoker(CIRpcChannel& channel, unsigned int timRX);
+			
 			// bool registerFunction(std::shared_ptr<RpcFunction> func);
-			bool registerFunction(std::function<CIRpcFunctionIn* (void)> createFunction);
+			bool registerFunction(std::function<CIRpcFunctionOut* (void)> createFunction);
+			
+			bool invokeFunction(CIRpcFunctionOut& func);
 			
 			// destructor must be virtual!
-			virtual ~CRpcExecutor(){ /* intentionally empty */ };
+			virtual ~CRpcInvoker(){ /* intentionally empty */ };
 		
 		private:
-			RpcError executeFunction(unsigned int uniqueId, const San2::Utils::bytes &in);
-			std::map<unsigned int, std::shared_ptr<CIRpcFunctionIn> > m_functions;
-			bool findFunction(unsigned int uniqueId, std::shared_ptr<CIRpcFunctionIn> &function);
+			std::map<unsigned int, std::shared_ptr<CIRpcFunctionOut> > m_functions;
+			bool findFunction(unsigned int uniqueId, std::shared_ptr<CIRpcFunctionOut> &function);
 			CIRpcChannel &m_channel;
 			unsigned int m_timRX;
 			

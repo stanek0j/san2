@@ -19,6 +19,7 @@ namespace San2
 		
 		private:
 			friend class CRpcExecutor;
+            friend class CRpcInvoker;
 			
 			bool sendData(unsigned int funcId, const San2::Utils::bytes &data);
 			bool recvData(unsigned int &funcIdOut, San2::Utils::bytes &out, unsigned int timeoutMsec);

@@ -1,9 +1,9 @@
 
 #include "ctcpinterface.hpp"
-#include "interfaces/sendcapsulefunc.hpp"
-#include "interfaces/alivefunc.hpp"
-#include "utils/platform/sleep.hpp"
+#include "interfaces/sendcapsulefuncout.hpp"
+#include "interfaces/alivefuncout.hpp"
 #include "comm/tcpstreamrw.hpp"
+#include "utils/platform/sleep.hpp"
 #include "utils/cvector.hpp"
 #include "utils/log.h"
 #include "utils/platform/sigignore.hpp"
@@ -29,7 +29,7 @@ CTcpInterface::CTcpInterface(San2::Network::SanAddress sanaddr, const std::strin
 	m_outputQueue(maxOutputQueueSize),
     srv(self() ,localIp, localPort, timeCON, timeRX, timeTX, inputQueue, m_RXstatus),
 	m_rpcChannel(NULL),
-	m_rpcexec(NULL)
+	m_rpci(NULL)
 {
     m_TXstatus = San2::Network::InterfaceLineStatus::DISCONNECTED;
 }
@@ -69,13 +69,13 @@ void CTcpInterface::run()
 	
 	San2::Comm::TcpStreamRW stream(CTCP_INTERFACE_MAX_SINGLE_READ_SIZE, this);
 	m_rpcChannel = new San2::Comm::StreamRpcChannel(stream);
-	m_rpcexec = new San2::Rpc::CRpcExecutor(*m_rpcChannel, m_timeRX);
+	m_rpci = new San2::Rpc::CRpcInvoker(*m_rpcChannel, m_timeRX);
 
     // Another MSVC fix :)
     // error C3480: a lambda capture variable must be from an enclosing function scope
     San2::Network::SanAddress msvc_fix_sanaddr = m_sanaddr;
 
-	bool ret = m_rpcexec->registerFunction([this, &msvc_fix_sanaddr](){return new SendCapsuleFunc(m_sanaddr, NULL, this);});
+	bool ret = m_rpci->registerFunction([this, &msvc_fix_sanaddr](){return new SendCapsuleFuncOut;});
 	if (!ret)
 	{
 		FILE_LOG(logERROR) << "CTcpInterface::run(): registrer function FAILED";
@@ -83,7 +83,7 @@ void CTcpInterface::run()
 		return;
 	}	
 	
-    ret = m_rpcexec->registerFunction([](){return new AliveFunc();});
+    ret = m_rpci->registerFunction([](){return new AliveFuncOut;});
 	if (!ret)
 	{
 		FILE_LOG(logERROR) << "CTcpInterface::run(): registrer AliveFunc function FAILED";
@@ -91,8 +91,8 @@ void CTcpInterface::run()
 		return;
 	}	
 
-	SendCapsuleFunc func(m_sanaddr, NULL, this);
-	AliveFunc aliveFunc;
+	SendCapsuleFuncOut func;
+	AliveFuncOut aliveFunc;
 
 	// get item from outputQueue and send it
 	
@@ -134,7 +134,7 @@ void CTcpInterface::run()
                     return;
                 }
 
-			    if (!m_rpcexec->invokeFunction(aliveFunc)) // test if connection ok (dummy function that sends, but does nothing)
+			    if (!m_rpci->invokeFunction(aliveFunc)) // test if connection ok (dummy function that sends, but does nothing)
 			    {
 				    FILE_LOG(logDEBUG4) << "TCP-IFACE: connection lost TX";
                     m_TXstatus = San2::Network::InterfaceLineStatus::DISCONNECTED;
@@ -153,7 +153,7 @@ void CTcpInterface::run()
 				FILE_LOG(logERROR) << "TCP-IFACE: capsule packing failed() ***FAILED*** ";	
 			}
 			
-			bool rval = m_rpcexec->invokeFunction(func);
+			bool rval = m_rpci->invokeFunction(func);
 			if (!rval)
 			{
 				FILE_LOG(logDEBUG4) << "TCP-IFACE: connection lost TX";

@@ -81,9 +81,6 @@
     <ClCompile Include="..\..\utils\platform\sleep.cpp">
       <Filter>utils\platform</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\rpc\cirpcfunction.cpp">
-      <Filter>rpc</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\rpc\cirpcchannel.cpp">
       <Filter>rpc</Filter>
     </ClCompile>
@@ -105,9 +102,6 @@
     <ClCompile Include="..\..\interfaces\tcp\ctcpinterface.cpp">
       <Filter>interfaces\tcp</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\interfaces\sendcapsulefunc.cpp">
-      <Filter>interfaces</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\utils\config.cpp">
       <Filter>utils</Filter>
     </ClCompile>
@@ -123,7 +117,25 @@
     <ClCompile Include="..\..\utils\address.cpp">
       <Filter>utils</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\interfaces\alivefunc.cpp">
+    <ClCompile Include="..\..\rpc\cirpcfunctionin.cpp">
+      <Filter>rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\rpc\cirpcfunctionout.cpp">
+      <Filter>rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\rpc\crpcinvoker.cpp">
+      <Filter>rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\interfaces\sendcapsulefuncin.cpp">
+      <Filter>interfaces</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\interfaces\sendcapsulefuncout.cpp">
+      <Filter>interfaces</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\interfaces\alivefuncin.cpp">
+      <Filter>interfaces</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\interfaces\alivefuncout.cpp">
       <Filter>interfaces</Filter>
     </ClCompile>
   </ItemGroup>
@@ -197,9 +209,6 @@
     <ClInclude Include="..\..\utils\platform\sleep.hpp">
       <Filter>utils\platform</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\rpc\cirpcfunction.hpp">
-      <Filter>rpc</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\rpc\cirpcchannel.hpp">
       <Filter>rpc</Filter>
     </ClInclude>
@@ -227,9 +236,6 @@
     <ClInclude Include="..\..\interfaces\tcp\ctcpinterface.hpp">
       <Filter>interfaces\tcp</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\interfaces\sendcapsulefunc.hpp">
-      <Filter>interfaces</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\utils\config.hpp">
       <Filter>utils</Filter>
     </ClInclude>
@@ -251,7 +257,25 @@
     <ClInclude Include="..\..\utils\address.hpp">
       <Filter>utils</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\interfaces\alivefunc.hpp">
+    <ClInclude Include="..\..\rpc\cirpcfunctionin.hpp">
+      <Filter>rpc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\rpc\cirpcfunctionout.hpp">
+      <Filter>rpc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\rpc\crpcinvoker.hpp">
+      <Filter>rpc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\interfaces\sendcapsulefuncin.hpp">
+      <Filter>interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\interfaces\sendcapsulefuncout.hpp">
+      <Filter>interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\interfaces\alivefuncin.hpp">
+      <Filter>interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\interfaces\alivefuncout.hpp">
       <Filter>interfaces</Filter>
     </ClInclude>
   </ItemGroup>

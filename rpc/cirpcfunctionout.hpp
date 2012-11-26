@@ -7,21 +7,19 @@ namespace San2
 {
 	namespace Rpc
 	{
-		class CIRpcFunction
+		class CIRpcFunctionOut
 		{
 		public:			
 			// destructor must be virtual!
-			virtual ~CIRpcFunction(){ /* intentionally empty */ }
+			virtual ~CIRpcFunctionOut(){ /* intentionally empty */ }
 		
-			virtual unsigned int getUniqueId()const=0 ;
-			virtual bool operator()(void)=0;
+			virtual unsigned int getUniqueId()const=0;
 			
 			// std::less<T> (because of std::map in CRpcExecutor)
-			bool operator() (const CIRpcFunction& x, const CIRpcFunction& y) const;
+			bool operator() (const CIRpcFunctionOut& x, const CIRpcFunctionOut& y) const;
 			
 			// TRUE = success
 			virtual bool pack(San2::Utils::bytes &out)=0;
-			virtual bool unpack(const San2::Utils::bytes &in)=0;
 		
 		private:
 			// another msvc fix

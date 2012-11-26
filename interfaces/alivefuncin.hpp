@@ -1,20 +1,17 @@
 
 #include <memory>
-#include "rpc/cirpcfunction.hpp"
+#include "rpc/cirpcfunctionin.hpp"
 
 namespace San2 {
 	namespace Interfaces
 	{
-		class AliveFunc : public San2::Rpc::CIRpcFunction
+		class AliveFuncIn : public San2::Rpc::CIRpcFunctionIn
 		{
 		public:
-			AliveFunc();
+			AliveFuncIn();
 			unsigned int getUniqueId()const;
 			bool operator()(void);
-			
-			bool pack(San2::Utils::bytes &out);
 			bool unpack(const San2::Utils::bytes &in);
-		
 		};
 	}
 }

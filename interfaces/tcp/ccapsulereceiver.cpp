@@ -12,9 +12,9 @@
 
 
 #include "ccapsulereceiver.hpp"
-#include "interfaces/sendcapsulefunc.hpp"
-#include "interfaces/alivefunc.hpp"
-#include "rpc/cirpcfunction.hpp"
+#include "interfaces/sendcapsulefuncin.hpp"
+#include "interfaces/alivefuncin.hpp"
+#include "rpc/cirpcfunctionin.hpp"
 #include "comm/tcpstreamrw.hpp"
 #include "utils/cvector.hpp"
 #include "network/nettypedef.hpp"
@@ -70,7 +70,7 @@ San2::Tcp::TcpErrorCode CCapsuleReceiver::receive()
     San2::Utils::CProducerConsumer<std::shared_ptr<San2::Network::CCapsule> >& msvc_fix_inputQueue = m_inputQueue;
     CTcpInterface &msvc_fix_iface = m_iface;
 
-	bool ret = m_rpcexec->registerFunction([&msvc_fix_inputQueue, this, &msvc_fix_iface](){return new SendCapsuleFunc(m_iface.getInterfaceAddress(), &m_inputQueue, this);});
+	bool ret = m_rpcexec->registerFunction([&msvc_fix_inputQueue, this, &msvc_fix_iface](){return new SendCapsuleFuncIn(m_iface.getInterfaceAddress(), &m_inputQueue, this);});
 	if (!ret)
 	{
 		FILE_LOG(logERROR) << "CCapsuleReceiver::receive(): registrer function *FAILED*";
@@ -78,7 +78,7 @@ San2::Tcp::TcpErrorCode CCapsuleReceiver::receive()
 		return San2::Tcp::TcpErrorCode::FAILURE;
 	}	
 	
-    ret = m_rpcexec->registerFunction([](){return new AliveFunc();});
+    ret = m_rpcexec->registerFunction([](){return new AliveFuncIn;});
 	if (!ret)
 	{
 		FILE_LOG(logERROR) << "CTcpInterface::run(): registrer AliveFunc function FAILED";
