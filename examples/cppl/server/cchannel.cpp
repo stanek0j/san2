@@ -1,5 +1,6 @@
 
 #include "cchannel.hpp"
+#include <stdio.h>
 
 CChannel::CChannel(CPPL_PIPETYPE handle, unsigned int timRX, unsigned int timTX) :
 	San2::Cppl::PipeChannel(handle, timRX, timTX)

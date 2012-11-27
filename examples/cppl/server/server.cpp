@@ -7,6 +7,7 @@
 	#include <sys/types.h>
 	#include <sys/un.h>
 	#include <signal.h>
+	#include <unistd.h>
 #endif
 
 #include "cppl/pipeserver.hpp"
