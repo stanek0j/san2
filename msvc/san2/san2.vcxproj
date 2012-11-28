@@ -37,6 +37,8 @@
     <ClCompile Include="..\..\rpc\cirpcchannel.cpp" />
     <ClCompile Include="..\..\rpc\cirpcfunctionin.cpp" />
     <ClCompile Include="..\..\rpc\cirpcfunctionout.cpp" />
+    <ClCompile Include="..\..\rpc\cirpcsyncfunctionin.cpp" />
+    <ClCompile Include="..\..\rpc\cirpcsyncfunctionout.cpp" />
     <ClCompile Include="..\..\rpc\crpcexecutor.cpp" />
     <ClCompile Include="..\..\rpc\crpcinvoker.cpp" />
     <ClCompile Include="..\..\stream\cistreamrw.cpp" />
@@ -77,8 +79,11 @@
     <ClInclude Include="..\..\rpc\cirpcchannel.hpp" />
     <ClInclude Include="..\..\rpc\cirpcfunctionin.hpp" />
     <ClInclude Include="..\..\rpc\cirpcfunctionout.hpp" />
+    <ClInclude Include="..\..\rpc\cirpcsyncfunctionin.hpp" />
+    <ClInclude Include="..\..\rpc\cirpcsyncfunctionout.hpp" />
     <ClInclude Include="..\..\rpc\crpcexecutor.hpp" />
     <ClInclude Include="..\..\rpc\crpcinvoker.hpp" />
+    <ClInclude Include="..\..\rpc\rpcdefines.hpp" />
     <ClInclude Include="..\..\rpc\rpcerror.hpp" />
     <ClInclude Include="..\..\stream\cimessageseparator.hpp" />
     <ClInclude Include="..\..\stream\cistreamrw.hpp" />

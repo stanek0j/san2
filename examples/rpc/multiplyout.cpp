@@ -25,3 +25,15 @@ bool MultiplyOut::pack(San2::Utils::bytes &out)
 	out = San2::Utils::CDataPack::pack(m_x) + San2::Utils::CDataPack::pack(m_y);
 	return true;
 }
+
+SAN_INT32 MultiplyOut::getResult()
+{
+    return m_result;
+}
+
+
+bool MultiplyOut::parseResponse(const San2::Utils::bytes &in)
+{
+    m_result = San2::Utils::CDataPack::unpackInt32(in, 0);
+    return true;
+}

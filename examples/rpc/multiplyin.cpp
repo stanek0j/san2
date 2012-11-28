@@ -23,6 +23,13 @@ bool MultiplyIn::unpack(const San2::Utils::bytes &in)
 
 bool MultiplyIn::operator()(void)
 {
-	printf("Multiply: %d * %d = %d\n", m_x, m_y, m_x * m_y);
+    SAN_INT32 result = m_x * m_y;
+	printf("Multiply: %d * %d = %d\n", m_x, m_y, result);
+    m_response = San2::Utils::CDataPack::pack(result);
 	return true;
+}
+
+San2::Utils::bytes MultiplyIn::getResponse()
+{
+    return m_response;
 }

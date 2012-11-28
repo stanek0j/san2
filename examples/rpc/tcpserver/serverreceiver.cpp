@@ -39,7 +39,7 @@ San2::Tcp::TcpErrorCode ServerReceiver::receive()
 	if (ret) printf("reg success\n");
 	else printf("reg fail\n");
 	
-	ret = m_rpcexec->registerFunction([](){return new MultiplyIn;});
+	ret = m_rpcexec->registerSyncFunction([](){return new MultiplyIn;});
 	if (ret) printf("reg success\n");
 	else printf("reg fail\n");
 	
