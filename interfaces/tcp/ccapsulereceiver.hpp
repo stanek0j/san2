@@ -13,6 +13,7 @@
 #include "utils/cproducerconsumer.hpp"
 #include "network/ccapsule.hpp"
 #include "network/cnetinterface.hpp"
+#include "utils/atomic.hpp"
 
 namespace San2
 {
@@ -23,7 +24,7 @@ namespace San2
 		class CCapsuleReceiver : public San2::Tcp::CSingleTcpServer
 		{
 		  public:
-              CCapsuleReceiver(CTcpInterface &iface, const std::string &ip, const std::string &port, unsigned int timCON, unsigned int timRX, unsigned int timTX, San2::Utils::CProducerConsumer<std::shared_ptr<San2::Network::CCapsule> >& inputQueue, std::atomic<San2::Network::InterfaceLineStatus> &RXstatus);
+              CCapsuleReceiver(CTcpInterface &iface, const std::string &ip, const std::string &port, unsigned int timCON, unsigned int timRX, unsigned int timTX, San2::Utils::CProducerConsumer<std::shared_ptr<San2::Network::CCapsule> >& inputQueue, San2::Utils::Atomic<San2::Network::InterfaceLineStatus> &RXstatus);
 			virtual ~CCapsuleReceiver();
 		  protected:
 			
@@ -43,7 +44,7 @@ namespace San2
 			
 			San2::Utils::CProducerConsumer<std::shared_ptr<San2::Network::CCapsule> >& m_inputQueue;
 
-            std::atomic<San2::Network::InterfaceLineStatus> &m_RXstatus;
+            San2::Utils::Atomic<San2::Network::InterfaceLineStatus> &m_RXstatus;
 		};
 	}
 }

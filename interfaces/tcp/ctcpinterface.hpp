@@ -13,6 +13,7 @@
 #include "comm/streamrpcchannel.hpp"
 #include "utils/cproducerconsumer.hpp"
 #include "rpc/crpcinvoker.hpp"
+#include "utils/atomic.hpp"
 
 // This is very confusing class as it combines both - client and server.
 // Server is an instance of CCapsuleReceiver
@@ -84,7 +85,7 @@ namespace San2
 			San2::Utils::CProducerConsumer<std::shared_ptr<San2::Network::CCapsule> >& m_inputQueue;
 			San2::Utils::CProducerConsumer<std::shared_ptr<San2::Network::CCapsule> > m_outputQueue;
 			
-            std::atomic<San2::Network::InterfaceLineStatus> m_RXstatus, m_TXstatus;
+            San2::Utils::Atomic<San2::Network::InterfaceLineStatus> m_RXstatus, m_TXstatus;
 
 			CCapsuleReceiver srv;
 			
