@@ -7,6 +7,7 @@
 #include "utils/cvector.hpp"
 #include "utils/log.h"
 #include "utils/platform/sigignore.hpp"
+#include "ccapsulereceiver.hpp"
 
 #define CTCP_INTERFACE_MAX_SINGLE_READ_SIZE 2000
 
