@@ -15,7 +15,7 @@ namespace San2
 					
 				}
 			
-				constexpr Atomic(T value) :
+				Atomic(T value) :
 					m_variable(value)
 				{
 					
@@ -38,7 +38,7 @@ namespace San2
 				std::mutex m_mutexVariable;
 				T m_variable;
 			
-			#ifndef MSVC
+			#ifndef WINDOWS
 				Atomic& operator=(const Atomic&)=delete;
 				Atomic& operator=(const Atomic&)volatile=delete;
 			#endif
