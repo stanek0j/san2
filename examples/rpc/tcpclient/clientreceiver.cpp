@@ -36,30 +36,29 @@ San2::Tcp::TcpErrorCode ClientReceiver::receive()
 	else printf("reg fail\n");
 	
 	
-	ret = m_rpci->registerFunction([](){return new MultiplyOut;});
+	ret = m_rpci->registerSyncFunction([](){return new MultiplyOut;});
 	if (ret) printf("reg success\n");
 	else printf("reg fail\n");
 	
+    // --------------------------------
 	TestFuncOut tf;
-	bool x = m_rpci->invokeFunction(tf);
-	if (!x) printf("Invoke fail\n");
+	if (!m_rpci->invokeFunction(tf)) printf("Invoke fail\n");
 	
 	
 	MultiplyOut mp(3, 5);
-	x = m_rpci->invokeFunction(mp);
-	if (!x) printf("Invoke fail\n");
-	//---------------------------------
+	if (!m_rpci->invokeSyncFunction(mp)) printf("Invoke fail\n");
+    std::cout << "multiplication result is: " << (int) mp.getResult() << std::endl;
+    mp.m_x = 10;
+    mp.m_y = 20;
 
-	unsigned int bytesRead;
-	const unsigned int dataSize = 512;
-	char data[dataSize];
+    if (!m_rpci->invokeFunction(tf)) printf("Invoke fail\n");
 
-	while(read(data, dataSize, &bytesRead) == San2::Tcp::TcpErrorCode::SUCCESS)
-	{
-		fwrite(data, 1, bytesRead, stdout);
-		fflush(stdout);
-	}
-	printf("client exit cc \n");
+    if (!m_rpci->invokeSyncFunction(mp)) printf("Invoke fail\n");
+    std::cout << "multiplication result is: " << (int) mp.getResult() << std::endl;
+    mp.m_x = 7;
+    mp.m_y = 8;
+    if (!m_rpci->invokeSyncFunction(mp)) printf("Invoke fail\n");
+    std::cout << "multiplication result is: " << (int) mp.getResult() << std::endl;
 	
 	return San2::Tcp::TcpErrorCode::SUCCESS;
 }

@@ -31,6 +31,24 @@
     <Filter Include="interfaces\tcp">
       <UniqueIdentifier>{aa0ad635-d0e3-41be-80b7-a26c0e0b5375}</UniqueIdentifier>
     </Filter>
+    <Filter Include="rpc\function">
+      <UniqueIdentifier>{c55ec405-04b5-40a8-bb56-24e8ef672507}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="rpc\function\in">
+      <UniqueIdentifier>{03a49ab0-6967-4866-9c2a-5c7f795355b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="rpc\function\out">
+      <UniqueIdentifier>{29b208f6-623e-4d59-b5a7-f99e824b6e9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="rpc\syncFunction">
+      <UniqueIdentifier>{49ba5ea9-610d-4eff-aefe-32a7c09d260f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="rpc\syncFunction\in">
+      <UniqueIdentifier>{4a9b09b7-0173-44f1-b7d1-9f3c3b674995}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="rpc\syncFunction\out">
+      <UniqueIdentifier>{68b0c5a5-888a-435c-80ca-062476a3010e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\comm\cpplstreamrw.cpp">
@@ -117,12 +135,6 @@
     <ClCompile Include="..\..\utils\address.cpp">
       <Filter>utils</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\rpc\cirpcfunctionin.cpp">
-      <Filter>rpc</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\rpc\cirpcfunctionout.cpp">
-      <Filter>rpc</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\rpc\crpcinvoker.cpp">
       <Filter>rpc</Filter>
     </ClCompile>
@@ -137,6 +149,18 @@
     </ClCompile>
     <ClCompile Include="..\..\interfaces\alivefuncout.cpp">
       <Filter>interfaces</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\rpc\cirpcfunctionin.cpp">
+      <Filter>rpc\function\in</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\rpc\cirpcfunctionout.cpp">
+      <Filter>rpc\function\out</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\rpc\cirpcsyncfunctionin.cpp">
+      <Filter>rpc\syncFunction\in</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\rpc\cirpcsyncfunctionout.cpp">
+      <Filter>rpc\syncFunction\out</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -257,12 +281,6 @@
     <ClInclude Include="..\..\utils\address.hpp">
       <Filter>utils</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\rpc\cirpcfunctionin.hpp">
-      <Filter>rpc</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\rpc\cirpcfunctionout.hpp">
-      <Filter>rpc</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\rpc\crpcinvoker.hpp">
       <Filter>rpc</Filter>
     </ClInclude>
@@ -277,6 +295,21 @@
     </ClInclude>
     <ClInclude Include="..\..\interfaces\alivefuncout.hpp">
       <Filter>interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\rpc\rpcdefines.hpp">
+      <Filter>rpc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\rpc\cirpcfunctionin.hpp">
+      <Filter>rpc\function\in</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\rpc\cirpcfunctionout.hpp">
+      <Filter>rpc\function\out</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\rpc\cirpcsyncfunctionin.hpp">
+      <Filter>rpc\syncFunction\in</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\rpc\cirpcsyncfunctionout.hpp">
+      <Filter>rpc\syncFunction\out</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

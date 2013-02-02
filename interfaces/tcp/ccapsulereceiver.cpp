@@ -23,7 +23,7 @@
 
 namespace San2 { namespace Interfaces {
 	
-CCapsuleReceiver::CCapsuleReceiver(CTcpInterface &iface, const std::string &ip, const std::string &port, unsigned int timCON, unsigned int timRX, unsigned int timTX, San2::Utils::CProducerConsumer<std::shared_ptr<San2::Network::CCapsule> >& inputQueue, std::atomic<San2::Network::InterfaceLineStatus> &RXstatus) :
+CCapsuleReceiver::CCapsuleReceiver(CTcpInterface &iface, const std::string &ip, const std::string &port, unsigned int timCON, unsigned int timRX, unsigned int timTX, San2::Utils::CProducerConsumer<std::shared_ptr<San2::Network::CCapsule> >& inputQueue, San2::Utils::Atomic<San2::Network::InterfaceLineStatus> &RXstatus) :
 	San2::Tcp::CSingleTcpServer(ip, port, timCON, timRX, timTX),
 	m_iface(iface),
 	m_rpcChannel(NULL),
