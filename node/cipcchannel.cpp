@@ -355,7 +355,7 @@ San2::Cppl::ErrorCode CIpcChannel::lineParser(const std::vector<std::string> &ar
         
         
         San2::Utils::bytes messageData;
-        for (int i = 2; i < args.size(); i++) messageData += args[i];
+        for (unsigned int i = 2; i < args.size(); i++) messageData += args[i];
 
         San2::Network::SanAddress msgDestinationAddress;
         if (!(San2::Utils::string2address(args[1], msgDestinationAddress)))

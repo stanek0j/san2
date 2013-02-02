@@ -80,7 +80,7 @@ namespace San2
 				
 				void prepend(const T &item)
 				{
-					this->reserve(sizeof(T) + this.size());
+					this->reserve(sizeof(T) + this->size());
 					this->insert(this->begin(), item);
 				}
 				

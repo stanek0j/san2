@@ -9,8 +9,8 @@ namespace San2 { namespace Node {
 
 CNode::CNode(unsigned int inputQueueMaxSize, std::string nodeName, unsigned int timePOP) :
 	m_inputQueue(inputQueueMaxSize),
-	m_timePOP(timePOP),
-	m_nodeName(nodeName)
+	m_nodeName(nodeName),
+	m_timePOP(timePOP)
 {
 
 }
