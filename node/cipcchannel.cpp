@@ -103,7 +103,7 @@ San2::Cppl::ErrorCode CIpcChannel::lineParser(const std::vector<std::string> &ar
     {
         if (args.size() < 2)
         {
-            San2::Cppl::BufferProcessor::sendLine("usage: capsule <default|src|dst|hop|hash|hexdata|dx>");
+            San2::Cppl::BufferProcessor::sendLine("usage: capsule <default|src|dst|hop|hash|hexdata|dx|ds>");
             return San2::Cppl::ErrorCode::SUCCESS;
         }
 
@@ -312,6 +312,43 @@ San2::Cppl::ErrorCode CIpcChannel::lineParser(const std::vector<std::string> &ar
                 return San2::Cppl::ErrorCode::SUCCESS;
             default:
                 San2::Cppl::BufferProcessor::sendLine("usage: capsule dx on | capsule dx off | capsule dx");
+                return San2::Cppl::ErrorCode::SUCCESS;
+            }
+        }
+
+        if (!args[1].compare("ds"))
+        {
+            switch(args.size())
+            {
+            case 2:
+                if (m_capsule.getDS())
+                {
+                    San2::Cppl::BufferProcessor::sendLine("ds is on");
+                }
+                else
+                {
+                    San2::Cppl::BufferProcessor::sendLine("ds is off");
+                }
+                return San2::Cppl::ErrorCode::SUCCESS;
+            case 3:
+                if (!args[2].compare("on"))
+                {
+                    m_capsule.setDS(true);
+                    San2::Cppl::BufferProcessor::sendLine("ds enabled OK");
+                    return San2::Cppl::ErrorCode::SUCCESS;
+                }
+
+                if (!args[2].compare("off"))
+                {
+                    m_capsule.setDS(true);
+                    San2::Cppl::BufferProcessor::sendLine("ds disabled OK");
+                    return San2::Cppl::ErrorCode::SUCCESS;
+                }
+
+                San2::Cppl::BufferProcessor::sendLine("usage: capsule ds on | capsule ds off");
+                return San2::Cppl::ErrorCode::SUCCESS;
+            default:
+                San2::Cppl::BufferProcessor::sendLine("usage: capsule ds on | capsule ds off | capsule ds");
                 return San2::Cppl::ErrorCode::SUCCESS;
             }
         }
