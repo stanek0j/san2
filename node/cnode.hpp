@@ -9,6 +9,7 @@
 #include "utils/cthread.hpp"
 #include "network/cnetinterface.hpp"
 #include "network/ccapsule.hpp"
+#include "worker/cworkerpool.hpp"
 
 namespace San2
 {
@@ -41,6 +42,8 @@ namespace San2
 		private:
 			San2::Utils::CProducerConsumer<std::shared_ptr<San2::Network::CCapsule> > m_inputQueue;
 			std::set<std::shared_ptr<San2::Network::CNetInterface> > m_interfaces;
+
+			San2::Worker::CWorkerPool *workerPool;
 			
 			std::mutex m_mutexInterfaces;
 			const std::string m_nodeName; // used for orientation in terminal, nothing else
