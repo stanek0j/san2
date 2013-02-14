@@ -3,7 +3,7 @@
 #include "cworkerpool.hpp"
 
 namespace San2 {
-namespace Worker {
+namespace Exec {
 
 CWorkerPool::CWorkerPool()
 {

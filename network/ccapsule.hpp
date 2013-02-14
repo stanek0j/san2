@@ -31,7 +31,7 @@ namespace San2
 			void setDestinationAddress(SanAddress dstAddress);
 			void setHop(SAN_UINT16 hop);
 			void setDX(bool dx); // Destination eXecute
-			void setDS(bool ds);
+			void setDS(bool ds); // Destination Send
 			void setApplicationId(SanApplicationId appId);
 			
 			SanAddress getFromInterfaceAddress();

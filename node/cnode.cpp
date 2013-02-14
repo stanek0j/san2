@@ -12,7 +12,7 @@ CNode::CNode(unsigned int inputQueueMaxSize, std::string nodeName, unsigned int 
 	m_nodeName(nodeName),
 	m_timePOP(timePOP)
 {
-	workerPool = new San2::Worker::CWorkerPool();
+	workerPool = new San2::Exec::CWorkerPool();
 }
 
 void CNode::run()
@@ -20,6 +20,8 @@ void CNode::run()
 	// there should be capsule executor/worker implementation
 	
 	printf("hwThreads: %d\n", workerPool->getHwThreads());
+	// create ipc
+	// run workers
 
 	// there should be a router implementation
 	

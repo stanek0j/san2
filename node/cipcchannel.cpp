@@ -86,7 +86,7 @@ San2::Cppl::ErrorCode CIpcChannel::lineParser(const std::vector<std::string> &ar
     {
         std::shared_ptr<San2::Network::CCapsule> shCap(new San2::Network::CCapsule);
         *shCap = m_capsule;
-        m_node.injectCapsule(shCap);
+        //m_node.injectCapsule(shCap);
         if (!(m_node.injectCapsule(shCap, this, SAN2_CIPCCHANNEL_INJECTTIMEOUT_MSEC)))
         {
             San2::Cppl::BufferProcessor::sendLine("inject OK");
@@ -409,6 +409,7 @@ San2::Cppl::ErrorCode CIpcChannel::lineParser(const std::vector<std::string> &ar
         shCap->setHop(255);
         shCap->setApplicationId(San2::Network::sanTestMessageApplicationId);
         shCap->setDX(true);
+        shCap->setDS(false);
         shCap->setData(messageData);
 
         m_node.injectCapsule(shCap);

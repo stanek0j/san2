@@ -51,12 +51,17 @@ OBJS-INTERFACES = interfaces/tcp/ccapsulereceiver.o \
 				  interfaces/sendcapsulefuncout.o \
 				  interfaces/alivefuncin.o \
 				  interfaces/alivefuncout.o \
+				  interfaces/workernodein.o \
+				  interfaces/workernodeout.o \
 				  interfaces/tcp/ctcpinterface.o
 
-OBJS-WORKER = worker/cworker.o \
-              worker/cworkerpool.o
+OBJS-EXEC = exec/cworkerpool.o
 
-OBJS-NODE = node/cnode.o node/main.o node/cipcchannel.o
+OBJS-NODE = node/cnode.o node/main.o node/cipcchannel.o node/cworkerchannel.o
+
+OBJS-WORKER = worker/cworker.o \
+              worker/cworkerreciever.o \
+              worker/main.o
 
 OBJS-EXAMPLES-CPPL-SERVER = examples/cppl/server/server.o \
 							examples/cppl/server/cchannel.o
@@ -81,9 +86,9 @@ OBJS-EXAMPLES-RPC-TCPCLIENT = examples/rpc/tcpclient/main.o \
 OBJS-TEST-FUNC = examples/rpc/testfuncin.o  examples/rpc/multiplyin.o \
 		 examples/rpc/testfuncout.o examples/rpc/multiplyout.o
 
-all:: components examples node
+all:: components examples node worker
 
-components: utils cppl stream network rpc comm tcp interfaces worker
+components: utils cppl stream network rpc comm tcp interfaces exec
 
 utils: $(OBJS-UTILS)
 cppl: $(OBJS-CPPL)
@@ -93,7 +98,7 @@ rpc: $(OBJS-RPC)
 comm: $(OBJS-COMM)
 tcp: $(OBJS-TCP)
 interfaces: $(OBJS-INTERFACES)
-worker: $(OBJS-WORKER)
+exec: $(OBJS-EXEC)
 
 examples: examples-utils examples-cppl examples-rpc
 
@@ -128,9 +133,11 @@ examples-rpc-tcpserver: utils cppl tcp stream comm rpc $(OBJS-EXAMPLES-RPC-TCPSE
 examples-rpc-tcpclient: utils cppl tcp stream comm rpc $(OBJS-EXAMPLES-RPC-TCPCLIENT) $(OBJS-TEST-FUNC)
 	$(CCC) $(OBJS-UTILS) $(OBJS-CPPL)  $(OBJS-TCP) $(OBJS-STREAM) $(OBJS-COMM) $(OBJS-RPC) $(OBJS-EXAMPLES-RPC-TCPCLIENT) $(OBJS-TEST-FUNC)  -o ./tcprpc_client $(LIBS) $(LDFLAGS)
 	
-node: utils cppl tcp stream comm rpc network interfaces $(OBJS-NODE)
-	$(CCC) $(OBJS-UTILS) $(OBJS-CPPL)  $(OBJS-TCP) $(OBJS-STREAM) $(OBJS-COMM) $(OBJS-RPC) $(OBJS-NETWORK) $(OBJS-INTERFACES) $(OBJS-WORKER) $(OBJS-NODE)  -o ./sanode $(LIBS) $(LDFLAGS)
+node: utils cppl tcp stream comm rpc network interfaces exec $(OBJS-NODE)
+	$(CCC) $(OBJS-UTILS) $(OBJS-CPPL)  $(OBJS-TCP) $(OBJS-STREAM) $(OBJS-COMM) $(OBJS-RPC) $(OBJS-NETWORK) $(OBJS-INTERFACES) $(OBJS-EXEC) $(OBJS-NODE)  -o ./sanode $(LIBS) $(LDFLAGS)
 
+worker: utils cppl tcp stream comm rpc network interfaces exec $(OBJS-WORKER)
+	$(CCC) $(OBJS-UTILS) $(OBJS-CPPL)  $(OBJS-TCP) $(OBJS-STREAM) $(OBJS-COMM) $(OBJS-RPC) $(OBJS-NETWORK) $(OBJS-INTERFACES) $(OBJS-EXEC) $(OBJS-WORKER)  -o ./sanworker $(LIBS) $(LDFLAGS)
 
 #tells how to make an *.o object file from an *.c file
 %.o: %.cpp
@@ -140,6 +147,7 @@ node: utils cppl tcp stream comm rpc network interfaces $(OBJS-NODE)
 clean::
 	rm -f *.o
 	rm -f sanode
+	rm -f sanworker
 	rm -f rpc/*.o
 	rm -f comm/*.o
 	rm -f utils/*.o
@@ -171,6 +179,6 @@ clean::
 	rm -f rpc_client
 	rm -f tcprpc_server
 	rm -f tcprpc_client
-	rm -f pctest	
+	rm -f pctest
 
 	

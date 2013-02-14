@@ -2,10 +2,25 @@
 #ifndef WORKER_HPP_
 #define WORKER_HPP_
 
-namespace San2 {
-namespace Worker {
+#include <string>
 
-class Worker {
+namespace San2 {
+namespace Exec {
+
+class Worker
+{
+
+public:
+	Worker(std::string workerID);
+
+	std::string getWorkerID();
+
+protected:
+
+private:
+	std::string workerID;
+	//TODO ipc channel
+
 };
 
 } /* namespace Worker */

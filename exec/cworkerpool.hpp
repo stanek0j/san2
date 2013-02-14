@@ -3,7 +3,7 @@
 #define CWORKERPOOL_H_
 
 namespace San2 {
-namespace Worker {
+namespace Exec {
 
 class CWorkerPool {
 
