@@ -7,8 +7,9 @@
 
 namespace San2 { namespace Node {
 
-CNode::CNode(unsigned int inputQueueMaxSize, std::string nodeName, unsigned int timePOP) :
+CNode::CNode(unsigned int inputQueueMaxSize, unsigned int workQueueMaxSize, std::string nodeName, unsigned int timePOP) :
 	m_inputQueue(inputQueueMaxSize),
+	m_workQueue(workQueueMaxSize),
 	m_nodeName(nodeName),
 	m_timePOP(timePOP)
 {
@@ -20,7 +21,10 @@ void CNode::run()
 	// there should be capsule executor/worker implementation
 	
 	printf("hwThreads: %d\n", workerPool->getHwThreads());
+
 	// create ipc
+
+
 	// run workers
 
 	// there should be a router implementation
@@ -67,6 +71,12 @@ void CNode::run()
 		if (rval == true)
 		{
 			// FILE_LOG(logDEBUG4) << "CNode::run():: capsule reached its final destination ######";
+
+			// saving capsule for workers to execute
+			if (capsule->getDX() && !capsule->getDS()) {
+				FILE_LOG(logDEBUG4) << "Capsule saved for execution";
+				m_workQueue.push(capsule);
+			}
 
             if (capsule->getAppId() == San2::Network::sanTestMessageApplicationId)
             {

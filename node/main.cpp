@@ -8,6 +8,7 @@
 
 #include "cnode.hpp"
 #include "cipcchannel.hpp"
+#include "cworkerchannel.hpp"
 #include "interfaces/tcp/ctcpinterface.hpp"
 #include "utils/platform/sleep.hpp"
 #include "utils/config.hpp"
@@ -23,10 +24,14 @@
 #define TIME_CON 2000
 #define TIME_RX  2000
 #define TIME_TX  2000
+#define TIME_WORK_CON 3000
+#define TIME_WORK_RX  3000
+#define TIME_WORK_TX  3000
 #define TIME_POP 2000
 #define TIME_POP_NODE 2000
 #define TCP_QUEUESIZE 50
 #define INPUT_QUEUE_SIZE 50
+#define WORK_QUEUE_SIZE 50
 
 std::string int2string(int x)
 {
@@ -92,17 +97,23 @@ int main(int argc, char *argv[])
 	// ---- setup InterProcessComunnication to terminal application
 	
 	std::string ipcAddress = cfg.getValue("ipcAddress");
+	std::string ipcWorkload = cfg.getValue("ipcWorkload");
 	
 	if (!ipcAddress.compare(std::string("")))
 	{
 		printf("failed to parse ipcAddress from configuration file\n");
 		return -2;
 	}
-	
+	if (!ipcWorkload.compare(std::string("")))
+	{
+		printf("failed to parse ipcWorkload from configuration file\n");
+		return -3;
+	}
 
-	San2::Node::CNode node(INPUT_QUEUE_SIZE, cfg.getValue("nodeName"), TIME_POP_NODE);
+	San2::Node::CNode node(INPUT_QUEUE_SIZE, WORK_QUEUE_SIZE, cfg.getValue("nodeName"), TIME_POP_NODE);
 
 	San2::Cppl::PipeServer ps(ipcAddress.c_str(), [&node] (CPPL_PIPETYPE handle, unsigned int timRX, unsigned int timTX) {return new San2::Node::CIpcChannel(handle, timRX, timTX, node);}, TIME_CON, TIME_RX, TIME_TX);
+	San2::Cppl::PipeServer psWork(ipcWorkload.c_str(), [&node] (CPPL_PIPETYPE handle, unsigned int timRX, unsigned int timTX) {return new San2::Node::CWorkerChannel(handle, timRX, timTX);}, TIME_WORK_CON, TIME_WORK_RX, TIME_WORK_TX);
 	
 	std::string localIp, localPort, remoteIp, remotePort, ifAddress;
     
@@ -137,6 +148,7 @@ int main(int argc, char *argv[])
 	
 	node.start();
 	ps.start(); // ipc start
+	psWork.start(); // worker ipc start
     printf("running\n");
     node.join();
 	

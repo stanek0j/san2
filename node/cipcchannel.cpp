@@ -303,7 +303,7 @@ San2::Cppl::ErrorCode CIpcChannel::lineParser(const std::vector<std::string> &ar
 
                 if (!args[2].compare("off"))
                 {
-                    m_capsule.setDX(true);
+                    m_capsule.setDX(false);
                     San2::Cppl::BufferProcessor::sendLine("dx disabled OK");
                     return San2::Cppl::ErrorCode::SUCCESS;
                 }
@@ -340,7 +340,7 @@ San2::Cppl::ErrorCode CIpcChannel::lineParser(const std::vector<std::string> &ar
 
                 if (!args[2].compare("off"))
                 {
-                    m_capsule.setDS(true);
+                    m_capsule.setDS(false);
                     San2::Cppl::BufferProcessor::sendLine("ds disabled OK");
                     return San2::Cppl::ErrorCode::SUCCESS;
                 }

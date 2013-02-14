@@ -18,7 +18,7 @@ namespace San2
 		class CNode : public San2::Utils::CThread
 		{
 		public:
-			CNode(unsigned int inputQueueMaxSize, std::string nodeName, unsigned int timePOP);
+			CNode(unsigned int inputQueueMaxSize, unsigned int workQueueMaxSize, std::string nodeName, unsigned int timePOP);
 		
 			void run(); // start receiving capsules
 			int addInterface(std::shared_ptr<San2::Network::CNetInterface> iface);
@@ -43,6 +43,7 @@ namespace San2
 			San2::Utils::CProducerConsumer<std::shared_ptr<San2::Network::CCapsule> > m_inputQueue;
 			std::set<std::shared_ptr<San2::Network::CNetInterface> > m_interfaces;
 
+			San2::Utils::CProducerConsumer<std::shared_ptr<San2::Network::CCapsule> > m_workQueue;
 			San2::Exec::CWorkerPool *workerPool;
 			
 			std::mutex m_mutexInterfaces;
